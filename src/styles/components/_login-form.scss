@@ -1,0 +1,44 @@
+#login-form-container {
+  background-color: rgb(64, 45, 96);
+  background-image: url('../../assets/images/flyting-birds@2x.png');
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+  opacity: 80%;
+  background-size: cover;
+}
+#home-page-logo{
+  width: 80%;
+  padding: 20px 3px 20px 10px;
+  border-right: 1px solid #402D60;
+}
+#home-page-logo:hover {
+  border-right: 2px solid #402D60;
+}
+.close-icon {
+  width: 35px;
+}
+.close-icon:hover {
+  width: 37px;
+}
+
+.login-R-items {
+  padding: 20px 0 20px 3px;
+  border-left: 1px solid #402D60;
+}
+.login-R-items:hover{
+  border-left: 2px solid #402D60;
+}
+
+#login-btn {
+  width: 100%;
+  background-color: #D9D9D9;
+  border: 1px solid #23083D;
+  border-radius: 20px;
+  font-family: MJ_thameen,sans-serif;
+  font-weight: bold;
+  font-size: 4rem;
+}
+#login-btn:focus{
+  outline: none;
+  border-width: 2px;
+}
