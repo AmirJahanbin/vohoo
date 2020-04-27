@@ -6,20 +6,6 @@
   opacity: 80%;
   background-size: cover;
 }
-#home-page-logo{
-  width: 80%;
-  padding: 20px 3px 20px 10px;
-  border-right: 1px solid #402D60;
-}
-#home-page-logo:hover {
-  border-right: 2px solid #402D60;
-}
-.close-icon {
-  width: 35px;
-}
-.close-icon:hover {
-  width: 37px;
-}
 
 .login-R-items {
   padding: 20px 0 20px 3px;
@@ -41,8 +27,4 @@
 #login-btn:focus{
   outline: none;
   border-width: 2px;
-}
-.form-group {
-  width: 25vw;
-  margin: 35px 0;
 }

@@ -8,10 +8,12 @@
     "@testing-library/user-event": "^7.2.1",
     "chapar": "^1.0.8",
     "node-sass": "^4.14.0",
+    "proptypes": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7",
     "css-loader": "^3.5.2",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.4",

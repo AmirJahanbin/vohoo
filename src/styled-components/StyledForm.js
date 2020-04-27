@@ -1,25 +1,13 @@
-//.form input {
-//  background-color: transparent;
-//  border: none;
-//}
-//.form input:focus {
-//  background-color: transparent;
-//  outline: none;
-//}
-//
-//.form label {
-//  display: block;
-//  color: #ffffff;
-//  font-family: MJ_thameen, sans-serif;
-//  font-weight: lighter;
-//  font-size: 40px;
-//}
-form {
+import styled from "styled-components";
+
+
+const StyledForm = styled.form`
+  
   direction: rtl;
   font-family: MJ_thameen, sans-serif;
   font-weight: 300;
   font-size: 2.5rem;
-}
+
 .form-group {
   position: relative;
   padding: 10px 0 0;
@@ -56,7 +44,6 @@ form {
   padding-bottom: 6px;
   font-weight: normal;
   border-width: 2px;
-  border-color: white;
 }
 .form-field:focus ~ .form-label {
   position: absolute;
@@ -71,3 +58,5 @@ form {
 .form-field:required, .form-field:invalid {
   box-shadow: none;
 }
+`;
+export default StyledForm;

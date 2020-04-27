@@ -1,16 +1,25 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
-import closeIcon from "../../assets/images/close icon@2x.png";
+import styled from "styled-components";
 import LoginForm from "../LoginForm";
+import closeIcon from "../../assets/images/close icon@2x.png";
+
+const StyledLoginForm = styled(LoginForm)`
+  .form-group {
+    width: 25vw;
+    margin: 35px 0;
+  }
+`;
+
 
 export default class Login extends React.Component {
     render() {
         return (
             <div className={"main-container"}>
-                <HomePageLink className={"right-container"} id={"home-page-logo"}/>
+                <HomePageLink className={"right-container"} id={"right-home-page-logo"}/>
                 <div className={"middle-container"} id={"login-form-container"}>
-                    <LoginForm className={"form"} id={"login-form"}/>
+                    <StyledLoginForm />
                 </div>
                 <div className={"left-container"}>
                     <div className={"login-R-items"}>

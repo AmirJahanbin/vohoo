@@ -1,6 +1,22 @@
 import React from "react";
-import "../styles/components/_sign-up-form.scss";
+import styled from "styled-components";
+import StyledForm from "../styled-components/StyledForm";
 
+const Input = styled.input`
+  width: 100%;
+  margin: 0 40%;
+  background-color: #D9D9D9;
+  border: 1px solid #23083D;
+  border-radius: 20px;
+  font-family: MJ_thameen,sans-serif;
+  font-weight: bold;
+  font-size: 4rem;
+  
+  &:hover{
+    outline: none;
+    border-width: 2px;
+  }
+`;
 export default class SignUpForm extends React.Component {
     constructor(props) {
         super(props);
@@ -25,7 +41,7 @@ export default class SignUpForm extends React.Component {
     render() {
         return (
             <div className={this.props.className}>
-                <form id={"sign-up-form"}>
+                <StyledForm id={"sign-up-form"}>
                     <div className={"form-group"}>
                         <input
                             name={"userName"}
@@ -49,6 +65,7 @@ export default class SignUpForm extends React.Component {
                             className={"form-field"}
                             placeholder={"شماره همراه"}
                             required={true}
+                            pattern={"[0-9]{11}"}
                             onKeyDown={this.handleNextInput}
                         />
                         <label htmlFor={"phoneNumber"} className={"form-label"}>
@@ -90,6 +107,7 @@ export default class SignUpForm extends React.Component {
                             id={"verificationCode"}
                             className={"form-field"}
                             placeholder={"کد اعتبارسنجی"}
+                            pattern={".{5}"}
                             required={true}
                             onKeyDown={this.handleNextInput}
                         />
@@ -118,13 +136,15 @@ export default class SignUpForm extends React.Component {
                             id={"repeatVerificationCode"}
                             className={"form-field"}
                             placeholder={"تکرار رمز عبور"}
+                            pattern={".{5}"}
                             required={true}
                         />
                         <label htmlFor={"repeatVerificationCode"} className={"form-label"}>
                             تکرار رمز عبور
                         </label>
                     </div>
-                </form>
+                    <Input type={"submit"} value={"ثبت نام"} className={"sign-up-btn"}/>
+                </StyledForm>
             </div>
         )
     }

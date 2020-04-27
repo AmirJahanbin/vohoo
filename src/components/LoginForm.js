@@ -1,5 +1,7 @@
 import React from "react";
-// import "../styles/components/_login-form.scss";
+import StyledForm from "../styled-components/StyledForm";
+
+
 export default class LoginForm extends React.Component {
 
     constructor(props) {
@@ -35,7 +37,7 @@ export default class LoginForm extends React.Component {
     render() {
         return (
             <div className={this.props.className} id={this.props.id}>
-                <form onSubmit={this.handleSubmit}>
+                <StyledForm onSubmit={this.handleSubmit} >
                     <div className={"form-group"}>
                         <input
                             name={"username"}
@@ -67,7 +69,7 @@ export default class LoginForm extends React.Component {
                         </label>
                     </div>
                     <input type={"submit"} value={"ورود"} id={"login-btn"}/>
-                </form>
+                </StyledForm>
             </div>
         );
     }
