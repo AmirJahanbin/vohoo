@@ -19,20 +19,43 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="sign-up page">
-      <change afterPath="$PROJECT_DIR$/src/styled-components/StyledForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/proptypes.js" afterDir="false" />
+    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="sign-up page finished">
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/facebook-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/instagram-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/mail-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/telegram-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/telephone@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/twitter-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/whatsapp-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/social icons/youtube-1@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/woman-praying@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/components/_contact-us.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles/components/_menu.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePageLink.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePageLink.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Bold/Segoe UI Bold.eot" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Bold/Segoe UI Bold.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Bold/Segoe UI Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Bold/Segoe UI Bold.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Bold/Segoe UI Bold.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Bold/Segoe UI Bold.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Bold/Segoe UI Bold.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Bold/Segoe UI Bold.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Light/Segoe UI Light.eot" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Light/Segoe UI Light.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Light/Segoe UI Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Light/Segoe UI Light.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Light/Segoe UI Light.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Light/Segoe UI Light.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Light/Segoe UI Light.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Light/Segoe UI Light.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Semilight/Segoe UI Semilight.otf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Semilight/Segoe UI Semilight.otf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Semilight/Segoe UI Semilight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Semilight/Segoe UI Semilight.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Semilight/Segoe UI Semilight.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Semilight/Segoe UI Semilight.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI Semilight/Segoe UI Semilight.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI Semilight/Segoe UI Semilight.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI/Segoe UI.eot" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI/Segoe UI.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI/Segoe UI.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI/Segoe UI.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI/Segoe UI.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI/Segoe UI.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/Segoe/Segoe UI/Segoe UI.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fonts/Segoe/SegoeUI/Segoe UI.woff2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/SignUpForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignUpForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/AboutUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ContactUs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/SignUp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_Links.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_Links.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_login-form.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_login.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_sign-up-form.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_sign-up.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/AppRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/AppRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/base/_fonts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/base/_fonts.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/components/_login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_login.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/styles.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,8 +67,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Sass File" />
-        <option value="SCSS File" />
         <option value="JavaScript File" />
+        <option value="SCSS File" />
       </list>
     </option>
   </component>
@@ -70,12 +93,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="settings.editor.splitter.proportion" value="0.27619982" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
     </key>
   </component>
   <component name="RunManager">
@@ -106,7 +130,14 @@
       <workItem from="1587893761896" duration="5511000" />
       <workItem from="1587918440128" duration="357000" />
       <workItem from="1587967600159" duration="2269000" />
-      <workItem from="1587972350624" duration="18759000" />
+      <workItem from="1587972350624" duration="19061000" />
+      <workItem from="1588050178775" duration="2050000" />
+      <workItem from="1588052926044" duration="24000" />
+      <workItem from="1588052986290" duration="10012000" />
+      <workItem from="1588063764716" duration="2913000" />
+      <workItem from="1588069704739" duration="7635000" />
+      <workItem from="1588095155679" duration="7613000" />
+      <workItem from="1588147096892" duration="17911000" />
     </task>
     <task id="LOCAL-00001" summary="sign-up page">
       <created>1587847642456</created>
@@ -122,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587847899360</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="sign-up page finished">
+      <created>1588023472702</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1588023472702</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -142,7 +180,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="sign-up page" />
-    <option name="LAST_COMMIT_MESSAGE" value="sign-up page" />
+    <MESSAGE value="sign-up page finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="sign-up page finished" />
   </component>
   <component name="WindowStateProjectService">
     <state x="829" y="390" width="251" height="270" key="#Notifications" timestamp="1587794653806">
@@ -154,50 +193,54 @@
     </state>
     <state x="359" y="171" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.999@0.27.1920.999" timestamp="1587826091720" />
     <state x="418" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1587795511800" />
+    <state x="693" y="270" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588063502367">
+      <screen x="0" y="27" width="1920" height="999" />
+    </state>
+    <state x="693" y="270" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1920.999@0.27.1920.999" timestamp="1588063502367" />
     <state x="622" y="211" width="666" height="638" key="#start" timestamp="1587826137834">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="622" y="211" width="666" height="638" key="#start/0.27.1920.999@0.27.1920.999" timestamp="1587826137834" />
-    <state width="1897" height="304" key="GridCell.Tab.0.bottom" timestamp="1587971939774">
+    <state width="1897" height="257" key="GridCell.Tab.0.bottom" timestamp="1588063804751">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state width="1897" height="304" key="GridCell.Tab.0.bottom/0.27.1920.999@0.27.1920.999" timestamp="1587971939774" />
+    <state width="1897" height="257" key="GridCell.Tab.0.bottom/0.27.1920.999@0.27.1920.999" timestamp="1588063804751" />
     <state width="1897" height="296" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1587796102826" />
-    <state width="1897" height="304" key="GridCell.Tab.0.center" timestamp="1587971939772">
+    <state width="1897" height="257" key="GridCell.Tab.0.center" timestamp="1588063804750">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state width="1897" height="304" key="GridCell.Tab.0.center/0.27.1920.999@0.27.1920.999" timestamp="1587971939772" />
+    <state width="1897" height="257" key="GridCell.Tab.0.center/0.27.1920.999@0.27.1920.999" timestamp="1588063804750" />
     <state width="1897" height="296" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1587796102820" />
-    <state width="1897" height="304" key="GridCell.Tab.0.left" timestamp="1587971939772">
+    <state width="1897" height="257" key="GridCell.Tab.0.left" timestamp="1588063804749">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state width="1897" height="304" key="GridCell.Tab.0.left/0.27.1920.999@0.27.1920.999" timestamp="1587971939772" />
+    <state width="1897" height="257" key="GridCell.Tab.0.left/0.27.1920.999@0.27.1920.999" timestamp="1588063804749" />
     <state width="1897" height="296" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1587796102820" />
-    <state width="1897" height="304" key="GridCell.Tab.0.right" timestamp="1587971939773">
+    <state width="1897" height="257" key="GridCell.Tab.0.right" timestamp="1588063804751">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state width="1897" height="304" key="GridCell.Tab.0.right/0.27.1920.999@0.27.1920.999" timestamp="1587971939773" />
+    <state width="1897" height="257" key="GridCell.Tab.0.right/0.27.1920.999@0.27.1920.999" timestamp="1588063804751" />
     <state width="1897" height="296" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1587796102821" />
-    <state x="467" y="243" width="1062" height="737" key="SettingsEditor" timestamp="1587982877918">
+    <state x="467" y="243" width="1062" height="737" key="SettingsEditor" timestamp="1588074050265">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="467" y="243" width="1062" height="737" key="SettingsEditor/0.27.1920.999@0.27.1920.999" timestamp="1587982877918" />
+    <state x="467" y="243" width="1062" height="737" key="SettingsEditor/0.27.1920.999@0.27.1920.999" timestamp="1588074050265" />
     <state x="304" y="140" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1587806324362" />
     <state x="689" y="257" width="639" height="524" key="StructurePopup" timestamp="1587817459073">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="689" y="257" width="639" height="524" key="StructurePopup/0.27.1920.999@0.27.1920.999" timestamp="1587817459073" />
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1587847905326">
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588023502655">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1587847905326" />
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588023502655" />
     <state x="624" y="236" key="run.anything.popup" timestamp="1588020012918">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="624" y="236" key="run.anything.popup/0.27.1920.999@0.27.1920.999" timestamp="1588020012918" />
-    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup" timestamp="1587988096417">
+    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup" timestamp="1588147947601">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup/0.27.1920.999@0.27.1920.999" timestamp="1587988096417" />
+    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup/0.27.1920.999@0.27.1920.999" timestamp="1588147947601" />
   </component>
 </project>

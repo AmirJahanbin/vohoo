@@ -65,7 +65,7 @@ export default class SignUpForm extends React.Component {
                             className={"form-field"}
                             placeholder={"شماره همراه"}
                             required={true}
-                            pattern={"[0-9]{11}"}
+                            pattern={"[0-9]{10}"}
                             onKeyDown={this.handleNextInput}
                         />
                         <label htmlFor={"phoneNumber"} className={"form-label"}>

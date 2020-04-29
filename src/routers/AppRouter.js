@@ -12,7 +12,7 @@ import Messages from "../components/pages/Messages";
 import Calendar from "../components/pages/Calendar";
 import Gathering from "../components/pages/Gathering";
 import MyActivity from "../components/pages/MyActivity";
-import AboutUs from "../components/pages/AboutUs";
+import ContactUs from "../components/pages/ContactUs";
 import NotFound from "../components/pages/404NotFound";
 
 const AppRouter = () => (
@@ -31,7 +31,7 @@ const AppRouter = () => (
                 <Route path={"/calendar"}><Calendar/></Route>
                 <Route path={"/gathering"}><Gathering/></Route>
                 <Route path={"/my-activity"}><MyActivity/></Route>
-                <Route path={"/about-us"}><AboutUs/></Route>
+                <Route path={"/contact-us"}><ContactUs/></Route>
                 <Route><NotFound/></Route>
             </Switch>
         </div>

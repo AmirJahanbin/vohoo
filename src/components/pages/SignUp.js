@@ -16,14 +16,13 @@ const StyledSignUpForm = styled(SignUpForm)`
     justify-content: space-between;
     margin: -100px 60px 0 60px;
   }
-  
 `;
-
 export default class SignUp extends React.Component{
     render() {
         return (
             <div className={"main-container"}>
-                <HomePageLink className={"right-container"} id={"right-home-page-logo"}/>
+                <HomePageLink className={"right-container "} id={"right-home-page-logo"}/>
+
                 <div className={"middle-container"} id={"sign-up-form-container"}>
                     <StyledSignUpForm />
                 </div>

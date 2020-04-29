@@ -22,7 +22,7 @@ export default class Login extends React.Component {
                     <StyledLoginForm />
                 </div>
                 <div className={"left-container"}>
-                    <div className={"login-R-items"}>
+                    <div className={"login-L-items"}>
                         <Link to={"/sign-up"}>
                             عضویت در سایت
                         </Link>
@@ -30,7 +30,7 @@ export default class Login extends React.Component {
                     <Link to={"/"}>
                         <img src={closeIcon} alt={closeIcon} className={"close-icon"}/>
                     </Link>
-                    <div className={"login-R-items"}>
+                    <div className={"login-L-items"}>
                         <Link to={"/forget-password-page"}>
                             فراموش کرده‌ام
                         </Link>
