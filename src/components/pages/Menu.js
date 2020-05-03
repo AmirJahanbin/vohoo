@@ -67,6 +67,9 @@ const StyledMenuMiddleContainer = styled.div`
       background: lightgray;
       border-radius: 50%;
     }
+    padding-right: 9px;
+    
+    overflow: -moz-scrollbars-none;
   }
   
   #last-events-title {
@@ -81,12 +84,15 @@ const StyledMenuMiddleContainer = styled.div`
     flex-direction: row-reverse;
     align-items: baseline;    
     font-size: 1.5vw;
-    font-weight: 200;
+    font-weight: 200;    
     margin: 5px 0 5px 5px;  
     & input {
       margin: 0 0 0 10px;
       width: 20px;
       height: 20px;
+    }
+    & a {
+      color: #23083D;
     }
   }
   .last-event-text:hover {
@@ -132,16 +138,15 @@ const StyledMenuLeftContainer = styled.div`
   font-weight: lighter;
   font-size: 1.3vw;
   
-  #top-left-home-page-logo {
-    align-self: flex-end;
-    width: 140px;
-  }
   .about-us-contact-us {
     display: flex;
     flex-direction: column;
     border-left: 1px solid #23083D;
     padding-left: 5px;
     margin-bottom: 50px;
+  }
+  & a {
+    color: #402D60;
   }
   & a:hover {
     font-weight: 400;
@@ -176,6 +181,7 @@ export default class Menu extends React.Component {
             ]
         }
     }
+
     render() {
         return (
             <div className={"main-container"}>
@@ -220,7 +226,7 @@ export default class Menu extends React.Component {
                 </StyledMenuMiddleContainer>
                 <div className={"left-container"}>
                     <StyledMenuLeftContainer className={"left-menu-links"}>
-                        <HomePageLink id={"top-left-home-page-logo"}/>
+                        <HomePageLink className={"top-left-home-page-logo"}/>
                         <Link to={"/sign-up"}>عضویت در سایت</Link>
                         <div className={"about-us-contact-us"}>
                             <Link to={"/about-us"}>داستان ما</Link>
@@ -228,7 +234,6 @@ export default class Menu extends React.Component {
                         </div>
                     </StyledMenuLeftContainer>
                 </div>
-
 
 
                 {/*<Link to={"/"}>Go home</Link>*/}

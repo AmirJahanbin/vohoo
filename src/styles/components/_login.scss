@@ -10,6 +10,8 @@
 .login-L-items {
   padding: 20px 0 20px 3px;
   border-left: 1px solid #402D60;
+  font-size: 1.3vw;
+  font-weight: lighter;
 }
 .login-L-items:hover{
   border-left: 2px solid #402D60;
@@ -22,7 +24,7 @@
   border-radius: 20px;
   font-family: MJ_thameen,sans-serif;
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 #login-btn:focus{
   outline: none;

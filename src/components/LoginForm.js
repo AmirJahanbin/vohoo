@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React from "react";
+import {Redirect} from "react-router-dom";
 import StyledForm from "../styled-components/StyledForm";
-
 
 export default class LoginForm extends React.Component {
 
@@ -25,19 +26,32 @@ export default class LoginForm extends React.Component {
             event.preventDefault();
         }
     };
-    handleSubmit = (event) => {
-        const userPassJson = JSON.stringify(this.state);
-        console.log(userPassJson);
 
-        //TODO send username and password to server
-        event.preventDefault();
-    };
-
+    handleOnSubmit = (e) => {
+        const userPass = this.state;
+        this.props.handleSubmit(e, userPass);
+    }
+    // handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //
+    //     //TODO send username and password to server
+    //     try {
+    //         const response = await axios.post('http://5.253.25.176:8000/api/auth/login/', this.state);
+    //         // const { history } = this.props;
+    //         // history.push("/my-profile");
+    //         console.log(response);
+    //         console.log(response.data);
+    //         return (<Redirect to="/my-profile"/>);
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    //
+    // };
 
     render() {
         return (
             <div className={this.props.className} id={this.props.id}>
-                <StyledForm onSubmit={this.handleSubmit} >
+                <StyledForm onSubmit={this.handleOnSubmit}>
                     <div className={"form-group"}>
                         <input
                             name={"username"}

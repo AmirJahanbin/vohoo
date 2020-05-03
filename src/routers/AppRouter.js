@@ -19,19 +19,19 @@ const AppRouter = () => (
     <BrowserRouter>
         <div>
             <Switch>
-                <Route path={"/"} exact={true}><Home/></Route>
-                <Route path={"/course-register"}><CourseRegister/></Route>
-                <Route path={"/menu"}><Menu/></Route>
-                <Route path={"/sign-up"}><SignUp/></Route>
-                <Route path={"/login"}><Login/></Route>
-                <Route path={"/my-courses"}><MyCourses/></Route>
-                <Route path={"/my-profile"}><MyProfile/></Route>
-                <Route path={"/invoice"}><Invoice/></Route>
-                <Route path={"/massages"}><Messages/></Route>
-                <Route path={"/calendar"}><Calendar/></Route>
-                <Route path={"/gathering"}><Gathering/></Route>
-                <Route path={"/my-activity"}><MyActivity/></Route>
-                <Route path={"/contact-us"}><ContactUs/></Route>
+                <Route path={"/"} exact={true}   component={Home}/>
+                <Route path={"/course-register"} component={CourseRegister}/>
+                <Route path={"/menu"}            component={Menu}/>
+                <Route path={"/sign-up"}         component={SignUp}/>
+                <Route path={"/login"}           component={Login}/>
+                <Route path={"/my-courses"}      component={MyCourses}/>
+                <Route path={"/my-profile"}      component={MyProfile}/>
+                <Route path={"/invoice"}         component={Invoice}/>
+                <Route path={"/massages"}        component={Messages}/>
+                <Route path={"/calendar"}        component={Calendar}/>
+                <Route path={"/gathering"}       component={Gathering}/>
+                <Route path={"/my-activity"}     component={MyActivity}/>
+                <Route path={"/contact-us"}      component={ContactUs}/>
                 <Route><NotFound/></Route>
             </Switch>
         </div>

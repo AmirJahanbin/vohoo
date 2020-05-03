@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
-  height: 100vh;
+  min-height: 900px;
 }
 
 .middle-container{
@@ -28,5 +28,4 @@
   justify-content: space-around;
   align-items: center;
   font-family: MJ_thameen, sans-serif;
-  font-size: 2rem;
 }

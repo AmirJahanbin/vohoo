@@ -1,5 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import axios from "axios";
+import {Redirect} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
 import styled from "styled-components";
 import LoginForm from "../LoginForm";
@@ -14,12 +16,29 @@ const StyledLoginForm = styled(LoginForm)`
 
 
 export default class Login extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    handleOnSubmit = async (e, userPass) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://5.253.25.176:8000/api/auth/login/', userPass);
+            this.props.history.push("/my-profile");
+            console.log(response);
+            console.log(response.data);
+            // return (<Redirect to="/my-profile"/>);
+        } catch (e) {
+            console.log(e);
+        }
+    }
     render() {
         return (
             <div className={"main-container"}>
-                <HomePageLink className={"right-container"} id={"right-home-page-logo"}/>
+                <div className={"right-container"}>
+                    <HomePageLink id={"right-home-page-logo"}/>
+                </div>
                 <div className={"middle-container"} id={"login-form-container"}>
-                    <StyledLoginForm />
+                    <StyledLoginForm handleSubmit={this.handleOnSubmit}/>
                 </div>
                 <div className={"left-container"}>
                     <div className={"login-L-items"}>

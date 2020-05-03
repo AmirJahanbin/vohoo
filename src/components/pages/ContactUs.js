@@ -92,7 +92,9 @@ export default class ContactUs extends React.Component {
     render() {
         return (
             <div className={"main-container"} >
-                <HomePageLink className={"right-container"} id={"right-home-page-logo"} />
+                <div className={"right-container"}>
+                    <HomePageLink id={"right-home-page-logo"} />
+                </div>
                 <StyledContactUsMiddleContainer className={"middle-container"} id={"contact-us-container"}>
                     <div className={"social-link-box"}>
                         <div className={"social-group"}>
