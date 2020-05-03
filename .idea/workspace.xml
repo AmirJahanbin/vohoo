@@ -20,31 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="menu page finished">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/course register/Rectangle 143636@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/course register/scheme_background@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/menu-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/MenuLink.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vohoo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vohoo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePageLink.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePageLink.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layouts/LSideContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layouts/MainContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layouts/RSideContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/ContactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ContactUs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/CourseRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/CourseRegister.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/SignUp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/AppRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/AppRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styled-components/StyledForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/styled-components/StyledForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/components/_containers.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_containers.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_login.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_sign-up.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_sign-up.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +118,7 @@
       <workItem from="1588422242116" duration="9506000" />
       <workItem from="1588437473021" duration="17072000" />
       <workItem from="1588458440871" duration="5902000" />
-      <workItem from="1588489908046" duration="23309000" />
+      <workItem from="1588489908046" duration="24021000" />
     </task>
     <task id="LOCAL-00001" summary="sign-up page">
       <created>1587847642456</created>
@@ -179,7 +155,21 @@
       <option name="project" value="LOCAL" />
       <updated>1588174376972</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="menu page finished">
+      <created>1588523846520</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588523846520</updated>
+    </task>
+    <task id="LOCAL-00007" summary="menu page finished">
+      <created>1588523856363</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588523856363</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,10 +240,14 @@
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="689" y="257" width="639" height="524" key="StructurePopup/0.27.1920.999@0.27.1920.999" timestamp="1587817459073" />
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588174384106">
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588523870160">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588174384106" />
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588523870160" />
+    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588523919805">
+      <screen x="0" y="27" width="1920" height="999" />
+    </state>
+    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog/0.27.1920.999@0.27.1920.999" timestamp="1588523919805" />
     <state x="624" y="236" key="run.anything.popup" timestamp="1588450344943">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
