@@ -1,7 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
-import {Redirect} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
 import styled from "styled-components";
 import LoginForm from "../LoginForm";
@@ -26,7 +25,6 @@ export default class Login extends React.Component {
             this.props.history.push("/my-profile");
             console.log(response);
             console.log(response.data);
-            // return (<Redirect to="/my-profile"/>);
         } catch (e) {
             console.log(e);
         }

@@ -98,49 +98,49 @@ export default class ContactUs extends React.Component {
                 <StyledContactUsMiddleContainer className={"middle-container"} id={"contact-us-container"}>
                     <div className={"social-link-box"}>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social1"}>
+                            <a href={"/"} id={"social1"}>
                                 <img src={telephone} alt={"telephone"}/>
                                 03132612613
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social2"}>
+                            <a href={"/"} id={"social2"}>
                                 <img src={telegram} alt={"telegram"}/>
                                 09131137002
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social3"}>
+                            <a href={"/"} id={"social3"}>
                                 <img src={whatsapp} alt={"whatsapp"}/>
                                 whatsapp/vohoo
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social4"}>
+                            <a href={"/"} id={"social4"}>
                                 <img src={mail} alt={"mail"}/>
                                 vohoo@gmail.com
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social5"}>
+                            <a href={"/"} id={"social5"}>
                                 <img src={instagram} alt={"instagram"}/>
                                 @vohoo
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social6"}>
+                            <a href={"/"} id={"social6"}>
                                 <img src={facebook} alt={"facebook"}/>
                                 www.facebook.com/me
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social7"}>
+                            <a href={"/"} id={"social7"}>
                                 <img src={youtube} alt={"youtube"}/>
                                 www.youtube.com/vohoo
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"#"} id={"social8"}>
+                            <a href={"/"} id={"social8"}>
                                 <img src={twitter} alt={"twitter"}/>
                                 www.twitter.com/vohoo
                             </a>

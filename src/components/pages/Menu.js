@@ -20,9 +20,14 @@ const StyledMenuMiddleContainer = styled.div`
     align-items: center;
     font-family: MJ_thameen, sans-serif;    
     
+  @media screen and (max-width: 992px) {
+    .middle-menu {
+      min-height: 50vh;
+    }
+  }
   .middle-menu {
     display: flex;
-    height: 75vh;
+    min-height: 50vh;
     flex-direction: column;
     justify-content: space-between;
     text-align: right;
@@ -108,12 +113,15 @@ const StyledMenuMiddleContainer = styled.div`
   // }
 `;
 
-const StyledMenuRightContainer = styled.div`  
+const StyledMenuRightContainer = styled.div`
+  @media screen and (max-width: 992px) {
+    min-height: 50vh;
+  }  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: right;
-  min-height: 50vh;
+  min-height: 100vh;
   font-size: 1.5vw;
   border-right: 1px solid #23083D;
   padding-right: 5px;
@@ -128,6 +136,9 @@ const StyledMenuRightContainer = styled.div`
 `;
 
 const StyledMenuLeftContainer = styled.div`
+  @media screen and (max-width: 992px) {
+    min-height: 50vh;
+  }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -210,7 +221,7 @@ export default class Menu extends React.Component {
                         <div id={"last-events-container"}>
                             {this.state.lastEvents.map((lastEvent) => (
                                 <div className={"last-event"}>
-                                    <input type={"image"} src={closeIcon} className={"last-event-close-icon"}/>
+                                    <input type={"image"} src={closeIcon} className={"last-event-close-icon"} alt={"closeIcon"}/>
                                     <Link to={""} className={"last-event-text"}>
                                         {lastEvent}
                                     </Link>

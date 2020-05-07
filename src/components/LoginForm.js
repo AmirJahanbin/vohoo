@@ -1,6 +1,4 @@
-import axios from 'axios';
 import React from "react";
-import {Redirect} from "react-router-dom";
 import StyledForm from "../styled-components/StyledForm";
 
 export default class LoginForm extends React.Component {

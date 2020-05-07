@@ -60,16 +60,16 @@ export default class SignUpForm extends React.Component {
                     <div className={"form-group"}>
                         <input
                             name={"phoneNumber"}
-                            type={"tel"}
+                            type={"text"}
                             id={"phoneNumber"}
                             className={"form-field"}
                             placeholder={"شماره همراه"}
                             required={true}
-                            pattern={"[0-9]{10}"}
+                            pattern={"[0-9]{11}"}
                             onKeyDown={this.handleNextInput}
                         />
                         <label htmlFor={"phoneNumber"} className={"form-label"}>
-                            شماره همراه
+                            شماره همراه (...۰۹)
                         </label>
                     </div>
                     <div className={"form-group"}>
@@ -132,7 +132,7 @@ export default class SignUpForm extends React.Component {
                     <div className={"form-group"}>
                         <input
                             name={"repeatVerificationCode"}
-                            type={"tel"}
+                            type={"text"}
                             id={"repeatVerificationCode"}
                             className={"form-field"}
                             placeholder={"تکرار رمز عبور"}

@@ -19,7 +19,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="menu page finished">
+    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="http://5.253.25.176:3000/course-register">
+      <change afterPath="$PROJECT_DIR$/src/components/ChangePassword.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SignUpForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignUpForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/ContactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ContactUs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/MyProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styled-components/StyledForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/styled-components/StyledForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/components/_containers.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_containers.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +61,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets/images/course register" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets/images" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -62,12 +74,12 @@
     <property name="settings.editor.splitter.proportion" value="0.27619982" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/src/assets/images/course register" />
       <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets/images/course register" />
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
     </key>
@@ -118,7 +130,16 @@
       <workItem from="1588422242116" duration="9506000" />
       <workItem from="1588437473021" duration="17072000" />
       <workItem from="1588458440871" duration="5902000" />
-      <workItem from="1588489908046" duration="24021000" />
+      <workItem from="1588489908046" duration="24617000" />
+      <workItem from="1588525106905" duration="2701000" />
+      <workItem from="1588578009335" duration="919000" />
+      <workItem from="1588609067652" duration="1215000" />
+      <workItem from="1588660192268" duration="17272000" />
+      <workItem from="1588738972896" duration="35384000" />
+      <workItem from="1588831832936" duration="5573000" />
+      <workItem from="1588839259282" duration="16448000" />
+      <workItem from="1588859401419" duration="118000" />
+      <workItem from="1588868014287" duration="1653000" />
     </task>
     <task id="LOCAL-00001" summary="sign-up page">
       <created>1587847642456</created>
@@ -169,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588523856363</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="menu page finished">
+      <created>1588524601838</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588524601838</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,10 +268,10 @@
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="689" y="257" width="639" height="524" key="StructurePopup/0.27.1920.999@0.27.1920.999" timestamp="1587817459073" />
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588523870160">
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588524609523">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588523870160" />
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588524609523" />
     <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588523919805">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
@@ -252,9 +280,9 @@
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="624" y="236" key="run.anything.popup/0.27.1920.999@0.27.1920.999" timestamp="1588450344943" />
-    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup" timestamp="1588447178530">
+    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup" timestamp="1588744621773">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup/0.27.1920.999@0.27.1920.999" timestamp="1588447178530" />
+    <state x="623" y="211" width="672" height="678" key="search.everywhere.popup/0.27.1920.999@0.27.1920.999" timestamp="1588744621773" />
   </component>
 </project>
