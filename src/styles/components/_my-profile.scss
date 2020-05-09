@@ -1,0 +1,21 @@
+.pro-submit-btn-container {
+  width: inherit;
+  height: 100px;
+  border-left: 1px solid #AAAAAA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+.edit-profile-btn {
+  background-color: transparent;
+  width: 100px;
+  font-family: MJ_thameen,sans-serif;
+  font-size: 25px;
+  border: none;
+  margin: auto;
+  color: #AAAAAA;
+}
+.edit-profile-btn:hover{
+  color: #402D60;
+}
