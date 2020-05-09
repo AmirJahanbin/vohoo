@@ -82,7 +82,6 @@ export default class Reservation extends React.Component {
                     <input
                         name="numberOfGuests"
                         type="text"
-                        readOnly={true}
                         value={this.state.numberOfGuests}
                         onChange={this.handleInputChange} />
                 </label>

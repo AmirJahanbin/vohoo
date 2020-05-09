@@ -1,12 +1,12 @@
 import React from 'react';
 import AppRouter from "./routers/AppRouter";
-// import NameForm from "./test/from.test";
+import Reservation from "./test/from.test";
 import './App.css';
 
 const App = () => (
     <div>
         <AppRouter/>
-        {/*<NameForm/>*/}
+        {/*<Reservation/>*/}
     </div>
 );
 export default App;

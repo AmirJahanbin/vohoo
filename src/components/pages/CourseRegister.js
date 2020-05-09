@@ -608,7 +608,9 @@ export default class CourseRegister extends React.Component {
                                     <div>
                                     <span style={{display: "block"}}>
                                         برای پرداخت اقساطی باید کلیه فیلد‌های‌
-                                        <Link>مشخصات من</Link>
+                                        <Link to={"/my-profile"}>
+                                            مشخصات من
+                                        </Link>
                                         ‌تکمیل شود‌‌
                                     </span>
                                     <span style={{display: "block"}}>

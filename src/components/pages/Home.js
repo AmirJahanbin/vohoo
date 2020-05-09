@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
@@ -35,9 +36,27 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            courseList: ['a']
+            courseList: ['']
         }
     }
+    componentDidMount() {
+        console.log(typeof this.state.courseList);
+        axios.get("http://5.253.25.176:8000/api/course/")
+            .then((response) => {
+                console.log(response);
+                const courseList = response;
+                const titleList = [];
+                courseList.data.map((course, index) => {
+                    console.log("index now is equal to: " + index);
+                    titleList[index] = course.title;
+                });
+                this.setState(() => ({courseList: titleList}));
+            })
+            .catch((error) => console.log(error)
+            )
+        axios.post()
+    }
+
     render() {
         return (
             <StyledHomePage className={"home-page-container"}>
@@ -45,15 +64,14 @@ export default class Home extends React.Component {
                     <HomePageLink className={"top-left-home-page-logo"}/>
                     <MenuLink className={"down-left-menu-link"}/>
                 </div>
-
-                <select id={"current_job"} name={"current_job"} className={"select-form-field"}>
-                    <option value={""}>لیست دوره ها</option>
-                    {this.state.courseList.map((course, index) => (
-                        <option value={course} key={index}>
-                            {course}
-                        </option>
-                    ))}
-                </select>
+                <span>
+                    :لیست دوره ها
+                </span>
+                {this.state.courseList.map((course, index) => (
+                    <Link to={"/course-register"} value={"/menu"} key={index}>
+                        {course}
+                    </Link>
+                ))}
             </StyledHomePage>
         );
     }

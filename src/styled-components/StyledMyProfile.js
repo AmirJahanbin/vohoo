@@ -4,42 +4,13 @@ import nationalCard from "../assets/images/national-card.png";
 
 const StyledMyProfile = styled.div`
   color: white;
-  width: 80%;
   margin: auto;
   font-size: xx-large;
-  .right-fixed-container {
-    position: fixed;
-    right: 0;
-  }
-  .edit-profile-btn {
-  background-color: transparent;
-    width: 70%;
-    font-family: MJ_thameen,sans-serif;
-    border: none;
-    padding: 20px 0;
-    border-left: 1px solid #402D60;
-    font-weight: lighter;
-    font-size: larger;
-    margin: auto;
-  }
-  .edit-profile-btn:hover{
-    border-left: 2px solid #402D60;
-  }
+  
   
   .active-sidebar {
     display: flex;
     flex-direction: column;
-  }
-  .left-fixed-container {
-    position: fixed;
-    left: 0;
-    width: 10vw;
-  }
-  .home-menu-link {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
   }
   .form-label-file {
     position: relative;
@@ -59,8 +30,6 @@ const StyledMyProfile = styled.div`
     height: 150px;
     border: 1px solid #D9D9D9;
     border-radius: 20px;
-    margin-right: 50px;
-    margin-top: 50px;
   }
   #image-profile-label:hover {
     background-color: rgba(64, 45, 96, 0.5);
@@ -81,15 +50,13 @@ const StyledMyProfile = styled.div`
     height: 156px;    
     border: 1px solid #D9D9D9;
     border-radius: 20px;
-    margin-right: 50px;
-    margin-top: 50px;
     color: black;
   }
   
   
   .personal-info {
     background-color: #AAAAAA;
-    padding: 40px 50px; 
+    padding: 40px 80px; 
     display: flex;
     flex-direction: column;
   }
@@ -108,7 +75,15 @@ const StyledMyProfile = styled.div`
   
   .entertainments {
     background-color: #795FA4;
-    padding: 40px 50px; 
+    padding: 40px 80px; 
+    font-size: 35px;
+    
+  }
+  #entertainments-header {
+    font-size: 40px;
+    width: 300px;
+    border-bottom: 1px solid white;
+    font-weight: 300;
   }
   #favorite-habits-container {
     display: flex;    
@@ -133,26 +108,31 @@ const StyledMyProfile = styled.div`
     border: none;
   }
   .social-media {
-   padding: 40px 50px;
+   padding: 40px 80px;
   }
   .social-media-input {
+    
     direction: ltr;
     display: flex;
-    align-items: center;
-    margin: 15px;
+    align-items: flex-end;
+    margin: 0 15px;
+    height: 80px;
+    
     & input {
+      position:absolute;
       border-bottom-color: gray;
       color: gray;
+      width: 500px;
+      padding-left: 70px;
     }
     & img {
       width: 55px;
-      height: 55px;
-      margin-right: 15px;
+      margin: 5px 15px 5px 5px;
     }
   }
   .case-history {
     background-color: #D9D9D9;
-    padding: 40px 50px;
+    padding: 40px 80px;
     color: #606060;
   }
   #my-profile-submit-btn {

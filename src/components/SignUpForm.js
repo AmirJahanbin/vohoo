@@ -30,6 +30,10 @@ export default class SignUpForm extends React.Component {
             repeatVerificationCode: ""
         }
     }
+    handleOnChange = () => {
+
+    }
+
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
             const form = event.target.form;
@@ -81,6 +85,7 @@ export default class SignUpForm extends React.Component {
                             placeholder={"نام"}
                             required={true}
                             onKeyDown={this.handleNextInput}
+                            onChange={this.handleOnChange}
                         />
                         <label htmlFor={"name"} className={"form-label"}>
                             نام

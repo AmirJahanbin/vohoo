@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
     "chapar": "^1.0.8",
+    "form-data": "^3.0.0",
     "google-map-react": "^1.1.7",
     "mapbox-gl": "^1.10.0",
     "moment": "^2.24.0",

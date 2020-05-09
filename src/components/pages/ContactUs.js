@@ -31,7 +31,6 @@ const StyledContactUsMiddleContainer = styled.div`
     border-left: 2px solid lightgray;
     & img {
       width: 55px;
-      height: 55px;
       margin: 15px;
     }
     & a {
