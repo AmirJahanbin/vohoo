@@ -111,23 +111,52 @@ const StyledForm = styled.form`
 /*******************************************************/
 .select-form-field {
   font-family: MJ_thameen, sans-serif;
-  font-size: 2.5rem;
+  font-size: 40px;
   font-weight: 400;
-  width: 300px;
-  background-color: transparent;
+  width: 310px;
+  background-color: #AAAAAA;
   color: #D9D9D9;
-  padding-left: 40px;
   border-bottom: 1px solid #D9D9D9;
+  
   & option {
     font-size: large;
     color: black;
-    background-color: #D9D9D9;
-    
+    background-color: #D9D9D9;   
   }
 }
 .select-form-field:focus {
   outline: none;
 }
-
+.select-arrow-icon {
+  position: absolute;
+  left: 0;
+  
+}
+/* This is to remove the arrow of select element in IE */
+.hide-select-arrow {
+  display: flex;
+  align-items: center;
+}
+select::-ms-expand {
+  display: none; 
+}
+select{
+  -webkit-appearance: none;
+  appearance: none; 
+}
+@-moz-document url-prefix(){
+  .hide-select-arrow{
+    border: 1px solid #CCC; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+    position: relative; 
+    overflow: hidden;
+  } 
+  .hide-select-arrow select { 
+    width: 110%; 
+    background-position: right 30px center !important; 
+    border: none !important;
+  }
+}
 `;
 export default StyledForm;

@@ -1,5 +1,6 @@
 import React from "react";
-import DatePicker from 'react-datepicker2';
+// import DatePicker from 'react-datepicker2';
+import {DatePicker} from "react-advance-jalaali-datepicker";
 import momentJalaali from 'moment-jalaali';
 import StyledForm from "../../styled-components/StyledForm";
 import StyledMyProfile from "../../styled-components/StyledMyProfile";
@@ -8,6 +9,7 @@ import MenuLink from "../MenuLink";
 import ChangePassword from "../ChangePassword";
 
 
+import arrowBottom from "../../assets/images/arrowBottom.png";
 import telegram from "../../assets/images/social icons/telegram-1@2x.png";
 import whatsapp from "../../assets/images/social icons/whatsapp-1@2x.png";
 import mail from "../../assets/images/social icons/mail-1@2x.png";
@@ -65,7 +67,7 @@ export default class MyProfile extends React.Component {
         };
         this.jobs = ['بافنده', 's', 'd', 'f', 'g', 'g', 'h'];
         this.degrees = ['a', 'a', 'a', 'a', 'a', 'a'];
-
+        this.birthOrders = ["فرزند اول","فرزند میانی","فرزند آخر"]
         this.provinces = ['a', 'a', 'a', 'a', 'a', 'a'];
         this.cities = ['a', 'a', 'a', 'a', 'a', 'a'];
         this.interests = ['بازی‌های تخته ای'
@@ -88,7 +90,11 @@ export default class MyProfile extends React.Component {
         this.numberOfChildren = React.createRef();
 
     }
+    DatePickerInput(props) {
+        return <input className="form-field-text" {...props} >
 
+        </input>;
+    }
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
             const form = event.target.form;
@@ -222,33 +228,54 @@ export default class MyProfile extends React.Component {
                                         />
                                     </label>
                                 </div>
-                                <div className={"pro-form-group"}>
+                                {/*<div className={"pro-form-group"}>*/}
+                                {/*    <DatePicker*/}
+                                {/*        id={"date_of_birth"}*/}
+                                {/*        timePicker={false}*/}
+                                {/*        isGregorian={false}*/}
+                                {/*        onChange={date_of_birth => this.setState({date_of_birth})}*/}
+                                {/*        value={null}*/}
+                                {/*        className={"form-field-text"}*/}
+                                {/*        onKeyDown={this.handleNextInput}*/}
+                                {/*    />*/}
+                                {/*    <label className={"form-label-text"}>*/}
+                                {/*        تاریخ تولد*/}
+                                {/*    </label>*/}
+                                {/*</div>*/}
+                                <div className="pro-form-group datePicker">
                                     <DatePicker
-                                        id={"date_of_birth"}
-                                        timePicker={false}
-                                        isGregorian={false}
-                                        onChange={date_of_birth => this.setState({date_of_birth})}
-                                        value={this.state.date_of_birth}
+                                        inputComponent={this.DatePickerInput}
+                                        preSelected="1390/01/01"
+                                        format="jYYYY/jMM/jDD"
+                                        placeholder="تاریخ تولد"
+                                        onChange={this.change}
                                         className={"form-field-text"}
+                                        id={"date_of_birth"}
                                         onKeyDown={this.handleNextInput}
                                     />
-                                    <label className={"form-label-text"}>
+                                    <label htmlFor={"date_of_birth"} className={"form-label-text"}>
                                         تاریخ تولد
                                     </label>
                                 </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"number"}
-                                        name={"birth_order"}
+                                <div className={"pro-form-group hide-select-arrow"} style={{width: "300px"}}>
+                                    <select
                                         id={"birth_order"}
-                                        className={"form-field-text"}
-                                        onChange={this.handleOnChange}
-                                        placeholder={"فرزند چندم"}
+                                        name={"birth_order"}
+                                        className={"select-form-field "}
                                         onKeyDown={this.handleNextInput}
-                                    />
-                                    <label htmlFor={"birth_order"} className={"form-label-text"}>
-                                        فرزند چندم
-                                    </label>
+                                        onChange={this.handleOnChange}
+                                    >
+                                        <option value={""}>فرزند چندم</option>
+                                        {this.birthOrders.map((order, index) => (
+                                            <option
+                                                value={order}
+                                                key={index}
+                                            >
+                                                {order}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                 </div>
                                 <div className={"pro-form-group"}>
                                     <input
@@ -330,13 +357,14 @@ export default class MyProfile extends React.Component {
                                     </label>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"current_job"}
                                             name={"current_job"}
-                                            className={"select-form-field"}
+                                            className={"select-form-field "}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChange}
+
                                         >
                                             <option value={""}>شغل فعلی</option>
                                             {this.jobs.map((job, index) => (
@@ -348,6 +376,7 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
                                     <div className={"pro-form-group"} style={{marginRight: "40px"}}>
                                         <input
@@ -366,7 +395,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"previous_job"}
                                             name={"previous_job"}
@@ -380,6 +409,7 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
                                     <div className={"pro-form-group"} style={{marginRight: "40px"}}>
                                         <input
@@ -398,7 +428,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"degree"}
                                             name={"degree"}
@@ -412,6 +442,7 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
                                     <div className={"pro-form-group"} style={{marginRight: "40px"}}>
                                         <input
@@ -430,7 +461,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"birth_province"}
                                             name={"birth_province"}
@@ -444,8 +475,9 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginRight: "40px"}}>
                                         <select
                                             id={"birth_city"}
                                             name={"birth_city"}
@@ -459,10 +491,11 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"current_province"}
                                             name={"current_province"}
@@ -476,8 +509,9 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginRight: "40px"}}>
                                         <select
                                             id={"current_city"}
                                             name={"current_city"}
@@ -491,6 +525,7 @@ export default class MyProfile extends React.Component {
                                                 </option>
                                             ))}
                                         </select>
+                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
                                 </div>
                                 <div className={"pro-form-group"}>
@@ -604,6 +639,7 @@ export default class MyProfile extends React.Component {
                                             <div className={"pro-form-group"} key={i}>
                                                 <input
                                                     type={"checkbox"}
+                                                    className={"checkbox-input"}
                                                     id={"interest" + i}
                                                     name={"interest0"}
                                                     value={interest}
@@ -625,6 +661,7 @@ export default class MyProfile extends React.Component {
                                             onChange={this.handleOnChange}
                                             placeholder={"فیلم یا سریال محبوب من"}
                                             // required={true}
+                                            style={{width: "400px"}}
                                         />
                                         <label htmlFor={"favorite_films"} className={"form-label-text"}>
                                             فیلم یا سریال محبوب من
@@ -651,6 +688,7 @@ export default class MyProfile extends React.Component {
                                             onChange={this.handleOnChange}
                                             placeholder={"کتاب محبوب من"}
                                             // required={true}
+                                            style={{width: "400px"}}
                                         />
                                         <label htmlFor={"favorite_books"} className={"form-label-text"}>
                                             کتاب محبوب من
@@ -728,13 +766,13 @@ export default class MyProfile extends React.Component {
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={facebook} alt={"facebook"}/>
-                                        <input
-                                            type={"text"}
-                                            name={"facebook"}
-                                            id={"facebook"}
-                                            className={"form-field-text"}
-                                            onChange={this.handleOnChange}
-                                        />
+                                    <input
+                                        type={"text"}
+                                        name={"facebook"}
+                                        id={"facebook"}
+                                        className={"form-field-text"}
+                                        onChange={this.handleOnChange}
+                                    />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={youtube} alt={"youtube"}/>

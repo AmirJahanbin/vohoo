@@ -19,25 +19,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="my-profile page styling finished">
-      <change afterPath="$PROJECT_DIR$/src/test/myProfileFiles.json" afterDir="false" />
+    <list default="true" id="6903d7f4-9365-444a-842c-7b0c6d0d300b" name="Default Changelist" comment="my-profile page styling updated">
+      <change afterPath="$PROJECT_DIR$/src/assets/images/arrowBottom.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePageLink.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePageLink.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SignUpForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignUpForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/ContactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ContactUs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/CourseRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/CourseRegister.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/MyProfile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styled-components/StyledForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/styled-components/StyledForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styled-components/StyledMyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/styled-components/StyledMyProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/base/_base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/base/_base.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/components/_containers.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/components/_containers.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/styles.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/from.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/from.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,13 +68,13 @@
     <property name="settings.editor.splitter.proportion" value="0.27619982" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets/images" />
-      <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/assets/images/course register" />
+      <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/assets/images/social icons" />
     </key>
   </component>
@@ -147,7 +136,8 @@
       <workItem from="1588868014287" duration="2434000" />
       <workItem from="1588922290697" duration="5658000" />
       <workItem from="1588947209180" duration="617000" />
-      <workItem from="1589012126567" duration="36551000" />
+      <workItem from="1589012126567" duration="37402000" />
+      <workItem from="1589095753310" duration="15152000" />
     </task>
     <task id="LOCAL-00001" summary="sign-up page">
       <created>1587847642456</created>
@@ -212,7 +202,21 @@
       <option name="project" value="LOCAL" />
       <updated>1588869864435</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="my-profile page styling updated">
+      <created>1589063249706</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1589063249706</updated>
+    </task>
+    <task id="LOCAL-00011" summary="my-profile page styling updated">
+      <created>1589063256592</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1589063256592</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +239,8 @@
     <MESSAGE value="sign-up page finished" />
     <MESSAGE value="menu page finished" />
     <MESSAGE value="my-profile page styling finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="my-profile page styling finished" />
+    <MESSAGE value="my-profile page styling updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="my-profile page styling updated" />
   </component>
   <component name="WindowStateProjectService">
     <state x="829" y="390" width="251" height="270" key="#Notifications" timestamp="1587794653806">
@@ -284,14 +289,18 @@
       <screen x="0" y="27" width="1920" height="999" />
     </state>
     <state x="689" y="257" width="639" height="524" key="StructurePopup/0.27.1920.999@0.27.1920.999" timestamp="1587817459073" />
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1588869883590">
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1589063264064">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1588869883590" />
-    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588523919805">
+    <state x="555" y="257" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.999@0.27.1920.999" timestamp="1589063264064" />
+    <state x="731" y="441" width="458" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589112290404">
       <screen x="0" y="27" width="1920" height="999" />
     </state>
-    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog/0.27.1920.999@0.27.1920.999" timestamp="1588523919805" />
+    <state x="731" y="441" width="458" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.27.1920.999@0.27.1920.999" timestamp="1589112290404" />
+    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1589106306363">
+      <screen x="0" y="27" width="1920" height="999" />
+    </state>
+    <state x="725" y="427" width="460" height="206" key="git4idea.remote.GitConfigureRemotesDialog/0.27.1920.999@0.27.1920.999" timestamp="1589106306363" />
     <state x="624" y="236" key="run.anything.popup" timestamp="1588450344943">
       <screen x="0" y="27" width="1920" height="999" />
     </state>

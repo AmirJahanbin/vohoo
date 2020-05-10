@@ -60,6 +60,46 @@ const StyledMyProfile = styled.div`
     display: flex;
     flex-direction: column;
   }
+  
+  .JDatePicker {
+    color: black;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .JDheader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .right {
+        .JC-years {
+          display: flex;
+          justify-content: space-around;
+          input[type="tel"]{
+            position:unset;
+          }
+        }
+        .number {
+          width: unset;
+        }
+      }
+      .left {
+        display: none;
+      }
+    }
+    .JC-months{
+      .holder {
+        width: 100%!important;
+      }
+    } 
+    .days-titles {
+      
+    } 
+    .JC-days {
+    
+    }
+  }
+  
   #verification-code-btn {
     font-family: MJ_thameen, sans-serif;
     
@@ -146,6 +186,9 @@ const StyledMyProfile = styled.div`
     border-radius: 20px;
     width: 50%;
     margin: 100px auto;
+    
+  }
+  .checkbox-input {
     
   }
 `;
