@@ -1,4 +1,5 @@
 import React from "react";
+import axiosInstance from '../../connetion/axios';
 // import DatePicker from 'react-datepicker2';
 import {DatePicker} from "react-advance-jalaali-datepicker";
 import momentJalaali from 'moment-jalaali';
@@ -67,7 +68,7 @@ export default class MyProfile extends React.Component {
         };
         this.jobs = ['بافنده', 's', 'd', 'f', 'g', 'g', 'h'];
         this.degrees = ['a', 'a', 'a', 'a', 'a', 'a'];
-        this.birthOrders = ["فرزند اول","فرزند میانی","فرزند آخر"]
+        this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"]
         this.provinces = ['a', 'a', 'a', 'a', 'a', 'a'];
         this.cities = ['a', 'a', 'a', 'a', 'a', 'a'];
         this.interests = ['بازی‌های تخته ای'
@@ -90,11 +91,17 @@ export default class MyProfile extends React.Component {
         this.numberOfChildren = React.createRef();
 
     }
+
+    componentDidMount() {
+        console.log('this is my token ===', axiosInstance.axios.defaults.headers.common['Authorization']);
+    }
+
     DatePickerInput(props) {
         return <input className="form-field-text" {...props} >
 
         </input>;
     }
+
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
             const form = event.target.form;
