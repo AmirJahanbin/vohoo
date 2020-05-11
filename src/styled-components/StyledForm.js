@@ -106,7 +106,7 @@ const StyledForm = styled.form`
 /*******************************************************/
 .form-label-radio {
   margin: 15px 0 15px 15px;
-  color: #D9D9D9;
+  
 }
 /*******************************************************/
 .select-form-field {
@@ -157,6 +157,54 @@ select{
     background-position: right 30px center !important; 
     border: none !important;
   }
+}
+/**********************************************************/
+.checkbox-label {
+  position:relative;
+  padding-right: 45px;
+}
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  background-color: transparent;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #D9D9D9;
+  border-radius: 5px;
+  top: 5px;
+  right: 0;
+  height: 35px;
+  width: 35px;
+}
+.checkbox-label:hover input ~ .checkmark {
+  //border: 2px solid #AAAAAA;
+}
+.checkbox-label input:checked ~ .checkmark {
+  
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.checkbox-label input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-label .checkmark:after {
+  width: 7px;
+  height: 14px;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 `;
 export default StyledForm;

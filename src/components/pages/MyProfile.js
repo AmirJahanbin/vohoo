@@ -20,6 +20,9 @@ import youtube from "../../assets/images/social icons/youtube-1@2x.png";
 import twitter from "../../assets/images/social icons/twitter-1@2x.png";
 
 
+const menuList = document.getElementsByClassName("pro-form-group");
+console.log(menuList);
+
 export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -62,10 +65,11 @@ export default class MyProfile extends React.Component {
 
             haveChildren: true,
             vCodeField: false,
-            favoriteFilms: ["interstellar"],
-            favoriteBooks: ["annacarnia"],
+            favoriteFilms: [""],
+            favoriteBooks: [""],
             imageProfile: null
         };
+        this.number_of_children= [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = ['بافنده', 's', 'd', 'f', 'g', 'g', 'h'];
         this.degrees = ['a', 'a', 'a', 'a', 'a', 'a'];
         this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"]
@@ -146,23 +150,28 @@ export default class MyProfile extends React.Component {
                             <nav className={"nav-sections"}>
                                 <ul className={"menu"}>
                                     <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"#course-title"}>
+                                        <a className={"menu-item-link"} href={"personal-info"}>
                                             اطلاعات پرسنلی
                                         </a>
                                     </li>
                                     <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"#course-intro-summery"}>
+                                        <a className={"menu-item-link"} href={"entertainments"}>
                                             علایق
                                         </a>
                                     </li>
                                     <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"#course-general-content"}>
+                                        <a className={"menu-item-link"} href={"social-media"}>
                                             فضای مجازی
                                         </a>
                                     </li>
                                     <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"#course-instructor"}>
+                                        <a className={"menu-item-link"} href={"case-history"}>
                                             سوابق
+                                        </a>
+                                    </li>
+                                    <li className={"menu-item"}>
+                                        <a className={"menu-item-link"} href={"#"}>
+                                            مشخصات فیزیکی
                                         </a>
                                     </li>
                                 </ul>
@@ -284,84 +293,111 @@ export default class MyProfile extends React.Component {
                                     </select>
                                     <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                 </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"radio"}
-                                        name={"gender"}
-                                        className={"form-field-radio"}
-                                        id={"gender_male"}
-                                        onKeyDown={this.handleNextInput}
-                                    />
-                                    <label htmlFor={"gender_male"} className={"form-label-radio"}>
+                                <div className={"pro-form-group"}
+                                     style={{width: "300px", justifyContent: "space-between", display: "flex"}}>
+                                    <label htmlFor={"gender_male"} className={"form-label-radio checkbox-label"}>
                                         مرد
+                                        <input
+                                            type={"radio"}
+                                            name={"gender"}
+                                            className={"form-field-radio"}
+                                            id={"gender_male"}
+                                            onKeyDown={this.handleNextInput}
+                                        />
+                                        <span className={"checkmark"}> </span>
                                     </label>
-                                    <input
-                                        type={"radio"}
-                                        name={"gender"}
-                                        className={"form-field-radio"}
-                                        id={"gender_female"}
-                                        onKeyDown={this.handleNextInput}
-                                    />
-                                    <label htmlFor={"gender_female"} className={"form-label-radio"}>
+                                    <label htmlFor={"gender_female"} className={"form-label-radio checkbox-label"}>
                                         زن
+                                        <input
+                                            type={"radio"}
+                                            name={"gender"}
+                                            className={"form-field-radio"}
+                                            id={"gender_female"}
+                                            onKeyDown={this.handleNextInput}
+                                        />
+                                        <span className={"checkmark"}> </span>
                                     </label>
                                 </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"radio"}
-                                        name={"marital_status"}
-                                        className={"form-field-radio"}
-                                        id={"married"}
-                                        value={"married"}
-                                        onChange={() => (this.setState({haveChildren: true}))}
-                                    />
-                                    <label htmlFor={"married"} className={"form-label-radio"}>
+                                <div className={"pro-form-group"}
+                                     style={{width: "550px", justifyContent: "space-between", display: "flex"}}>
+                                    <label htmlFor={"married"} className={"form-label-radio checkbox-label"}>
                                         متأهل
+                                        <input
+                                            type={"radio"}
+                                            name={"marital_status"}
+                                            className={"form-field-radio"}
+                                            id={"married"}
+                                            value={"married"}
+                                            onChange={() => (this.setState({haveChildren: true}))}
+                                        />
+                                        <span className={"checkmark"}> </span>
                                     </label>
-                                    <input
-                                        type={"radio"}
-                                        name={"marital_status"}
-                                        className={"form-field-radio"}
-                                        id={"unmarried"}
-                                        value={"unmarried"}
-                                        onKeyDown={this.handleNextInput}
-                                        onChange={(c) => {
-                                            console.log(c.target.value);
-                                            this.numberOfChildren.current.value = null;
-                                            return this.setState({haveChildren: false});
-                                        }}
-                                    />
-                                    <label htmlFor={"unmarried"} className={"form-label-radio"}>
+                                    <label htmlFor={"unmarried"} className={"form-label-radio checkbox-label"}>
                                         مجرد
+                                        <input
+                                            type={"radio"}
+                                            name={"marital_status"}
+                                            className={"form-field-radio"}
+                                            id={"unmarried"}
+                                            value={"unmarried"}
+                                            onKeyDown={this.handleNextInput}
+                                            onChange={(c) => {
+                                                console.log(c.target.value);
+                                                this.numberOfChildren.current.value = null;
+                                                return this.setState({haveChildren: false});
+                                            }}
+                                        />
+                                        <span className={"checkmark"}> </span>
                                     </label>
-                                    <input
-                                        type={"radio"}
-                                        name={"marital_status"}
-                                        className={"form-field-radio"}
-                                        id={"divorced"}
-                                        value={"divorced"}
-                                        onKeyDown={this.handleNextInput}
-                                        onChange={() => (this.setState({haveChildren: true}))}
-                                    />
-                                    <label htmlFor={"divorced"} className={"form-label-radio"}>
+                                    <label htmlFor={"divorced"} className={"form-label-radio checkbox-label"}>
                                         متارکه
+                                        <input
+                                            type={"radio"}
+                                            name={"marital_status"}
+                                            className={"form-field-radio"}
+                                            id={"divorced"}
+                                            value={"divorced"}
+                                            onKeyDown={this.handleNextInput}
+                                            onChange={() => (this.setState({haveChildren: true}))}
+                                        />
+                                        <span className={"checkmark"}> </span>
                                     </label>
                                 </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"number"}
+                                {/*<div className={"pro-form-group"}>*/}
+                                {/*    <input*/}
+                                {/*        type={"number"}*/}
+                                {/*        name={"number_of_children"}*/}
+                                {/*        id={"number-of-children"}*/}
+                                {/*        className={"form-field-text"}*/}
+                                {/*        onChange={this.handleOnChange}*/}
+                                {/*        placeholder={"تعداد فرزندان"}*/}
+                                {/*        onKeyDown={this.handleNextInput}*/}
+                                {/*        disabled={!this.state.haveChildren}*/}
+                                {/*        ref={this.numberOfChildren}*/}
+                                {/*    />*/}
+                                {/*    <label htmlFor={"number-of-children"} className={"form-label-text"}>*/}
+                                {/*        تعداد فرزندان*/}
+                                {/*    </label>*/}
+                                {/*</div>*/}
+                                <div className={"pro-form-group hide-select-arrow"} style={{width: "300px"}}>
+                                    <select
+                                        id={"number_of_children"}
                                         name={"number_of_children"}
-                                        id={"number-of-children"}
-                                        className={"form-field-text"}
-                                        onChange={this.handleOnChange}
-                                        placeholder={"تعداد فرزندان"}
+                                        className={"select-form-field "}
                                         onKeyDown={this.handleNextInput}
-                                        disabled={!this.state.haveChildren}
-                                        ref={this.numberOfChildren}
-                                    />
-                                    <label htmlFor={"number-of-children"} className={"form-label-text"}>
-                                        تعداد فرزندان
-                                    </label>
+                                        onChange={this.handleOnChange}
+                                    >
+                                        <option value={""}>تعداد فرزندان</option>
+                                        {this.number_of_children.map((number, index) => (
+                                            <option
+                                                value={number}
+                                                key={index}
+                                            >
+                                                {number}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                 </div>
                                 <div className={"inline-form-groups"}>
                                     <div className={"pro-form-group hide-select-arrow"}>
@@ -545,7 +581,7 @@ export default class MyProfile extends React.Component {
                                         placeholder={"آدرس محل سکونت"}
                                         onKeyDown={this.handleNextInput}
                                         // required={true}
-                                        style={{width: "640px"}}
+                                        style={{width: "660px"}}
                                     />
                                     <label htmlFor={"current_address"} className={"form-label-text"}>
                                         آدرس محل سکونت
@@ -604,7 +640,6 @@ export default class MyProfile extends React.Component {
                                         </label>
                                     </div>
                                 </div>
-
                                 <div className={"pro-form-group"}>
                                     <input
                                         type={"text"}
@@ -644,15 +679,16 @@ export default class MyProfile extends React.Component {
                                     {this.interests.map((interest, i) => {
                                         return (
                                             <div className={"pro-form-group"} key={i}>
-                                                <input
-                                                    type={"checkbox"}
-                                                    className={"checkbox-input"}
-                                                    id={"interest" + i}
-                                                    name={"interest0"}
-                                                    value={interest}
-                                                />
-                                                <label htmlFor={"interest" + i}>
+                                                <label htmlFor={"interest" + i} className={"checkbox-label"}>
                                                     {interest}
+                                                    <input
+                                                        type={"checkbox"}
+                                                        className={"checkbox-input"}
+                                                        id={"interest" + i}
+                                                        name={"interest0"}
+                                                        value={interest}
+                                                    />
+                                                    <span className={"checkmark"}> </span>
                                                 </label>
                                             </div>
                                         )
@@ -804,93 +840,105 @@ export default class MyProfile extends React.Component {
                             </div>
                             <div className={"case-history"}>
                                 <div className={"case-diseases inline-form-groups"}>
-                            <span style={{width: "45%"}}>
-                                سابقه بیماری جسمی یا روحی
-                            </span>
+                                    <span style={{width: "45%"}}>
+                                        سابقه بیماری جسمی یا روحی
+                                    </span>
                                     <div style={{width: "45%"}}>
-                                        <input
-                                            type={"radio"}
-                                            name={"disease_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_disease_history"}
-                                        />
-                                        <label htmlFor={"has_disease_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_disease_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             دارم
+                                            <input
+                                                type={"radio"}
+                                                name={"disease_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_disease_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
-                                        <input
-                                            type={"radio"}
-                                            name={"disease_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_not_disease_history"}
-                                        />
-                                        <label htmlFor={"has_not_disease_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_not_disease_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             ندارم
+                                            <input
+                                                type={"radio"}
+                                                name={"disease_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_not_disease_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
-                                    <div className={"pro-form-group"} style={{width: "100%", paddingRight: "44%"}}>
-                                        <input
-                                            type={"text"}
-                                            name={"disease_history_explanation"}
-                                            id={"disease_history_explanation"}
-                                            className={"form-field-text"}
-                                            onChange={this.handleOnChange}
-                                            placeholder={"توضیح دهید"}
-                                            onKeyDown={this.handleNextInput}
-                                            style={{width: "50%", borderColor: "#606060"}}
-                                        />
-                                        <label htmlFor={"disease_history_explanation"} className={"form-label-text"}
-                                               style={{color: "#606060"}}>
-                                            توضیح دهید
-                                        </label>
-                                    </div>
+                                    {/*<div className={"pro-form-group"} style={{width: "100%", paddingRight: "44%"}}>*/}
+                                    {/*    <input*/}
+                                    {/*        type={"text"}*/}
+                                    {/*        name={"disease_history_explanation"}*/}
+                                    {/*        id={"disease_history_explanation"}*/}
+                                    {/*        className={"form-field-text"}*/}
+                                    {/*        onChange={this.handleOnChange}*/}
+                                    {/*        placeholder={"توضیح دهید"}*/}
+                                    {/*        onKeyDown={this.handleNextInput}*/}
+                                    {/*        style={{width: "50%", borderColor: "#606060"}}*/}
+                                    {/*    />*/}
+                                    {/*    <label htmlFor={"disease_history_explanation"} className={"form-label-text checkbox-label"}*/}
+                                    {/*           style={{color: "#606060"}}>*/}
+                                    {/*        توضیح دهید*/}
+                                    {/*    </label>*/}
+                                    {/*</div>*/}
                                 </div>
                                 <div className={"case-drug inline-form-groups"}>
-                            <span style={{width: "45%"}}>
-                                سابقه مصرف دارو
-                            </span>
+                                    <span style={{width: "45%"}}>
+                                        سابقه مصرف دارو
+                                    </span>
                                     <div style={{width: "45%"}}>
-                                        <input
-                                            type={"radio"}
-                                            name={"drug_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_drug_history"}
-                                        />
-                                        <label htmlFor={"has_drug_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_drug_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             دارم
+                                            <input
+                                                type={"radio"}
+                                                name={"drug_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_drug_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
-                                        <input
-                                            type={"radio"}
-                                            name={"drug_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_not_drug_history"}
-                                        />
-                                        <label htmlFor={"has_not_drug_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_not_drug_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             ندارم
+                                            <input
+                                                type={"radio"}
+                                                name={"drug_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_not_drug_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
                                 </div>
                                 <div className={"case-criminal inline-form-groups"}>
-                            <span style={{width: "45%"}}>
-                                سابقه کیفری
-                            </span>
+                                    <span style={{width: "45%"}}>
+                                        سابقه کیفری
+                                    </span>
                                     <div style={{width: "45%"}}>
-                                        <input
-                                            type={"radio"}
-                                            name={"criminal_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_criminal_history"}
-                                        />
-                                        <label htmlFor={"has_criminal_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_criminal_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             دارم
+                                            <input
+                                                type={"radio"}
+                                                name={"criminal_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_criminal_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
-                                        <input
-                                            type={"radio"}
-                                            name={"criminal_history"}
-                                            className={"form-field-radio"}
-                                            id={"has_not_criminal_history"}
-                                        />
-                                        <label htmlFor={"has_not_criminal_history"} className={"form-label-radio"}>
+                                        <label htmlFor={"has_not_criminal_history"}
+                                               className={"form-label-radio checkbox-label"}>
                                             ندارم
+                                            <input
+                                                type={"radio"}
+                                                name={"criminal_history"}
+                                                className={"form-field-radio"}
+                                                id={"has_not_criminal_history"}
+                                            />
+                                            <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
                                 </div>

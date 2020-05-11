@@ -138,7 +138,7 @@ const StyledMyProfile = styled.div`
   .favorite-films-books-container {
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: flex-end;
   }
   .form-add-btn {
     font-family: MJ_thameen, sans-serif;
@@ -174,6 +174,15 @@ const StyledMyProfile = styled.div`
     background-color: #D9D9D9;
     padding: 40px 80px;
     color: #606060;
+    div {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      height: 100px;
+    }
+    & .checkmark {
+      border-color: #AAAAAA;
+    }
   }
   #my-profile-submit-btn {
     font-family: MJ_thameen, sans-serif;
@@ -186,10 +195,6 @@ const StyledMyProfile = styled.div`
     border-radius: 20px;
     width: 50%;
     margin: 100px auto;
-    
-  }
-  .checkbox-input {
-    
   }
 `;
 export default StyledMyProfile;
