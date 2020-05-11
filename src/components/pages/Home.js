@@ -41,14 +41,14 @@ export default class Home extends React.Component {
     }
     componentDidMount() {
         console.log(typeof this.state.courseList);
-        axios.get("http://5.253.25.176:8000/api/course/")
+        axios.get("http://5.253.25.176:8000/api/tree/course")
             .then((response) => {
                 console.log(response);
-                const courseList = response;
+                const courseList = response.data.results;
                 const titleList = [];
-                courseList.data.map((course, index) => {
+                courseList.map((course, index) => {
                     console.log("index now is equal to: " + index);
-                    titleList[index] = course.title;
+                    titleList[index] = course.name;
                 });
                 this.setState(() => ({courseList: titleList}));
             })

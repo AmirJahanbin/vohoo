@@ -356,7 +356,7 @@ export default class MyProfile extends React.Component {
                                             name={"marital_status"}
                                             className={"form-field-radio"}
                                             id={"divorced"}
-                                            value={"divorced"}
+                                            defaultValue={"divorced"}
                                             onKeyDown={this.handleNextInput}
                                             onChange={() => (this.setState({haveChildren: true}))}
                                         />
@@ -379,17 +379,20 @@ export default class MyProfile extends React.Component {
                                 {/*        تعداد فرزندان*/}
                                 {/*    </label>*/}
                                 {/*</div>*/}
-                                <div className={"pro-form-group hide-select-arrow"} style={{width: "300px"}}>
+                                <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
                                     <select
                                         id={"number_of_children"}
                                         name={"number_of_children"}
                                         className={"select-form-field "}
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChange}
+                                        disabled={!this.state.haveChildren}
+                                        ref={this.numberOfChildren}
                                     >
-                                        <option value={""}>تعداد فرزندان</option>
+                                        <option defaultValue={"تعداد فرزندان"} >تعداد فرزندان</option>
                                         {this.number_of_children.map((number, index) => (
                                             <option
+                                                
                                                 value={number}
                                                 key={index}
                                             >
