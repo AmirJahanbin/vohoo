@@ -54,7 +54,6 @@ export default class Home extends React.Component {
             })
             .catch((error) => console.log(error)
             )
-        axios.post()
     }
 
     render() {

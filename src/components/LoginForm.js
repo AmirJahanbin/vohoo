@@ -48,39 +48,41 @@ export default class LoginForm extends React.Component {
 
     render() {
         return (
-            <div className={this.props.className} id={this.props.id}>
+            <div className={this.props.className} id={this.props.id} >
                 <StyledForm onSubmit={this.handleOnSubmit}>
-                    <div className={"form-group"}>
-                        <input
-                            name={"username"}
-                            type={"text"}
-                            id={"username"}
-                            className={"form-field"}
-                            onChange={this.handleOnChange}
-                            placeholder={"نام کاربری"}
-                            autoFocus={true}
-                            required={true}
-                            onKeyDown={this.handleNextInput}
-                        />
-                        <label htmlFor={"username"} className={"form-label"}>
-                            نام کاربری
-                        </label>
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                        <div className={"form-group"} style={{width: "300px", margin: "35px"}}>
+                            <input
+                                name={"username"}
+                                type={"text"}
+                                id={"username"}
+                                className={"form-field"}
+                                onChange={this.handleOnChange}
+                                placeholder={"نام کاربری"}
+                                autoFocus={true}
+                                required={true}
+                                onKeyDown={this.handleNextInput}
+                            />
+                            <label htmlFor={"username"} className={"form-label"}>
+                                نام کاربری
+                            </label>
+                        </div>
+                        <div className={"form-group"} style={{width: "300px", margin: "35px"}}>
+                            <input
+                                name={"password"}
+                                type={"text"}
+                                id={"password"}
+                                className={"form-field"}
+                                onChange={this.handleOnChange}
+                                placeholder={"رمز عبور"}
+                                required={true}
+                            />
+                            <label htmlFor={"password"} className={"form-label"} >
+                                رمز عبور
+                            </label>
+                        </div>
+                        <input type={"submit"} value={"ورود"} id={"login-btn"} style={{width: "300px", margin: "35px"}}/>
                     </div>
-                    <div className={"form-group"}>
-                        <input
-                            name={"password"}
-                            type={"text"}
-                            id={"password"}
-                            className={"form-field"}
-                            onChange={this.handleOnChange}
-                            placeholder={"رمز عبور"}
-                            required={true}
-                        />
-                        <label htmlFor={"password"} className={"form-label"}>
-                            رمز عبور
-                        </label>
-                    </div>
-                    <input type={"submit"} value={"ورود"} id={"login-btn"}/>
                 </StyledForm>
             </div>
         );

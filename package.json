@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.14",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -18,7 +19,6 @@
     "node-sass": "^4.14.0",
     "proptypes": "^1.1.0",
     "react": "^16.13.1",
-    "react-advance-jalaali-datepicker": "^1.2.2",
     "react-awesome-slider": "^4.1.0",
     "react-big-calendar": "^0.24.5",
     "react-calendar": "^3.0.1",

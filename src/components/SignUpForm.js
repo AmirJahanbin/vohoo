@@ -21,11 +21,12 @@ export default class SignUpForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: "",
+            username: "",
             password: "",
-            phoneNumber: "",
-            name: "",
-            family: "",
+            country_code: "+98",
+            phone_number: "",
+            first_name: "",
+            last_name: "",
             verificationCode: "",
             repeatVerificationCode: ""
         }
@@ -73,8 +74,13 @@ export default class SignUpForm extends React.Component {
                             onKeyDown={this.handleNextInput}
                         />
                         <label htmlFor={"phoneNumber"} className={"form-label"}>
-                            شماره همراه (...۰۹)
+                            شماره همراه
                         </label>
+                        <div className={"input-field-caption"}>
+                            <button type={"button"} onClick={this.handleVerificationCode} style={{color: "#C7BADC"}}>
+                                دریافت کد اعتبار سنجی
+                            </button>
+                        </div>
                     </div>
                     <div className={"form-group"}>
                         <input

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import cameraIcon from "../assets/images/camera.png";
-import nationalCard from "../assets/images/national-card.png";
+
+
 
 const StyledMyProfile = styled.div`
   color: white;
@@ -11,56 +12,21 @@ const StyledMyProfile = styled.div`
   .active-sidebar {
     display: flex;
     flex-direction: column;
-  }
-  .form-label-file {
-    position: relative;
-  }
-  .form-field-file {
-    position: absolute;
-    visibility: hidden;
-  }
-  #image-profile-label{  
-    background-image: url(${cameraIcon});
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 150px;
-    border: 1px solid #D9D9D9;
-    border-radius: 20px;
-  }
-  #image-profile-label:hover {
-    background-color: rgba(64, 45, 96, 0.5);
-  }
-  #image-profile {
-    width: 150px;
-    height: auto;
-  }
-  #national-card-label{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url(${nationalCard});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    width: 258px;
-    height: 156px;    
-    border: 1px solid #D9D9D9;
-    border-radius: 20px;
-    color: black;
-  }
-  
-  
+  }  
   .personal-info {
     background-color: #AAAAAA;
     padding: 40px 80px; 
     display: flex;
     flex-direction: column;
   }
-  
+  .national-card-field {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: 1px solid #D9D9D9;
+    padding-bottom: 10px;
+    width: 300px;
+  }  
+  //second calendar(bad one)
   .JDatePicker {
     color: black;
     font-size: 15px;
@@ -99,7 +65,7 @@ const StyledMyProfile = styled.div`
     
     }
   }
-  
+    
   #verification-code-btn {
     font-family: MJ_thameen, sans-serif;
     
@@ -117,7 +83,9 @@ const StyledMyProfile = styled.div`
     background-color: #795FA4;
     padding: 40px 80px; 
     font-size: 35px;
-    
+    & .checkmark:after {
+      border-color: #402D60;
+    }
   }
   #entertainments-header {
     font-size: 40px;
@@ -130,6 +98,7 @@ const StyledMyProfile = styled.div`
     margin: auto;
     flex-direction: row;
     flex-wrap: wrap;    
+    font-size: 33px;
     & div {
       width: 29%;
     }

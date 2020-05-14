@@ -26,6 +26,17 @@ const StyledSignUpForm = styled(SignUpForm)`
   }
 `;
 export default class SignUp extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            password: "",
+            country_code: "+98",
+            phone_number: "",
+            first_name: "",
+            last_name: ""
+        }
+    }
     render() {
         return (
             <div className={"main-container"}>

@@ -91,6 +91,9 @@
   url('../../../src/assets/fonts/MJ/Mj_ThameenDemi-Bold/Mj_ThameenDemi-Bold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
   url('../../../src/assets/fonts/MJ/Mj_ThameenDemi-Bold/mj_thameen_demibold.ttf') format('truetype');
 }
+
+//Segoe UI
+
 @font-face {
   font-family: SegoeUI;
   font-style: normal;
@@ -102,7 +105,7 @@
   url('../../../src/assets/fonts/Segoe/SegoeUI/Segoe UI.ttf') format('truetype');
 }
 @font-face {
-  font-family: SegoeUI;
+  font-family: SegoeUIBold;
   font-style: normal;
   font-weight: bold;
   src: url("../../../src/assets/fonts/Segoe/SegoeUI Bold/Segoe UI Bold.eot");

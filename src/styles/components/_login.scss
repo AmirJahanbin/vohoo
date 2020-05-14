@@ -18,13 +18,14 @@
 }
 
 #login-btn {
-  width: 100%;
+  width: 300px;
   background-color: #D9D9D9;
   border: 1px solid #23083D;
   border-radius: 20px;
   font-family: MJ_thameen,sans-serif;
   font-weight: bold;
   font-size: 3rem;
+  margin: auto;
 }
 #login-btn:focus{
   outline: none;

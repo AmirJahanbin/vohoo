@@ -1,15 +1,16 @@
 import React from "react";
 import axiosInstance from '../../connetion/axios';
-// import DatePicker from 'react-datepicker2';
-import {DatePicker} from "react-advance-jalaali-datepicker";
+import DatePicker from 'react-datepicker2';
 import momentJalaali from 'moment-jalaali';
 import StyledForm from "../../styled-components/StyledForm";
 import StyledMyProfile from "../../styled-components/StyledMyProfile";
 import HomePageLink from "../HomePageLink";
 import MenuLink from "../MenuLink";
 import ChangePassword from "../ChangePassword";
+import UploadFile from "../UploadFile";
 
-
+import uploadIcon from "../../assets/images/upload-1.png"
+import calendarIcon from "../../assets/images/011-calendar.png"
 import arrowBottom from "../../assets/images/arrowBottom.png";
 import telegram from "../../assets/images/social icons/telegram-1@2x.png";
 import whatsapp from "../../assets/images/social icons/whatsapp-1@2x.png";
@@ -19,29 +20,24 @@ import facebook from "../../assets/images/social icons/facebook-1@2x.png";
 import youtube from "../../assets/images/social icons/youtube-1@2x.png";
 import twitter from "../../assets/images/social icons/twitter-1@2x.png";
 
-
-const menuList = document.getElementsByClassName("pro-form-group");
-console.log(menuList);
-
 export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            username: "",
-            password: "",
+            first_name: "",
+            last_name: "",
             phone_number: [],
             date_of_birth: momentJalaali(),
-            birth_order: ["first_child", "middle_child", "last_child"],
+            birth_order: "",
             gender: ["male", "female"],
             marital_status: ["married", "single", "divorced"],
             number_of_children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            current_job: ["integer"],
-            current_job_explanation: [""],
-            previous_job: ["integer"],
-            previous_job_explanation: [""],
-            degree: ["string"],
-            degree_explanation: "",
+            current_jobs: [],
+            current_jobs_explanation: [""],
+            previous_jobs: ["integer"],
+            previous_jobs_explanation: [""],
+            degrees: ["string"],
+            degrees_explanation: "",
             birth_address_province: "integer",
             birth_address_city: "integer",
             current_address_province: "integer",
@@ -69,12 +65,14 @@ export default class MyProfile extends React.Component {
             favoriteBooks: [""],
             imageProfile: null
         };
-        this.number_of_children= [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        this.jobs = ['بافنده', 's', 'd', 'f', 'g', 'g', 'h'];
-        this.degrees = ['a', 'a', 'a', 'a', 'a', 'a'];
+        this.numberOfChildren = React.createRef();
+        //assets
+        this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.jobs = [];
+        this.degrees = [];
         this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"]
-        this.provinces = ['a', 'a', 'a', 'a', 'a', 'a'];
-        this.cities = ['a', 'a', 'a', 'a', 'a', 'a'];
+        this.provinces = [];
+        this.cities = [];
         this.interests = ['بازی‌های تخته ای'
             , 'پیک نیک'
             , 'شب نشینی'
@@ -92,18 +90,113 @@ export default class MyProfile extends React.Component {
             , 'دوچرخه سواری'
             , 'فیلم دیدن'
             , 'کتاب خواندن'];
-        this.numberOfChildren = React.createRef();
+
+
 
     }
 
     componentDidMount() {
         console.log('this is my token ===', axiosInstance.axios.defaults.headers.common['Authorization']);
+        // axiosInstance.axios.post('/user/get_user/')
+        //     .then(userResponse => {
+        //         console.log(userResponse.data);
+        //         return axiosInstance.axios.get(`/information/profile/${userResponse.data.id}`)
+        //     })
+        //     .then(profileResponse => {
+        //         console.log(profileResponse.data);
+        //     })
+
+
+        //get list of all cities
+        axiosInstance.axios.get('/information/city/')
+            .then((cities) => {
+                const citiesObject = cities.data.results;
+                for(let i = 0 ; i < citiesObject.length ; i++) {
+                    this.provinces[i] = citiesObject[i].name;
+                }
+            })
+
+        //get list of all states(provinces)
+        axiosInstance.axios.get('/information/state/')
+            .then((states) => {
+                const statesObject = states.data.results;
+                for(let i = 0 ; i < statesObject.length ; i++) {
+                    this.cities[i] = statesObject[i].name;
+                }
+            })
+
+        //get list of all jobs
+        axiosInstance.axios.get('/information/job/')
+            .then((jobs) => {
+                const jobsObject = jobs.data.results;
+                for(let i = 0 ; i < jobsObject.length ; i++) {
+                    this.jobs[i] = jobsObject[i].name;
+                }
+            })
+
+        //get list of all degrees
+        axiosInstance.axios.get('/information/degree/')
+            .then((degrees) => {
+                const degreesObject = degrees.data.results;
+                for(let i = 0 ; i < degreesObject.length ; i++) {
+                    this.degrees[i] = degreesObject[i].title;
+                }
+            })
+
+        //get list of all interests
+        axiosInstance.axios.get('/information/entertainment/')
+            .then((interests) => {
+                const interestsObject = interests.data.results;
+                for(let i = 0 ; i < interestsObject.length ; i++) {
+                    this.interests[i] = interestsObject[i].name;
+                }
+            })
+
+
     }
 
-    DatePickerInput(props) {
-        return <input className="form-field-text" {...props} >
+    setProfileInfo = (userId) => {
+        axiosInstance.axios.get(`/information/profile/${userId}/`)
+            .then(profileResponse => {
+                const usrPro = profileResponse.data;
+                console.log("here boy this is usrPro: ");
+                console.log(profileResponse.data.first_name);
+                console.log(profileResponse.data.last_name);
+                console.log("this is date of birth : ");
+                console.log(usrPro.date_of_birth);
+                const tempDate = momentJalaali(usrPro.date_of_birth, "jYYYY-jM-jD").format("jYYYY/jM/jD");
+                console.log("tempDate: " + tempDate);
 
-        </input>;
+                this.setState(() => ({
+                    first_name: usrPro.first_name,
+                    last_name: usrPro.last_name,
+                    reference: usrPro.reference,
+                    referenced_profiles: usrPro.referenced_profiles,
+                    // date_of_birth: momentJalaali(usrPro.date_of_birth, "jYYYY-jM-jD").format("jYYYY/jM/jD"),
+                    birth_order: usrPro.birth_order,
+                    gender: usrPro.gender,
+                    marital_status: usrPro.marital_status,
+                    number_of_children: usrPro.marital_status,
+                    current_jobs: usrPro.current_jobs,//array
+                    current_jobs_explanation: usrPro.current_jobs_explanation,//array
+                    previous_jobs: usrPro.previous_jobs,//array
+                    previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
+                    degrees: usrPro.degrees,//array
+                    degrees_explanation: usrPro.degrees_explanation,//array
+                    birth_city: usrPro.birth_city,
+                    current_city: usrPro.current_city,
+                    phone_numbers: usrPro.phone_numbers,//array
+                    social_medias: usrPro.social_medias,//array
+                    entertainments: usrPro,//array
+                    films: usrPro.films,//array
+                    books: usrPro.books,//array
+                    interests_explanation: usrPro.interests_explanation,
+                    disease_history: usrPro.disease_history,
+                    disease_history_explanation: usrPro.disease_history_explanation,
+                    drug_history: usrPro.drug_history,
+                    criminal_history: usrPro.criminal_history
+                }));
+            })
     }
 
     handleNextInput = (event) => {
@@ -118,15 +211,16 @@ export default class MyProfile extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called " + this.state.haveChildren);
-
+        const objectToSend = {}
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
         let name = event.target.name;
         let val = event.target.value;
         this.setState(() => ({[name]: val}));
+        console.log(event);
         console.log("event.target.name: " + name);
-        console.log("event.target.name: " + val);
+        console.log("event.target.value: " + val);
 
     };
     handleVerificationCode = () => {
@@ -138,45 +232,48 @@ export default class MyProfile extends React.Component {
 
     handleImageFile = (event) => {
         this.setState({imageProfile: URL.createObjectURL(event.target.files[0])});
+        console.log("you should handle this file!!!");
     }
 
     render() {
         return (
-
             <div className={"main-container"}>
                 <div className={"right-container"}>
                     <div className={"right-fixed-container"}>
-                        <div className={"active-sidebar"}>
-                            <nav className={"nav-sections"}>
-                                <ul className={"menu"}>
-                                    <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"personal-info"}>
-                                            اطلاعات پرسنلی
-                                        </a>
-                                    </li>
-                                    <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"entertainments"}>
-                                            علایق
-                                        </a>
-                                    </li>
-                                    <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"social-media"}>
-                                            فضای مجازی
-                                        </a>
-                                    </li>
-                                    <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"case-history"}>
-                                            سوابق
-                                        </a>
-                                    </li>
-                                    <li className={"menu-item"}>
-                                        <a className={"menu-item-link"} href={"#"}>
-                                            مشخصات فیزیکی
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+                        <h1 style={{fontFamily: "MJ_thameen, sans-serif", fontSize: "35px", fontWeight: "300"}}>
+                            مشخصات من
+                        </h1>
+                        {/*<div className={"active-sidebar"}>*/}
+                        {/*    <nav className={"nav-sections"}>*/}
+                        {/*        <ul className={"menu"}>*/}
+                        {/*            <li className={"menu-item"}>*/}
+                        {/*                <a className={"menu-item-link"} href={"personal-info"}>*/}
+                        {/*                    اطلاعات پرسنلی*/}
+                        {/*                </a>*/}
+                        {/*            </li>*/}
+                        {/*            <li className={"menu-item"}>*/}
+                        {/*                <a className={"menu-item-link"} href={"entertainments"}>*/}
+                        {/*                    علایق*/}
+                        {/*                </a>*/}
+                        {/*            </li>*/}
+                        {/*            <li className={"menu-item"}>*/}
+                        {/*                <a className={"menu-item-link"} href={"social-media"}>*/}
+                        {/*                    فضای مجازی*/}
+                        {/*                </a>*/}
+                        {/*            </li>*/}
+                        {/*            <li className={"menu-item"}>*/}
+                        {/*                <a className={"menu-item-link"} href={"case-history"}>*/}
+                        {/*                    سوابق*/}
+                        {/*                </a>*/}
+                        {/*            </li>*/}
+                        {/*            <li className={"menu-item"}>*/}
+                        {/*                <a className={"menu-item-link"} href={"#"}>*/}
+                        {/*                    مشخصات فیزیکی*/}
+                        {/*                </a>*/}
+                        {/*            </li>*/}
+                        {/*        </ul>*/}
+                        {/*    </nav>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 <div className={"middle-container"}>
@@ -184,102 +281,137 @@ export default class MyProfile extends React.Component {
                         <StyledForm onSubmit={this.handleSubmit}>
                             <div className={"personal-info"}>
                                 <div className={"pro-form-group"}>
-                                    <label className={"form-label-file"} id={"image-profile-label"}>
-                                        <img src={this.state.imageProfile} className={"input-file-image"}
-                                             id={"image-profile"}/>
-                                        <input
-                                            type={"file"}
-                                            name={"profile_image"}
-                                            className={"form-field-file"}
-                                            onChange={this.handleImageFile}
-                                            onKeyDown={this.handleNextInput}
-                                        />
+                                    <UploadFile handleImageFile={this.handleImageFile} id={"image-profile-label"}/>
+                                </div>
+                                <ChangePassword getUserId={this.setProfileInfo}/>
+                                <hr className={"pro-hr"}/>
+                                <div className={"inline-form-groups"} style={{alignItems: "flex-start"}}>
+                                    <div style={{width: "50%"}}>
+                                        <div className={"pro-form-group"}>
+                                            <input
+                                                type={"text"}
+                                                name={"first_name"}
+                                                id={"first_name"}
+                                                className={"form-field-text"}
+                                                placeholder={"نام"}
+                                                onChange={this.handleOnChange}
+                                                onKeyDown={this.handleNextInput}
+                                                // required={true}
+                                                value={this.state.first_name}
+                                            />
+                                            <label htmlFor={"first_name"} className={"form-label-text"}>
+                                                نام
+                                            </label>
+                                        </div>
+                                        <div className={"pro-form-group"}>
+                                            <input
+                                                type={"text"}
+                                                name={"last_name"}
+                                                id={"last_name"}
+                                                className={"form-field-text"}
+                                                placeholder={"نام خانوادگی"}
+                                                onChange={this.handleOnChange}
+                                                onKeyDown={this.handleNextInput}
+                                                // required={true}
+                                                value={this.state.last_name}
+                                            />
+                                            <label htmlFor={"last_name"} className={"form-label-text"}>
+                                                نام خانوادگی
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div style={{width: "50%"}}>
+                                        <div className={"pro-form-group"}>
+                                            <input
+                                                type={"text"}
+                                                name={"introducing_first_name"}
+                                                id={"introducing_first_name"}
+                                                className={"form-field-text"}
+                                                onChange={this.handleOnChange}
+                                                placeholder={"نام معرف"}
+                                                onKeyDown={this.handleNextInput}
+                                                // required={true}
+                                                value={this.state.introducing_first_name}
+                                            />
+                                            <label htmlFor={"introducing_first_name"} className={"form-label-text"}>
+                                                نام معرف
+                                            </label>
+                                        </div>
+                                        <div className={"pro-form-group"}>
+                                            <input
+                                                type={"text"}
+                                                name={"introducing_last_name"}
+                                                id={"introducing_last_name"}
+                                                className={"form-field-text"}
+                                                onChange={this.handleOnChange}
+                                                placeholder={"نام خانوادگی معرف"}
+                                                onKeyDown={this.handleNextInput}
+                                                // required={true}
+                                                value={this.state.introducing_last_name}
+                                            />
+                                            <label htmlFor={"introducing_last_name"} className={"form-label-text"}>
+                                                نام خانوادگی معرف
+                                            </label>
+                                        </div>
+                                        <div className={"pro-form-group"}>
+                                            <input
+                                                type={"tel"}
+                                                name={"introducing_phone_number"}
+                                                id={"introducing_phone_number"}
+                                                className={"form-field-text"}
+                                                onChange={this.handleOnChange}
+                                                placeholder={"شماره همراه معرف"}
+                                                onKeyDown={this.handleNextInput}
+                                                // required={true}
+                                                value={this.state.introducing_phone_number}
+                                            />
+                                            <label htmlFor={"introducing_phone_number"} className={"form-label-text"}>
+                                                شماره همراه معرف
+                                            </label>
+                                            <div className={"input-field-caption"}>
+                                                <span style={{direction: "ltr", fontFamily: "'Segoe UI', sans-serif"}}>
+                                                    0913 123 4567
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className={"input-field-caption"}>
+                                        <span>
+                                            تصویر کارت ملی
+                                        </span>
+                                    </div>
+                                    <label className={"national-card-field"} style={{}}>
+                                        <UploadFile handleImageFile={this.handleImageFile} id={"national-card-label"}/>
+                                        <img src={uploadIcon} alt={"uploadIcon"} style={{margin: "0 5px"}}/>
                                     </label>
                                 </div>
-                                {
-                                    //is editing true then ->
-                                    <ChangePassword/>
-                                }
-
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"text"}
-                                        name={"first_name"}
-                                        id={"first_name"}
-                                        className={"form-field-text"}
-                                        placeholder={"نام"}
-                                        onChange={this.handleOnChange}
-                                        onKeyDown={this.handleNextInput}
-                                        // required={true}
-                                        defaultValue={this.state.name}
-                                    />
-                                    <label htmlFor={"first_name"} className={"form-label-text"}>
-                                        نام
-                                    </label>
-                                </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"text"}
-                                        name={"last_name"}
-                                        id={"last_name"}
-                                        className={"form-field-text"}
-                                        placeholder={"نام خانوادگی"}
-                                        onChange={this.handleOnChange}
-                                        onKeyDown={this.handleNextInput}
-                                        // required={true}
-                                    />
-                                    <label htmlFor={"last_name"} className={"form-label-text"}>
-                                        نام خانوادگی
-                                    </label>
-                                </div>
-                                <div className={"pro-form-group"}>
-                                    <label className={"form-label-file"} id={"national-card-label"}>
-                                        تصویر کارت ملی
-                                        <input
-                                            type={"file"}
-                                            name={"national_card_image"}
-                                            className={"form-field-file"}
-                                            onChange={this.handleImageFile}
-                                            onKeyDown={this.handleNextInput}
-                                        />
-                                    </label>
-                                </div>
-                                {/*<div className={"pro-form-group"}>*/}
-                                {/*    <DatePicker*/}
-                                {/*        id={"date_of_birth"}*/}
-                                {/*        timePicker={false}*/}
-                                {/*        isGregorian={false}*/}
-                                {/*        onChange={date_of_birth => this.setState({date_of_birth})}*/}
-                                {/*        value={null}*/}
-                                {/*        className={"form-field-text"}*/}
-                                {/*        onKeyDown={this.handleNextInput}*/}
-                                {/*    />*/}
-                                {/*    <label className={"form-label-text"}>*/}
-                                {/*        تاریخ تولد*/}
-                                {/*    </label>*/}
-                                {/*</div>*/}
-                                <div className="pro-form-group datePicker">
+                                <div className={"pro-form-group"} style={{width: "300px"}}>
                                     <DatePicker
-                                        inputComponent={this.DatePickerInput}
-                                        preSelected="1390/01/01"
-                                        format="jYYYY/jMM/jDD"
-                                        placeholder="تاریخ تولد"
-                                        onChange={this.change}
-                                        className={"form-field-text"}
                                         id={"date_of_birth"}
+                                        timePicker={false}
+                                        isGregorian={false}
+                                        onChange={date_of_birth => this.setState({date_of_birth})}
+
+                                        value={this.state.date_of_birth}
+                                        className={"form-field-text"}
                                         onKeyDown={this.handleNextInput}
                                     />
-                                    <label htmlFor={"date_of_birth"} className={"form-label-text"}>
+                                    <label className={"form-label-text"}>
                                         تاریخ تولد
                                     </label>
+                                    <img src={calendarIcon} alt={"calendar icon"}
+                                         style={{position: "absolute", left: "5px", top: "30px"}}/>
                                 </div>
                                 <div className={"pro-form-group hide-select-arrow"} style={{width: "300px"}}>
                                     <select
                                         id={"birth_order"}
                                         name={"birth_order"}
-                                        className={"select-form-field "}
+                                        className={"select-form-field"}
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChange}
+
                                     >
                                         <option value={""}>فرزند چندم</option>
                                         {this.birthOrders.map((order, index) => (
@@ -291,6 +423,9 @@ export default class MyProfile extends React.Component {
                                             </option>
                                         ))}
                                     </select>
+                                    {/*<label htmlFor={"birth_order"} className={"select-form-label"}>*/}
+                                    {/*    فرزند چندم*/}
+                                    {/*</label>*/}
                                     <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                 </div>
                                 <div className={"pro-form-group"}
@@ -363,23 +498,8 @@ export default class MyProfile extends React.Component {
                                         <span className={"checkmark"}> </span>
                                     </label>
                                 </div>
-                                {/*<div className={"pro-form-group"}>*/}
-                                {/*    <input*/}
-                                {/*        type={"number"}*/}
-                                {/*        name={"number_of_children"}*/}
-                                {/*        id={"number-of-children"}*/}
-                                {/*        className={"form-field-text"}*/}
-                                {/*        onChange={this.handleOnChange}*/}
-                                {/*        placeholder={"تعداد فرزندان"}*/}
-                                {/*        onKeyDown={this.handleNextInput}*/}
-                                {/*        disabled={!this.state.haveChildren}*/}
-                                {/*        ref={this.numberOfChildren}*/}
-                                {/*    />*/}
-                                {/*    <label htmlFor={"number-of-children"} className={"form-label-text"}>*/}
-                                {/*        تعداد فرزندان*/}
-                                {/*    </label>*/}
-                                {/*</div>*/}
-                                <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
+                                {this.state.haveChildren &&
+                                    <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
                                     <select
                                         id={"number_of_children"}
                                         name={"number_of_children"}
@@ -389,10 +509,10 @@ export default class MyProfile extends React.Component {
                                         disabled={!this.state.haveChildren}
                                         ref={this.numberOfChildren}
                                     >
-                                        <option defaultValue={"تعداد فرزندان"} >تعداد فرزندان</option>
+                                        <option defaultValue={"تعداد فرزندان"}>تعداد فرزندان</option>
                                         {this.number_of_children.map((number, index) => (
                                             <option
-                                                
+
                                                 value={number}
                                                 key={index}
                                             >
@@ -401,9 +521,9 @@ export default class MyProfile extends React.Component {
                                         ))}
                                     </select>
                                     <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                </div>
+                                </div>}
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"current_job"}
                                             name={"current_job"}
@@ -424,7 +544,7 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
                                             name={"current_job_explanation"}
@@ -441,7 +561,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"previous_job"}
                                             name={"previous_job"}
@@ -457,7 +577,7 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
                                             name={"previous_job_explanation"}
@@ -474,7 +594,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"degree"}
                                             name={"degree"}
@@ -490,7 +610,7 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
                                             name={"previous_job_explanation"}
@@ -507,7 +627,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"birth_province"}
                                             name={"birth_province"}
@@ -523,7 +643,7 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group hide-select-arrow"}>
                                         <select
                                             id={"birth_city"}
                                             name={"birth_city"}
@@ -541,7 +661,7 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"current_province"}
                                             name={"current_province"}
@@ -557,7 +677,7 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginRight: "40px"}}>
+                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"current_city"}
                                             name={"current_city"}
@@ -603,28 +723,32 @@ export default class MyProfile extends React.Component {
                                     <label htmlFor={"landline_number"} className={"form-label-text"}>
                                         شماره ثابت
                                     </label>
+                                    <div className={"input-field-caption"}>
+                                            <span style={{direction: "ltr", fontFamily: "'Segoe UI', sans-serif"}}>
+                                                031 34567890
+                                            </span>
+                                    </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group"}>
+                                    <div className={"pro-form-group"} style={{marginLeft: '40px'}}>
                                         <input
                                             name={"phone_number"}
                                             type={"tel"}
                                             id={"phone_number"}
                                             className={"form-field-text"}
-                                            placeholder={"شماره ثابت"}
+                                            placeholder={"شماره همراه"}
                                             pattern={"[0-9]{11}"}
                                             // required={true}
                                             onKeyDown={this.handleNextInput}
                                         />
                                         <label htmlFor={"phone_number"} className={"form-label-text"}>
-                                            شماره همراه(...۰۹)
+                                            شماره همراه
                                         </label>
-                                    </div>
-                                    <div>
-                                        <button type={"button"} onClick={this.handleVerificationCode}
-                                                id={"verification-code-btn"}>
-                                            دریافت کد اعبتار سنجی
-                                        </button>
+                                        <div className={"input-field-caption"}>
+                                            <span style={{direction: "ltr", fontFamily: "'Segoe UI', sans-serif"}}>
+                                                0913 123 4567
+                                            </span>
+                                        </div>
                                     </div>
                                     <div className={"pro-form-group"}>
                                         <input
@@ -641,38 +765,14 @@ export default class MyProfile extends React.Component {
                                         <label htmlFor={"verification_code"} className={"form-label-text"}>
                                             کد اعتبارسنجی
                                         </label>
+                                        <div className={"input-field-caption"}>
+                                            <button type={"button"} onClick={this.handleVerificationCode}>
+                                                دریافت کد اعتبار سنجی
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"text"}
-                                        name={"introducing_fname"}
-                                        id={"introducing_fname"}
-                                        className={"form-field-text"}
-                                        onChange={this.handleOnChange}
-                                        placeholder={"نام معرف"}
-                                        onKeyDown={this.handleNextInput}
-                                        // required={true}
-                                    />
-                                    <label htmlFor={"introducing_fname"} className={"form-label-text"}>
-                                        نام معرف
-                                    </label>
-                                </div>
-                                <div className={"pro-form-group"}>
-                                    <input
-                                        type={"text"}
-                                        name={"introducing_phone_number"}
-                                        id={"introducing_phone_number"}
-                                        className={"form-field-text"}
-                                        onChange={this.handleOnChange}
-                                        placeholder={"شماره تماس معرف"}
-                                        onKeyDown={this.handleNextInput}
-                                        // required={true}
-                                    />
-                                    <label htmlFor={"introducing_phone_number"} className={"form-label-text"}>
-                                        شماره تماس معرف
-                                    </label>
-                                </div>
+
                             </div>
                             <div className={"entertainments"}>
                                 <h3 id={"entertainments-header"}>
