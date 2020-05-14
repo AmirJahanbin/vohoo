@@ -1,9 +1,8 @@
 #login-form-container {
-  background-color: rgb(64, 45, 96);
+  background-color: rgba(64, 45, 96,0.5);
   background-image: url('../../assets/images/flyting-birds@2x.png');
-  background-blend-mode: overlay;
+  background-blend-mode: darken;
   background-repeat: no-repeat;
-  opacity: 80%;
   background-size: cover;
 }
 
