@@ -28,36 +28,36 @@ export default class MyProfile extends React.Component {
             first_name: "",
             last_name: "",
             phone_number: [],
-            date_of_birth: "",
+            date_of_birth: momentJalaali(),
             birth_order: "",
             gender: "",
             marital_status: "",
             number_of_children: "",
             current_jobs: [],
-            current_jobs_explanation: [""],
+            current_jobs_explanation: "",//temporary not an array
             previous_jobs: ["integer"],
-            previous_jobs_explanation: [""],
-            degrees: ["string"],
-            degrees_explanation: "",
+            previous_jobs_explanation: [],//temporary not an array
+            degrees: [],
+            degrees_explanation: "",//temporary not an array
             birth_address_province: "integer",
             birth_address_city: "integer",
             current_address_province: "integer",
             current_address_city: "integer",
             current_living_address: "integer",
-            landline_number: "string",
-            introducing_first_name: "string",
-            introducing_last_name: "string",
-            introducing_phone_number: "string",
+            landline_number: "",
+            introducing_first_name: "",
+            introducing_last_name: "",
+            introducing_phone_number: "",
             entertainments: ["integer"],
-            films: ["string"],
-            books: ["string"],
-            interests_explanation: "string",
-            social_media: {},
+            films: [],
+            books: [],
+            interests_explanation: "",
+            social_media: [],
             disease_history: false,
-            disease_history_explanation: "",
+            disease_history_explanation: "",//temporary not an array
             drug_history: false,
             criminal_history: false,
-            criminal_history_explanation: "",
+            criminal_history_explanation: "",//temporary not an array
 
 
             haveChildren: true,
@@ -161,21 +161,24 @@ export default class MyProfile extends React.Component {
                 const usrPro = profileResponse.data;
 
                 //get list of jobs, degrees, city, socials, entertainments, films and books
-                let job_names = [];
+                let current_job_names = [];
+                let previous_job_names = [];
+                let degree_names = [];
 
-                usrPro.current_jobs.map(async cr => {
-                    const jobResponse = await axiosInstance.axios.get(cr);
-                    job_names.push(jobResponse.data.name);
-                })
+                //this request may be wrong!
+                // usrPro.current_jobs.map(async cr => {
+                //     const jobResponse = await axiosInstance.axios.get(cr);
+                //     job_names.push(jobResponse.data.name);
+                // })
 
                 for (let i = 0; i < usrPro.current_jobs.length; i++) {
                     const cr = usrPro.current_jobs[i];
                     const jobResponse = await axiosInstance.axios.get(cr);
-                    job_names.push(jobResponse.data.name)
+                    current_job_names.push(jobResponse.data.name)
                 }
                 // this.setState(() => ({current_jobs: job_names}));
 
-                console.log("hereeeee", job_names);
+                console.log("hereeeee", current_job_names);
 
 
                 // console.log("here boy this is usrPro: ");
@@ -187,13 +190,15 @@ export default class MyProfile extends React.Component {
                     last_name: usrPro.last_name,
                     reference: usrPro.reference,
                     referenced_profiles: usrPro.referenced_profiles,
-                    date_of_birth: momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD"),
+                    date_of_birth: (usrPro.date_of_birth !== null) ?
+                                    momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD") :
+                                    momentJalaali(),
                     birth_order: usrPro.birth_order,
                     gender: usrPro.gender,
                     marital_status: usrPro.marital_status,
                     haveChildren: usrPro.marital_status !== "single",
                     number_of_children: usrPro.number_of_children,
-                    current_jobs: job_names,//array
+                    current_jobs: current_job_names,//array
                     current_jobs_explanation: usrPro.current_jobs_explanation,//array
                     previous_jobs: usrPro.previous_jobs,//array
                     previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
@@ -446,7 +451,7 @@ export default class MyProfile extends React.Component {
                                         className={"select-form-field"}
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChange}
-                                        defaultValue={this.state.birth_order}
+                                        value={this.state.birth_order}
                                     >
                                         <option value={""}>فرزند چندم</option>
                                         {this.birthOrders.map((order, index) => (
@@ -569,7 +574,7 @@ export default class MyProfile extends React.Component {
                                             className={"select-form-field "}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChange}
-                                            value={this.state.current_jobs[1]}
+                                            value={this.state.current_jobs[0]}
                                         >
                                             <option value={""}>شغل فعلی</option>
                                             {this.jobs.map((job, index) => (

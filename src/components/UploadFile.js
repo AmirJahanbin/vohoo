@@ -66,10 +66,17 @@ export default class UploadFile extends React.Component {
                 console.log(userResponse.data);
                 axiosInstance.axios.get(`/information/profile/${userResponse.data.id}/`)
                     .then((usrPro) => {
-                        this.setState(() => ({
-                            imageProfile: usrPro.data.image,
-                            nationalCard: usrPro.data.national_card_image
-                        }));
+                        if(usrPro.data.image !== null) {
+                            this.setState(() => ({
+                                imageProfile: usrPro.data.image
+                            }));
+                        }
+                        if(usrPro.data.national_card_image !== null) {
+                            this.setState(() => ({
+                                nationalCard: usrPro.data.national_card_image
+                            }));
+                        }
+
                     })
             })
 
