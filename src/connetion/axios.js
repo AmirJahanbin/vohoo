@@ -3,7 +3,7 @@ import axios from 'axios';
 class Axios {
     constructor() {
         this.axios = axios.create({
-            baseURL: 'http://weespo.ir:8001/api',
+            baseURL: 'http://5.253.25.176:8001/api',
             timeout: 10000
         });
         const existingToken = localStorage.getItem('token')

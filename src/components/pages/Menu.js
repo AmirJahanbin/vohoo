@@ -238,7 +238,7 @@ export default class Menu extends React.Component {
                 <div className={"left-container"}>
                     <StyledMenuLeftContainer className={"left-menu-links"}>
                         <HomePageLink className={"top-left-home-page-logo"}/>
-                        <Link to={"/sign-up"}>عضویت در سایت</Link>
+                        <Link to={"/login"}>ورود به سایت</Link>
                         <div className={"about-us-contact-us"}>
                             <Link to={"/about-us"}>داستان ما</Link>
                             <Link to={"/contact-us"}>ارتباط با ما</Link>

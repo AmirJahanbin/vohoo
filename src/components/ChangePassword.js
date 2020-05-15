@@ -85,6 +85,8 @@ export default class ChangePassword extends React.Component {
                         id={"new_password"}
                         className={"form-field-text"}
                         placeholder={"رمز عبور جدید"}
+                        pattern={".{8,}"}
+                        title={"رمز عبور باید حداقل ۸ کاراکتر داشته باشد"}
                         onChange={this.handleOnChange}
                         onKeyDown={this.handleNextInput}
                         // required={true}

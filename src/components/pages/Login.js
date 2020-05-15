@@ -20,9 +20,9 @@ export default class Login extends React.Component {
             console.log(response.data);
             if (response.data.key) {
                 localStorage.setItem('token', response.data.key);
-                axiosInstance.setAuthKey(response.data.key)
+                axiosInstance.setAuthKey(response.data.key);
             }
-            this.props.history.push("/my-profile");
+            this.props.history.push("/menu");
         } catch (e) {
             this.toast.error(e.message || 'Wrong user pass');
             console.log("here is what happened " + e);

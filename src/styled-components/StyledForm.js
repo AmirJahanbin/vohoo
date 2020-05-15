@@ -13,13 +13,13 @@ const StyledForm = styled.form`
   padding: 10px 0 0;
 }
 .form-field {
-  font-family: inherit;
+  font-family: IRANSans,sans-serif;
   width: 100%;
   border: 0;
   border-bottom: 1px solid #D9D9D9;
   outline: 0;
-  font-size: 2.5rem;
-  color: #D9D9D9;
+  font-size: 25px;
+  color: white;
   padding: 5px 0 0 0;
   background: transparent;
   transition: border-color 0.2s;
@@ -28,13 +28,13 @@ const StyledForm = styled.form`
     color: transparent;
 }
 .form-field:placeholder-shown ~ .form-label {
-  font-size: 2.5rem;
+  font-size: 25px;
   cursor: text;
   top: 15px;
 }
 .form-label {
   position: absolute;
-  top: 0; 
+  top: -5px; 
   display: block;
   transition: 0.2s;
   font-size: initial;

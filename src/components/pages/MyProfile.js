@@ -20,6 +20,7 @@ import facebook from "../../assets/images/social icons/facebook-1@2x.png";
 import youtube from "../../assets/images/social icons/youtube-1@2x.png";
 import twitter from "../../assets/images/social icons/twitter-1@2x.png";
 
+
 export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -27,11 +28,11 @@ export default class MyProfile extends React.Component {
             first_name: "",
             last_name: "",
             phone_number: [],
-            date_of_birth: momentJalaali(),
+            date_of_birth: "",
             birth_order: "",
-            gender: ["male", "female"],
-            marital_status: ["married", "single", "divorced"],
-            number_of_children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            gender: "",
+            marital_status: "",
+            number_of_children: "",
             current_jobs: [],
             current_jobs_explanation: [""],
             previous_jobs: ["integer"],
@@ -65,8 +66,8 @@ export default class MyProfile extends React.Component {
             favoriteBooks: [""],
             imageProfile: null
         };
-        this.numberOfChildren = React.createRef();
         //assets
+
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
         this.degrees = [];
@@ -92,7 +93,6 @@ export default class MyProfile extends React.Component {
             , 'کتاب خواندن'];
 
 
-
     }
 
     componentDidMount() {
@@ -111,7 +111,7 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get('/information/city/')
             .then((cities) => {
                 const citiesObject = cities.data.results;
-                for(let i = 0 ; i < citiesObject.length ; i++) {
+                for (let i = 0; i < citiesObject.length; i++) {
                     this.provinces[i] = citiesObject[i].name;
                 }
             })
@@ -120,7 +120,7 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get('/information/state/')
             .then((states) => {
                 const statesObject = states.data.results;
-                for(let i = 0 ; i < statesObject.length ; i++) {
+                for (let i = 0; i < statesObject.length; i++) {
                     this.cities[i] = statesObject[i].name;
                 }
             })
@@ -129,7 +129,7 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get('/information/job/')
             .then((jobs) => {
                 const jobsObject = jobs.data.results;
-                for(let i = 0 ; i < jobsObject.length ; i++) {
+                for (let i = 0; i < jobsObject.length; i++) {
                     this.jobs[i] = jobsObject[i].name;
                 }
             })
@@ -138,7 +138,7 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get('/information/degree/')
             .then((degrees) => {
                 const degreesObject = degrees.data.results;
-                for(let i = 0 ; i < degreesObject.length ; i++) {
+                for (let i = 0; i < degreesObject.length; i++) {
                     this.degrees[i] = degreesObject[i].title;
                 }
             })
@@ -147,7 +147,7 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get('/information/entertainment/')
             .then((interests) => {
                 const interestsObject = interests.data.results;
-                for(let i = 0 ; i < interestsObject.length ; i++) {
+                for (let i = 0; i < interestsObject.length; i++) {
                     this.interests[i] = interestsObject[i].name;
                 }
             })
@@ -155,29 +155,45 @@ export default class MyProfile extends React.Component {
 
     }
 
-    setProfileInfo = (userId) => {
+    setProfileInfo = async (userId) => {
         axiosInstance.axios.get(`/information/profile/${userId}/`)
-            .then(profileResponse => {
+            .then(async profileResponse => {
                 const usrPro = profileResponse.data;
-                console.log("here boy this is usrPro: ");
-                console.log(profileResponse.data.first_name);
-                console.log(profileResponse.data.last_name);
-                console.log("this is date of birth : ");
-                console.log(usrPro.date_of_birth);
-                const tempDate = momentJalaali(usrPro.date_of_birth, "jYYYY-jM-jD").format("jYYYY/jM/jD");
-                console.log("tempDate: " + tempDate);
 
-                this.setState(() => ({
+                //get list of jobs, degrees, city, socials, entertainments, films and books
+                let job_names = [];
+
+                usrPro.current_jobs.map(async cr => {
+                    const jobResponse = await axiosInstance.axios.get(cr);
+                    job_names.push(jobResponse.data.name);
+                })
+
+                for (let i = 0; i < usrPro.current_jobs.length; i++) {
+                    const cr = usrPro.current_jobs[i];
+                    const jobResponse = await axiosInstance.axios.get(cr);
+                    job_names.push(jobResponse.data.name)
+                }
+                // this.setState(() => ({current_jobs: job_names}));
+
+                console.log("hereeeee", job_names);
+
+
+                // console.log("here boy this is usrPro: ");
+                // console.log(profileResponse.data.first_name);
+                // console.log(profileResponse.data.last_name);
+
+                this.setState((prevState) => ({
                     first_name: usrPro.first_name,
                     last_name: usrPro.last_name,
                     reference: usrPro.reference,
                     referenced_profiles: usrPro.referenced_profiles,
-                    // date_of_birth: momentJalaali(usrPro.date_of_birth, "jYYYY-jM-jD").format("jYYYY/jM/jD"),
+                    date_of_birth: momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD"),
                     birth_order: usrPro.birth_order,
                     gender: usrPro.gender,
                     marital_status: usrPro.marital_status,
-                    number_of_children: usrPro.marital_status,
-                    current_jobs: usrPro.current_jobs,//array
+                    haveChildren: usrPro.marital_status !== "single",
+                    number_of_children: usrPro.number_of_children,
+                    current_jobs: job_names,//array
                     current_jobs_explanation: usrPro.current_jobs_explanation,//array
                     previous_jobs: usrPro.previous_jobs,//array
                     previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
@@ -197,6 +213,12 @@ export default class MyProfile extends React.Component {
                     criminal_history: usrPro.criminal_history
                 }));
             })
+
+        setTimeout(() => {
+            // console.log("this is firssssst: ");
+            // console.log(this.state.current_jobs);
+        }, 3000);
+
     }
 
     handleNextInput = (event) => {
@@ -207,7 +229,6 @@ export default class MyProfile extends React.Component {
             event.preventDefault();
         }
     };
-
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called " + this.state.haveChildren);
@@ -223,13 +244,27 @@ export default class MyProfile extends React.Component {
         console.log("event.target.value: " + val);
 
     };
+    handleMaritalStatus = (event) => {
+        console.log("handleMaritalStatus called");
+        let name = event.target.name;
+        let val = event.target.value;
+        if (name === "marital_status" && val === "single") {
+            this.setState(() => ({haveChildren: false}));
+        } else {
+            this.setState(() => ({haveChildren: true}))
+        }
+        this.setState(() => ({[name]: val}));
+        console.log(event);
+        console.log("event.target.name: " + name);
+        console.log("event.target.value: " + val);
+
+    };
     handleVerificationCode = () => {
         this.setState({vCodeField: true});
     };
     handleAddOption = () => {
 
     };
-
     handleImageFile = (event) => {
         this.setState({imageProfile: URL.createObjectURL(event.target.files[0])});
         console.log("you should handle this file!!!");
@@ -411,7 +446,7 @@ export default class MyProfile extends React.Component {
                                         className={"select-form-field"}
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChange}
-
+                                        defaultValue={this.state.birth_order}
                                     >
                                         <option value={""}>فرزند چندم</option>
                                         {this.birthOrders.map((order, index) => (
@@ -437,7 +472,10 @@ export default class MyProfile extends React.Component {
                                             name={"gender"}
                                             className={"form-field-radio"}
                                             id={"gender_male"}
+                                            onChange={this.handleOnChange}
                                             onKeyDown={this.handleNextInput}
+                                            value={"male"}
+                                            checked={this.state.gender === "male"}
                                         />
                                         <span className={"checkmark"}> </span>
                                     </label>
@@ -448,7 +486,10 @@ export default class MyProfile extends React.Component {
                                             name={"gender"}
                                             className={"form-field-radio"}
                                             id={"gender_female"}
+                                            onChange={this.handleOnChange}
                                             onKeyDown={this.handleNextInput}
+                                            value={"female"}
+                                            checked={this.state.gender === "female"}
                                         />
                                         <span className={"checkmark"}> </span>
                                     </label>
@@ -463,24 +504,22 @@ export default class MyProfile extends React.Component {
                                             className={"form-field-radio"}
                                             id={"married"}
                                             value={"married"}
-                                            onChange={() => (this.setState({haveChildren: true}))}
+                                            onChange={this.handleMaritalStatus}
+                                            checked={this.state.marital_status === "married"}
                                         />
                                         <span className={"checkmark"}> </span>
                                     </label>
-                                    <label htmlFor={"unmarried"} className={"form-label-radio checkbox-label"}>
+                                    <label htmlFor={"single"} className={"form-label-radio checkbox-label"}>
                                         مجرد
                                         <input
                                             type={"radio"}
                                             name={"marital_status"}
                                             className={"form-field-radio"}
-                                            id={"unmarried"}
-                                            value={"unmarried"}
+                                            id={"single"}
+                                            value={"single"}
                                             onKeyDown={this.handleNextInput}
-                                            onChange={(c) => {
-                                                console.log(c.target.value);
-                                                this.numberOfChildren.current.value = null;
-                                                return this.setState({haveChildren: false});
-                                            }}
+                                            onChange={this.handleMaritalStatus}
+                                            checked={this.state.marital_status === "single"}
                                         />
                                         <span className={"checkmark"}> </span>
                                     </label>
@@ -491,15 +530,16 @@ export default class MyProfile extends React.Component {
                                             name={"marital_status"}
                                             className={"form-field-radio"}
                                             id={"divorced"}
-                                            defaultValue={"divorced"}
+                                            value={"divorced"}
                                             onKeyDown={this.handleNextInput}
-                                            onChange={() => (this.setState({haveChildren: true}))}
+                                            onChange={this.handleMaritalStatus}
+                                            checked={this.state.marital_status === "divorced"}
                                         />
                                         <span className={"checkmark"}> </span>
                                     </label>
                                 </div>
                                 {this.state.haveChildren &&
-                                    <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
+                                <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
                                     <select
                                         id={"number_of_children"}
                                         name={"number_of_children"}
@@ -507,12 +547,11 @@ export default class MyProfile extends React.Component {
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChange}
                                         disabled={!this.state.haveChildren}
-                                        ref={this.numberOfChildren}
+                                        value={this.state.number_of_children}
                                     >
-                                        <option defaultValue={"تعداد فرزندان"}>تعداد فرزندان</option>
+                                        <option value={"تعداد فرزندان"}>تعداد فرزندان</option>
                                         {this.number_of_children.map((number, index) => (
                                             <option
-
                                                 value={number}
                                                 key={index}
                                             >
@@ -525,12 +564,12 @@ export default class MyProfile extends React.Component {
                                 <div className={"inline-form-groups"}>
                                     <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
-                                            id={"current_job"}
-                                            name={"current_job"}
+                                            id={"current_jobs"}
+                                            name={"current_jobs"}
                                             className={"select-form-field "}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChange}
-
+                                            value={this.state.current_jobs[1]}
                                         >
                                             <option value={""}>شغل فعلی</option>
                                             {this.jobs.map((job, index) => (
@@ -613,16 +652,16 @@ export default class MyProfile extends React.Component {
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
-                                            name={"previous_job_explanation"}
-                                            id={"previous_job_explanation"}
+                                            name={"degree_explanation"}
+                                            id={"degree_explanation"}
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
-                                            placeholder={"توضیحات"}
+                                            placeholder={"رشته تحصیلی"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "600px"}}
                                         />
-                                        <label htmlFor={"previous_job_explanation"} className={"form-label-text"}>
-                                            توضیحات
+                                        <label htmlFor={"degree_explanation"} className={"form-label-text"}>
+                                            رشته تحصیلی
                                         </label>
                                     </div>
                                 </div>
