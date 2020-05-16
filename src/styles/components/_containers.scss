@@ -34,6 +34,11 @@
     flex-direction: row-reverse;
     justify-content: center;
     min-height: 100vh;
+
+    & .Toastify {
+      font-size: 15px;
+      font-family: IRANSans,sans-serif;
+    }
   }
 
   .middle-container{

@@ -25,38 +25,39 @@ export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user_id: "",
             first_name: "",
             last_name: "",
-            phone_number: [],
             date_of_birth: momentJalaali(),
             birth_order: "",
             gender: "",
             marital_status: "",
             number_of_children: "",
-            current_jobs: [],
+            current_jobs: {},
             current_jobs_explanation: "",//temporary not an array
-            previous_jobs: ["integer"],
-            previous_jobs_explanation: [],//temporary not an array
-            degrees: [],
+            previous_jobs: {},
+            previous_jobs_explanation: "",//temporary not an array
+            degrees: {},
             degrees_explanation: "",//temporary not an array
-            birth_address_province: "integer",
-            birth_address_city: "integer",
-            current_address_province: "integer",
-            current_address_city: "integer",
-            current_living_address: "integer",
+            birth_province: "",
+            birth_city: {},
+            current_province: {},
+            current_city: {},
+            current_address: "",
             landline_number: "",
+            phone_numbers: {},
             introducing_first_name: "",
             introducing_last_name: "",
             introducing_phone_number: "",
-            entertainments: ["integer"],
+            entertainments: [],
             films: [],
             books: [],
             interests_explanation: "",
             social_media: [],
-            disease_history: false,
+            disease_history: null,
             disease_history_explanation: "",//temporary not an array
-            drug_history: false,
-            criminal_history: false,
+            drug_history: null,
+            criminal_history: null,
             criminal_history_explanation: "",//temporary not an array
 
 
@@ -71,7 +72,13 @@ export default class MyProfile extends React.Component {
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
         this.degrees = [];
-        this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"]
+        // this.birthOrders = {
+        //     first: "فرزند اول",
+        //     middle: "فرزند میانی",
+        //     last: "فرزند آخر"
+        // };
+        this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"];
+        this.birthOrdersForJson = ["first", "middle", "last"];
         this.provinces = [];
         this.cities = [];
         this.interests = ['بازی‌های تخته ای'
@@ -110,46 +117,31 @@ export default class MyProfile extends React.Component {
         //get list of all cities
         axiosInstance.axios.get('/information/city/')
             .then((cities) => {
-                const citiesObject = cities.data.results;
-                for (let i = 0; i < citiesObject.length; i++) {
-                    this.provinces[i] = citiesObject[i].name;
-                }
+                this.cities = cities.data.results;
             })
 
         //get list of all states(provinces)
         axiosInstance.axios.get('/information/state/')
             .then((states) => {
-                const statesObject = states.data.results;
-                for (let i = 0; i < statesObject.length; i++) {
-                    this.cities[i] = statesObject[i].name;
-                }
+                this.provinces = states.data.results;
             })
 
         //get list of all jobs
         axiosInstance.axios.get('/information/job/')
             .then((jobs) => {
-                const jobsObject = jobs.data.results;
-                for (let i = 0; i < jobsObject.length; i++) {
-                    this.jobs[i] = jobsObject[i].name;
-                }
+                this.jobs = jobs.data.results;
             })
 
         //get list of all degrees
         axiosInstance.axios.get('/information/degree/')
             .then((degrees) => {
-                const degreesObject = degrees.data.results;
-                for (let i = 0; i < degreesObject.length; i++) {
-                    this.degrees[i] = degreesObject[i].title;
-                }
+                this.degrees = degrees.data.results;
             })
 
         //get list of all interests
         axiosInstance.axios.get('/information/entertainment/')
             .then((interests) => {
-                const interestsObject = interests.data.results;
-                for (let i = 0; i < interestsObject.length; i++) {
-                    this.interests[i] = interestsObject[i].name;
-                }
+                this.interests = interests.data.results;
             })
 
 
@@ -161,67 +153,103 @@ export default class MyProfile extends React.Component {
                 const usrPro = profileResponse.data;
 
                 //get list of jobs, degrees, city, socials, entertainments, films and books
-                let current_job_names = [];
-                let previous_job_names = [];
-                let degree_names = [];
-
+                let current_jobs = (await axiosInstance.axios.get(usrPro.current_jobs[0])).data;
+                let previous_jobs = (await axiosInstance.axios.get(usrPro.previous_jobs[0])).data;
+                let degrees = (await axiosInstance.axios.get(usrPro.degrees[0])).data;
+                let birth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
+                let current_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
+                let phone_numbers =(await axiosInstance.axios.get(usrPro.phone_numbers[0])).data;
+                let entertainments = [];
                 //this request may be wrong!
                 // usrPro.current_jobs.map(async cr => {
                 //     const jobResponse = await axiosInstance.axios.get(cr);
                 //     job_names.push(jobResponse.data.name);
                 // })
 
-                for (let i = 0; i < usrPro.current_jobs.length; i++) {
-                    const cr = usrPro.current_jobs[i];
-                    const jobResponse = await axiosInstance.axios.get(cr);
-                    current_job_names.push(jobResponse.data.name)
+                // for (let i = 0; i < usrPro.current_jobs.length; i++) {
+                //     const cr = usrPro.current_jobs[i];
+                //     const jobResponse = await axiosInstance.axios.get(cr);
+                //     current_jobs.push(jobResponse.data);
+                // }
+                // for (let i = 0; i < usrPro.previous_jobs.length; i++) {
+                //     const prev = usrPro.previous_jobs[i];
+                //     const jobResponse = await axiosInstance.axios.get(prev);
+                //     previous_job_names.push(jobResponse.data.name);
+                // }
+                // for (let i = 0; i < usrPro.degrees.length; i++) {
+                //     const deg = usrPro.degrees[i];
+                //     const degreeResponse = await axiosInstance.axios.get(deg);
+                //     degree_names.push(degreeResponse.data.title);
+                // }
+
+                // let birthCityResponse = await axiosInstance.axios.get(usrPro.birth_city);
+                // birth_city_name = birthCityResponse.data.name;
+                // console.log("this is birth city: ", birth_city_name);
+
+                // let currentCityResponse = await axiosInstance.axios.get(usrPro.current_city);
+                // current_city_name = currentCityResponse.data.name;
+                // console.log("this is current city: ", current_city_name);
+
+                // for (let i = 0; i < usrPro.phone_numbers.length; i++) {
+                //     const phoneUrl = usrPro.phone_numbers[i];
+                //     const phoneResponse = await axiosInstance.axios.get(phoneUrl);
+                //     phone_number_values.push(phoneResponse.data.phone_number);
+                // }
+
+                for (let i = 0; i < usrPro.entertainments.length; i++) {
+                    const entttUrl = usrPro.entertainments[i];
+                    const entertainmentResponse = await axiosInstance.axios.get(entttUrl);
+                    entertainments.push(entertainmentResponse.data);
                 }
-                // this.setState(() => ({current_jobs: job_names}));
 
-                console.log("hereeeee", current_job_names);
 
+                console.log("this is disesssss", usrPro.disease_history);
+                console.log("this is drug", usrPro.drug_history);
+                console.log("this is criminals: ", usrPro.criminal_history);
 
                 // console.log("here boy this is usrPro: ");
                 // console.log(profileResponse.data.first_name);
                 // console.log(profileResponse.data.last_name);
 
                 this.setState((prevState) => ({
+                    user_id: userId,
                     first_name: usrPro.first_name,
                     last_name: usrPro.last_name,
                     reference: usrPro.reference,
                     referenced_profiles: usrPro.referenced_profiles,
                     date_of_birth: (usrPro.date_of_birth !== null) ?
-                                    momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD") :
-                                    momentJalaali(),
+                        momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD") :
+                        momentJalaali(),
                     birth_order: usrPro.birth_order,
                     gender: usrPro.gender,
                     marital_status: usrPro.marital_status,
                     haveChildren: usrPro.marital_status !== "single",
                     number_of_children: usrPro.number_of_children,
-                    current_jobs: current_job_names,//array
+                    current_jobs: current_jobs, //array
                     current_jobs_explanation: usrPro.current_jobs_explanation,//array
-                    previous_jobs: usrPro.previous_jobs,//array
+                    previous_jobs: previous_jobs,//array
                     previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
-                    degrees: usrPro.degrees,//array
+                    degrees: degrees,//array
                     degrees_explanation: usrPro.degrees_explanation,//array
-                    birth_city: usrPro.birth_city,
-                    current_city: usrPro.current_city,
-                    phone_numbers: usrPro.phone_numbers,//array
+                    birth_city: birth_city,
+                    current_city: current_city,
+                    current_address: usrPro.current_address,
+                    phone_numbers: phone_numbers,//array
                     social_medias: usrPro.social_medias,//array
-                    entertainments: usrPro,//array
+                    entertainments: entertainments,//array
                     films: usrPro.films,//array
                     books: usrPro.books,//array
                     interests_explanation: usrPro.interests_explanation,
-                    disease_history: usrPro.disease_history,
+                    disease_history: usrPro.disease_history && usrPro.disease_history,
                     disease_history_explanation: usrPro.disease_history_explanation,
-                    drug_history: usrPro.drug_history,
-                    criminal_history: usrPro.criminal_history
+                    drug_history: usrPro.drug_history && usrPro.drug_history,
+                    criminal_history: usrPro.criminal_history && usrPro.criminal_history
                 }));
             })
 
         setTimeout(() => {
-            // console.log("this is firssssst: ");
-            // console.log(this.state.current_jobs);
+            console.log("this is entertainments === : ");
+            console.log(this.state.entertainments);
         }, 3000);
 
     }
@@ -236,8 +264,9 @@ export default class MyProfile extends React.Component {
     };
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log("handle submit called " + this.state.haveChildren);
-        const objectToSend = {}
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_jobs: [this.state.current_jobs.url]});
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {previous_jobs: [this.state.previous_jobs.url]});
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {degrees: [this.state.degrees.url]});
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
@@ -247,8 +276,64 @@ export default class MyProfile extends React.Component {
         console.log(event);
         console.log("event.target.name: " + name);
         console.log("event.target.value: " + val);
-
     };
+    handleOnChangeCaseHistory = (event) => {
+        console.log("handle case history called", event.target.name, event.target.value);
+        let name = event.target.name;
+        this.setState((prevState) => ({
+            [name]: !prevState[name]
+        }));
+    }
+    handleOnChangeArrays = (event) => {
+        console.log("handle on change select box: ", event.target.value);
+        let name = event.target.name;
+        let value = [];
+        value[0] = event.target.value;
+        this.setState(() => ({
+            [name]: value
+        }))
+    }
+
+    handleOnChangeCurrentJob = (event) => {
+        console.log('event==', event);
+        const selectedCurrentJob = event.target.value;
+        this.setState(() => ({current_jobs: this.jobs.find(j => j.name === selectedCurrentJob)}));
+    }
+    handleOnChangePreviousJob = (event) => {
+        console.log('event==', event);
+        const selectedPreviousJob = event.target.value;
+        this.setState(() => ({previous_jobs: this.jobs.find(j => j.name === selectedPreviousJob)}));
+    }
+    handleOnChangeDegree = (event) => {
+        console.log('event==', event);
+        const selectedDegree = event.target.value;
+        this.setState(() => ({degrees: this.degrees.find(d => d.title === selectedDegree)}));
+    }
+    handleOnChangeBirthProvince = (event) => {
+        console.log('event==', event);
+        const selectedProvince = event.target.value;
+        this.setState(() => ({birth_province: this.provinces.find(p => p.name === selectedProvince)}));
+    }
+    handleOnChangeBirthCity = (event) => {
+        console.log('event==', event);
+        const selectedCity = event.target.value;
+        this.setState(() => ({birth_city: this.cities.find(c => c.name === selectedCity)}));
+    }
+    handleOnChangeCurrentProvince = (event) => {
+        console.log('event==', event);
+        const selectedProvince = event.target.value;
+        this.setState(() => ({current_province: this.cities.find(p => p.name === selectedProvince)}));
+    }
+    handleOnChangeCurrentCity = (event) => {
+        console.log('event==', event);
+        const selectedCity = event.target.value;
+        this.setState(() => ({current_province: this.cities.find(c => c.name === selectedCity)}));
+    }
+    handleOnChangeEntertainments = (event) => {
+        console.log('event==', event.target.value.name);
+        const selectedEntertainment = event.target.checked;
+        this.setState(() => ({entertainments: this.interests.find(i => i.name === selectedEntertainment)}));
+    }
     handleMaritalStatus = (event) => {
         console.log("handleMaritalStatus called");
         let name = event.target.name;
@@ -456,7 +541,7 @@ export default class MyProfile extends React.Component {
                                         <option value={""}>فرزند چندم</option>
                                         {this.birthOrders.map((order, index) => (
                                             <option
-                                                value={order}
+                                                value={this.birthOrdersForJson[index]}
                                                 key={index}
                                             >
                                                 {order}
@@ -573,16 +658,16 @@ export default class MyProfile extends React.Component {
                                             name={"current_jobs"}
                                             className={"select-form-field "}
                                             onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChange}
-                                            value={this.state.current_jobs[0]}
+                                            onChange={this.handleOnChangeCurrentJob}
+                                            value={this.state.current_jobs.name}//must be this.state.current_jobs[i].name for later
                                         >
                                             <option value={""}>شغل فعلی</option>
                                             {this.jobs.map((job, index) => (
                                                 <option
-                                                    value={job}
+                                                    value={job.name}
                                                     key={index}
                                                 >
-                                                    {job}
+                                                    {job.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -591,15 +676,16 @@ export default class MyProfile extends React.Component {
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
-                                            name={"current_job_explanation"}
-                                            id={"current_job_explanation"}
+                                            name={"current_jobs_explanation"}
+                                            id={"current_jobs_explanation"}
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
                                             placeholder={"توضیحات"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "600px"}}
+                                            value={this.state.current_jobs_explanation}
                                         />
-                                        <label htmlFor={"current_job_explanation"} className={"form-label-text"}>
+                                        <label htmlFor={"current_jobs_explanation"} className={"form-label-text"}>
                                             توضیحات
                                         </label>
                                     </div>
@@ -607,15 +693,17 @@ export default class MyProfile extends React.Component {
                                 <div className={"inline-form-groups"}>
                                     <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
-                                            id={"previous_job"}
-                                            name={"previous_job"}
+                                            id={"previous_jobs"}
+                                            name={"previous_jobs"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangePreviousJob}
+                                            value={this.state.previous_jobs.name}//must be this.state.previous_jobs[i].name for later
                                         >
                                             <option value={""}>شغل قبلی</option>
                                             {this.jobs.map((job, index) => (
-                                                <option value={job} key={index}>
-                                                    {job}
+                                                <option value={job.name} key={index}>
+                                                    {job.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -624,15 +712,16 @@ export default class MyProfile extends React.Component {
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
-                                            name={"previous_job_explanation"}
-                                            id={"previous_job_explanation"}
+                                            name={"previous_jobs_explanation"}
+                                            id={"previous_jobs_explanation"}
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
                                             placeholder={"توضیحات"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "600px"}}
+                                            value={this.state.previous_jobs_explanation}
                                         />
-                                        <label htmlFor={"previous_job_explanation"} className={"form-label-text"}>
+                                        <label htmlFor={"previous_jobs_explanation"} className={"form-label-text"}>
                                             توضیحات
                                         </label>
                                     </div>
@@ -640,15 +729,17 @@ export default class MyProfile extends React.Component {
                                 <div className={"inline-form-groups"}>
                                     <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
-                                            id={"degree"}
-                                            name={"degree"}
+                                            id={"degrees"}
+                                            name={"degrees"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangeDegree}
+                                            value={this.state.degrees.title}//must be this.state.degrees[i].title for later
                                         >
                                             <option value={""}>مدرک تحصیلی</option>
                                             {this.degrees.map((degree, index) => (
-                                                <option value={degree} key={index}>
-                                                    {degree}
+                                                <option value={degree.title} key={index}>
+                                                    {degree.title}
                                                 </option>
                                             ))}
                                         </select>
@@ -657,13 +748,14 @@ export default class MyProfile extends React.Component {
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
-                                            name={"degree_explanation"}
-                                            id={"degree_explanation"}
+                                            name={"degrees_explanation"}
+                                            id={"degrees_explanation"}
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
                                             placeholder={"رشته تحصیلی"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "600px"}}
+                                            value={this.state.degrees_explanation}
                                         />
                                         <label htmlFor={"degree_explanation"} className={"form-label-text"}>
                                             رشته تحصیلی
@@ -677,11 +769,13 @@ export default class MyProfile extends React.Component {
                                             name={"birth_province"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangeBirthProvince}
+                                            value={this.state.birth_province.name}
                                         >
                                             <option value={""}>استان محل تولد</option>
                                             {this.provinces.map((province, index) => (
-                                                <option value={province} key={index}>
-                                                    {province}
+                                                <option value={province.name} key={index}>
+                                                    {province.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -693,11 +787,13 @@ export default class MyProfile extends React.Component {
                                             name={"birth_city"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangeBirthCity}
+                                            value={this.state.birth_city.name}
                                         >
                                             <option value={""}>شهر محل تولد</option>
                                             {this.cities.map((city, index) => (
-                                                <option value={city} key={index}>
-                                                    {city}
+                                                <option value={city.name} key={index}>
+                                                    {city.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -711,11 +807,13 @@ export default class MyProfile extends React.Component {
                                             name={"current_province"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangeCurrentProvince}
+                                            value={this.state.current_province.name}
                                         >
                                             <option value={""}>استان محل سکونت</option>
                                             {this.provinces.map((province, index) => (
-                                                <option value={province} key={index}>
-                                                    {province}
+                                                <option value={province.name} key={index}>
+                                                    {province.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -727,11 +825,13 @@ export default class MyProfile extends React.Component {
                                             name={"current_city"}
                                             className={"select-form-field"}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChangeCurrentCity}
+                                            value={this.state.current_city.name}
                                         >
                                             <option value={""}>شهر محل سکونت</option>
                                             {this.cities.map((city, index) => (
-                                                <option value={city} key={index}>
-                                                    {city}
+                                                <option value={city.name} key={index}>
+                                                    {city.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -749,6 +849,7 @@ export default class MyProfile extends React.Component {
                                         onKeyDown={this.handleNextInput}
                                         // required={true}
                                         style={{width: "660px"}}
+                                        value={this.state.current_address}
                                     />
                                     <label htmlFor={"current_address"} className={"form-label-text"}>
                                         آدرس محل سکونت
@@ -776,16 +877,19 @@ export default class MyProfile extends React.Component {
                                 <div className={"inline-form-groups"}>
                                     <div className={"pro-form-group"} style={{marginLeft: '40px'}}>
                                         <input
-                                            name={"phone_number"}
+                                            name={"phone_numbers"}
                                             type={"tel"}
-                                            id={"phone_number"}
+                                            id={"phone_numbers"}
                                             className={"form-field-text"}
                                             placeholder={"شماره همراه"}
-                                            pattern={"[0-9]{11}"}
+                                            pattern={"[0-9]{10}"}
                                             // required={true}
+                                            disabled={true}
+                                            onChange={this.handleOnChange}
                                             onKeyDown={this.handleNextInput}
+                                            value={this.state.phone_numbers.phone_number}//must be this.state.phone_numbers[i].phone_number for later
                                         />
-                                        <label htmlFor={"phone_number"} className={"form-label-text"}>
+                                        <label htmlFor={"phone_numbers"} className={"form-label-text"}>
                                             شماره همراه
                                         </label>
                                         <div className={"input-field-caption"}>
@@ -805,6 +909,7 @@ export default class MyProfile extends React.Component {
                                             required={this.state.vCodeField}
                                             disabled={!this.state.vCodeField}
                                             onKeyDown={this.handleNextInput}
+                                            onChange={this.handleOnChange}
                                         />
                                         <label htmlFor={"verification_code"} className={"form-label-text"}>
                                             کد اعتبارسنجی
@@ -816,30 +921,32 @@ export default class MyProfile extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div className={"entertainments"}>
                                 <h3 id={"entertainments-header"}>
                                     تفریحات من
                                 </h3>
                                 <div id={"favorite-habits-container"}>
-                                    {this.interests.map((interest, i) => {
-                                        return (
+                                    {this.interests.map((interest, i) =>
+                                        (
                                             <div className={"pro-form-group"} key={i}>
-                                                <label htmlFor={"interest" + i} className={"checkbox-label"}>
-                                                    {interest}
+                                                <label htmlFor={"entertainments" + i} className={"checkbox-label"}>
+                                                    {interest.name}
                                                     <input
                                                         type={"checkbox"}
                                                         className={"checkbox-input"}
-                                                        id={"interest" + i}
-                                                        name={"interest0"}
-                                                        value={interest}
+                                                        id={"entertainments" + i}
+                                                        name={"entertainments" + i}
+                                                        // value={this.interests[i].name}
+                                                        checked={!!this.state.entertainments[i]}
+                                                        disabled={true}
+                                                        onChange={this.handleOnChangeEntertainments}
                                                     />
                                                     <span className={"checkmark"}> </span>
                                                 </label>
                                             </div>
                                         )
-                                    })}
+                                    )}
                                 </div>
                                 <div className={"favorite-films-books-container"}>
                                     <div className={"pro-form-group"}>
@@ -906,6 +1013,7 @@ export default class MyProfile extends React.Component {
                                         onKeyDown={this.handleNextInput}
                                         // required={true}
                                         style={{width: "600px"}}
+                                        value={this.state.interests_explanation}
                                     />
                                     <label htmlFor={"interests_explanation"} className={"form-label-text"}>
                                         توضیحات تکمیلی درمورد علایق
@@ -999,6 +1107,9 @@ export default class MyProfile extends React.Component {
                                                 name={"disease_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_disease_history"}
+                                                value={this.state.disease_history}
+                                                checked={this.state.disease_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1010,6 +1121,9 @@ export default class MyProfile extends React.Component {
                                                 name={"disease_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_not_disease_history"}
+                                                value={this.state.disease_history}
+                                                checked={!this.state.disease_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1044,6 +1158,9 @@ export default class MyProfile extends React.Component {
                                                 name={"drug_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_drug_history"}
+                                                value={this.state.drug_history}
+                                                checked={this.state.drug_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1055,6 +1172,9 @@ export default class MyProfile extends React.Component {
                                                 name={"drug_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_not_drug_history"}
+                                                value={this.state.drug_history}
+                                                checked={!this.state.drug_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1073,6 +1193,9 @@ export default class MyProfile extends React.Component {
                                                 name={"criminal_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_criminal_history"}
+                                                value={this.state.criminal_history}
+                                                checked={this.state.criminal_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1084,6 +1207,9 @@ export default class MyProfile extends React.Component {
                                                 name={"criminal_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_not_criminal_history"}
+                                                value={this.state.criminal_history}
+                                                checked={!this.state.criminal_history}
+                                                onChange={this.handleOnChangeCaseHistory}
                                             />
                                             <span className={"checkmark"}> </span>
                                         </label>
@@ -1097,7 +1223,7 @@ export default class MyProfile extends React.Component {
                     <div className={"left-fixed-container"}>
                         <HomePageLink className={"top-left-home-page-logo"}/>
                         <div className={"pro-submit-btn-container"}>
-                            <button type={"button"} className={"edit-profile-btn"}>
+                            <button type={"button"} className={"edit-profile-btn"} onClick={this.handleSubmit}>
                                 ثبت تغییرات
                             </button>
                         </div>
