@@ -53,7 +53,7 @@ export default class SignUp extends React.Component{
                 <div className={"right-container"}>
                     <HomePageLink id={"right-home-page-logo"}/>
                 </div>
-                <div className={"middle-container"} id={"sign-up-form-container"}>
+                <div className={"middle-container"} style={{justifyContent: "center"}} id={"sign-up-form-container"}>
                     <StyledSignUpForm>
                         <SignUpForm className={"sign-up-form"} handleRedirectToMenu={this.handleRedirectToMenu}/>
                     </StyledSignUpForm>

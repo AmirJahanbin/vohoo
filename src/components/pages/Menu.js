@@ -212,6 +212,7 @@ export default class Menu extends React.Component {
                         </div>
                         <div className={"middle-menu-bottom"}>
                             <Link to={"/my-profile"}>مشخصات من</Link>
+                            <Link to={"/my-wallet"}>کیف پول من</Link>
                             <Link to={"/invoice"}>صورت مالی من</Link>
                             <Link to={"/my-activity"}>حضور من</Link>
                         </div>

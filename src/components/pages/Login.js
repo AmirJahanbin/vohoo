@@ -23,6 +23,7 @@ export default class Login extends React.Component {
             if (response.data.key) {
                 localStorage.setItem('token', response.data.key);
                 axiosInstance.setAuthKey(response.data.key);
+
             }
             this.props.history.push("/menu");
         } catch (e) {
@@ -41,7 +42,7 @@ export default class Login extends React.Component {
                 <div className={"right-container"}>
                     <HomePageLink id={"right-home-page-logo"}/>
                 </div>
-                <div className={"middle-container"} id={"login-form-container"}>
+                <div className={"middle-container"} style={{justifyContent: "center"}} id={"login-form-container"}>
                     <LoginForm handleSubmit={this.handleOnSubmit}/>
                 </div>
                 <div className={"left-container"}>
