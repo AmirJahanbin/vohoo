@@ -272,6 +272,7 @@ export default class MyProfile extends React.Component {
         console.log("handleOnChange called");
         let name = event.target.name;
         let val = event.target.value;
+
         this.setState(() => ({[name]: val}));
         console.log(event);
         console.log("event.target.name: " + name);

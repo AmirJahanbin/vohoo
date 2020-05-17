@@ -28,8 +28,8 @@ export default class Login extends React.Component {
         } catch (e) {
             // this.toast.error(e.message || 'Wrong user pass');
             console.log(inspect(e, false, null, true));
-            if(e.response.status === 401) {
-                this.toast.error("نام کاربری یا رمز عبور نادرست است.")
+            if(e.response.status >= 400 || e.response.status <= 199) {
+                this.toast.error("نام کاربری یا رمز عبور نادرست است")
             }
         }
     }

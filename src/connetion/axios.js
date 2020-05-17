@@ -6,7 +6,7 @@ class Axios {
 
         this.axios = axios.create({
             baseURL: 'http://5.253.25.176:8001/api',
-            timeout: 10000
+            // timeout: 10000
         });
 
         const existingToken = localStorage.getItem('token')
@@ -27,10 +27,11 @@ class Axios {
 
             // spinning hide
             // UPDATE: Add this code to hide global loading indicator
-            setTimeout(() => document.body.classList.remove('loading-indicator'), 2000);
+            document.body.classList.remove('loading-indicator');
 
             return response;
         }, function (error) {
+            document.body.classList.remove('loading-indicator');
             return Promise.reject(error);
         });
 

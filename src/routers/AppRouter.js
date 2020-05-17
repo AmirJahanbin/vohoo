@@ -13,6 +13,7 @@ import Calendar from "../components/pages/Calendar";
 import Gathering from "../components/pages/Gathering";
 import MyActivity from "../components/pages/MyActivity";
 import ContactUs from "../components/pages/ContactUs";
+import MyWallet from "../components/pages/MyWallet";
 import NotFound from "../components/pages/404NotFound";
 
 const AppRouter = () => (
@@ -32,6 +33,7 @@ const AppRouter = () => (
                 <Route path={"/gathering"}       component={Gathering}/>
                 <Route path={"/my-activity"}     component={MyActivity}/>
                 <Route path={"/contact-us"}      component={ContactUs}/>
+                <Route path={"/my-wallet"}       component={MyWallet}/>
                 <Route><NotFound/></Route>
             </Switch>
         </div>
