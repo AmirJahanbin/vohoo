@@ -114,7 +114,10 @@ const StyledCourseRegister = styled.div`
         //margin-left: 300px;
         & img {
           width: 200px;
-          height: auto;
+          height: 200px;
+          border: 1px solid #606060;
+          border-radius: 20px;
+          background-color: #AAAAAA;
         }
         & div {
           margin: 0 10px 20px 10px;

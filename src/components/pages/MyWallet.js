@@ -128,9 +128,11 @@ export default class MyWallet extends React.Component {
                     tracking_code: response.data.tracking_code,
                     transaction_id: response.data.transaction_id
                 }))
-                this.toast.success("اکنون به درگاه بانکی وارد می‌شوید")
+                this.toast.success("اکنون به درگاه بانکی وارد می‌شوید");
+
                 setTimeout(() => {
-                    window.open(`http://panel.aqayepardakht.ir/api/create/${this.state.transaction_id}/`);
+                    console.log("transaction_id" , this.state.transaction_id);
+                    window.open(`http://panel.aqayepardakht.ir/startpay/${this.state.transaction_id}`, "_blank");
                 },3000)
             })
             .catch((error) => {

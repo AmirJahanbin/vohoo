@@ -2,6 +2,7 @@
 import React from "react";
 import axiosInstance from '../../connetion/axios';
 import {Link} from "react-router-dom";
+import styled from "styled-components";
 import Toastify from "../toastify";
 import Calendar from "jalali-react-big-calendar";
 import moment from "moment-jalaali";
@@ -10,6 +11,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
 import mapboxgl from 'mapbox-gl';
+
 
 //custom dependencies
 import StyledCourseRegister from "../../styled-components/StyledCouresRegister";
@@ -20,9 +22,25 @@ import instructor from "../../assets/images/course register/Rectangle 143636@2x.
 import hotOffer from "../../assets/images/course register/Group 62810.png";
 import courseInfoIcon from "../../assets/images/course register/Group 62655.png";
 import shareIcon from "../../assets/images/course register/Path 36406.png";
+import avatar from "../../assets/images/avatar.png";
+import logo from "../../assets/images/Component 203 – 12@2x.png";
 
 const localizer = momentLocalizer(moment);
 moment.loadPersian({dialect: 'persian-modern'});
+
+const StyledTeacherImage = styled.div`
+background-image: url(${props => (props.avatar !== null) ? props.avatar : avatar});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: ${props => props.avatar ? "cover" : "auto"};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+`;
 
 export default class CourseRegister extends React.Component {
     constructor(props) {
@@ -39,10 +57,13 @@ export default class CourseRegister extends React.Component {
             allPaymentPackages: [],
             longitude: null,
             latitude: null,
-
-            events: [
-
-            ]
+            teacherProfile: {
+                full_name: "",
+                first_name: "",
+                last_name: "",
+                image: avatar
+            },
+            events: []
         }
         this.toast = new Toastify().toast;
         this.persianMonths = ["", "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
@@ -66,6 +87,23 @@ export default class CourseRegister extends React.Component {
                             longitude: locationResponse.data.longitude,
                             latitude: locationResponse.data.latitude
                         }))
+                    })
+                axiosInstance.axios.get(response.data.teacher_sections)
+                    .then((teacher_section) => {
+                        axiosInstance.axios.get(teacher_section.data.teacher)
+                            .then((teacher) => {
+                                axiosInstance.axios.get(teacher.data.profile)
+                                    .then((teacher_pro) => {
+                                        let tempPro = {};
+                                        tempPro.full_name = teacher_pro.data.first_name + " " + teacher_pro.data.last_name;
+                                        tempPro.first_name = teacher_pro.data.first_name;
+                                        tempPro.last_name = teacher_pro.data.last_name;
+                                        tempPro.image = teacher_pro.data.image;
+                                        this.setState(() => ({
+                                            teacherProfile: tempPro
+                                        }))
+                                    })
+                            })
                     })
                 Promise.all(response.data.section_sessions.map(sec_sess_url => axiosInstance.axios.get(sec_sess_url)))
                     .then((sec_sess_response) => {
@@ -128,7 +166,7 @@ export default class CourseRegister extends React.Component {
 
 
         setTimeout(() => {
-            console.log("tempPaymentDetails: ", tempPaymentLists);
+            console.log("teacher: ", this.state.teacherProfile.full_name);
 
 
 
@@ -154,7 +192,7 @@ export default class CourseRegister extends React.Component {
                 style: 'mapbox://styles/mapbox/streets-v11'
             });
             let marker = new mapboxgl.Marker().setLngLat([this.state.longitude, this.state.latitude]).addTo(map);
-            console.log("eventtttt: ", this.state.events[0].start);
+            // console.log("eventtttt: ", this.state.events[0].start);
         },3000)
 
     }
@@ -179,56 +217,65 @@ export default class CourseRegister extends React.Component {
         if(this.state.events[0]) {
             console.log("render: ", this.state.events[0].start);
         }
+        let startDay = "";
+        if(this.state.sectionObject.start_date) {
+            let temp = moment(this.state.sectionObject.start_date, "YYYY-M-D").format("jYYYY/jM/jD");
+            let tempDate =  moment(temp, "jYYYY/jM/jD").jDate();
+            let tempMonth = moment(temp, "jYYYY/jM/jD").jMonth();
+            startDay = tempDate + "  " + this.persianMonths[tempMonth + 1];
+        }
+
+        console.log("here: ", this.state.courseContentTextObjects[4]);
 
         return (
             <StyledCourseRegister>
                 <div className={"right-fixed-container"}>
-                    <div className={"active-sidebar"}>
-                        <nav className={"nav-sections"}>
-                            <ul className={"menu"}>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-title"}>
-                                        circle
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-intro-summery"}>
-                                        معرفی دوره
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-general-content"}>
-                                        circle
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-instructor"}>
-                                        circle
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-comments"}>
-                                        circle
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#schedule"}>
-                                        تاریخ
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#course-location"}>
-                                        آدرس
-                                    </a>
-                                </li>
-                                <li className={"menu-item"}>
-                                    <a className={"menu-item-link"} href={"#registration"}>
-                                        ثبت‌نام
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                    {/*<div className={"active-sidebar"}>*/}
+                    {/*    <nav className={"nav-sections"}>*/}
+                    {/*        <ul className={"menu"}>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-title"}>*/}
+                    {/*                    circle*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-intro-summery"}>*/}
+                    {/*                    معرفی دوره*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-general-content"}>*/}
+                    {/*                    circle*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-instructor"}>*/}
+                    {/*                    circle*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-comments"}>*/}
+                    {/*                    circle*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#schedule"}>*/}
+                    {/*                    تاریخ*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#course-location"}>*/}
+                    {/*                    آدرس*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*            <li className={"menu-item"}>*/}
+                    {/*                <a className={"menu-item-link"} href={"#registration"}>*/}
+                    {/*                    ثبت‌نام*/}
+                    {/*                </a>*/}
+                    {/*            </li>*/}
+                    {/*        </ul>*/}
+                    {/*    </nav>*/}
+                    {/*</div>*/}
                 </div>
                 <div className={"left-fixed-container"}>
                     <div className={"home-menu-link"}>
@@ -264,20 +311,49 @@ export default class CourseRegister extends React.Component {
                             {/*            allowFullScreen>*/}
                             {/*    </iframe>*/}
                             {/*</div>*/}
-                            <div>
-                                <img src={bbb} alt={"bbb"}/>
+                            <div style={{display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                color: "white",
+                                fontSize: "16px",
+                                width: "80%",
+                                marginLeft: "10%"
+                            }}>
+                                {this.state.courseContentTextObjects[1] && this.state.courseContentTextObjects[1].body}
+                                {/*<img src={bbb} alt={"bbb"}/>*/}
                             </div>
-                            <div>
-                                <img src={bbb} alt={"bbb"}/>
+                            <div style={{display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                color: "white",
+                                fontSize: "16px",
+                                width: "80%",
+                                marginLeft: "10%"
+                            }}>
+                                {this.state.courseContentTextObjects[2] && this.state.courseContentTextObjects[2].body}
+                                {/*<img src={bbb} alt={"bbb"}/>*/}
                             </div>
-                            <div>
-                                <img src={bbb} alt={"bbb"}/>
+                            <div style={{display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                color: "white",
+                                fontSize: "16px",
+                                width: "80%",
+                                marginLeft: "10%"
+                            }}>
+                                {this.state.courseContentTextObjects[3] && this.state.courseContentTextObjects[3].body}
+                                {/*<img src={bbb} alt={"bbb"}/>*/}
                             </div>
-                            <div>
-                                <img src={bbb} alt={"bbb"}/>
-                            </div>
-                            <div>
-                                <img src={bbb} alt={"bbb"}/>
+                            <div style={{display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                color: "white",
+                                fontSize: "16px",
+                                width: "80%",
+                                marginLeft: "10%"
+                            }}>
+                                {this.state.courseContentTextObjects[4] && this.state.courseContentTextObjects[4].body}
+                                {/*<img src={bbb} alt={"bbb"}/>*/}
                             </div>
                         </AwesomeSlider>
                     </div>
@@ -293,10 +369,14 @@ export default class CourseRegister extends React.Component {
                                 <span>روش های درمانی</span>
                             </div>
                             <div className={"ci-right"}>
-                                <img src={instructor} alt={"instructor"}/>
+                                <StyledTeacherImage avatar={this.state.teacherProfile.image}/>
                                 <div>
-                                    <h2>آرش لطفی</h2>
-                                    <h3>فوق لیسانس روانشناسی بالینی</h3>
+                                    <h2>
+                                        {
+                                            this.state.teacherProfile && this.state.teacherProfile.full_name
+                                        }
+                                    </h2>
+                                    <h3>{""}</h3>
                                 </div>
                             </div>
                         </div>
@@ -310,19 +390,19 @@ export default class CourseRegister extends React.Component {
                             {/*    </iframe>*/}
                             {/*</div>*/}
                             <div>
-                                <img src={bbb} alt={"bbb"}/>
+                                <img src={logo} alt={"bbb"} style={{border: "1px solid gray", borderRadius: "20px"}}/>
                             </div>
                             <div>
-                                <img src={bbb} alt={"bbb"}/>
+                                <img src={logo} alt={"bbb"} style={{border: "1px solid gray", borderRadius: "20px"}}/>
                             </div>
                             <div>
-                                <img src={bbb} alt={"bbb"}/>
+                                <img src={logo} alt={"bbb"} style={{border: "1px solid gray", borderRadius: "20px"}}/>
                             </div>
                             <div>
-                                <img src={bbb} alt={"bbb"}/>
+                                <img src={logo} alt={"bbb"} style={{border: "1px solid gray", borderRadius: "20px"}}/>
                             </div>
                             <div>
-                                <img src={bbb} alt={"bbb"}/>
+                                <img src={logo} alt={"bbb"} style={{border: "1px solid gray", borderRadius: "20px"}}/>
                             </div>
                         </AwesomeSlider>
                     </div>
@@ -331,13 +411,13 @@ export default class CourseRegister extends React.Component {
                     <div className={"schedule-header"}>
                         <span style={{color: "#aaaaaa"}}>شروع دوره</span>
                         <span style={{direction: "rtl"}}>
-                            {this.state.sectionObject && this.state.sectionObject.start_date}
+                            {this.state.sectionObject && startDay}
                         </span>
                     </div>
                     <div className={"schedule-hour"}>
                         <span style={{fontSize: "4rem"}}>ساعت برگزاری</span>
-                        {<span style={{color: "#C7BADC", fontSize: "5rem"}}>پنجشنبه ۱۵:۳۰ - ۱۹:۳۰</span>}
-                        {<span style={{color: "#C7BADC", fontSize: "5rem"}}>پنجشنبه ۱۵:۳۰ - ۱۹:۳۰</span>}
+                        {/*{<span style={{color: "#C7BADC", fontSize: "5rem"}}>پنجشنبه ۱۵:۳۰ - ۱۹:۳۰</span>}*/}
+                        {/*{<span style={{color: "#C7BADC", fontSize: "5rem"}}>پنجشنبه ۱۵:۳۰ - ۱۹:۳۰</span>}*/}
                         <div>
                             <span>حداقل ۱۵ دقیقه زودتر در محل حاضر شوید</span>
                             <span>امکان حضور بعد از ساعت اعلام شده نیست</span>
