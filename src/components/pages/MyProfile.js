@@ -294,7 +294,6 @@ export default class MyProfile extends React.Component {
             [name]: value
         }))
     }
-
     handleOnChangeCurrentJob = (event) => {
         console.log('event==', event);
         const selectedCurrentJob = event.target.value;

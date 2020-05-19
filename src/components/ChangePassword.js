@@ -13,6 +13,8 @@ export default class ChangePassword extends React.Component {
     }
 
     componentDidMount() {
+        const token = axiosInstance.getAuthKey();
+        axiosInstance.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
         axiosInstance.axios.post('/user/get_user/')
             .then(userResponse => {
                 console.log(userResponse.data);

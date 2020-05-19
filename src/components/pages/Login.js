@@ -21,7 +21,7 @@ export default class Login extends React.Component {
             const response = await axiosInstance.axios.post('/auth/login/', userPass,{headers:{Authorization:null}});
             console.log(response.data);
             if (response.data.key) {
-                localStorage.setItem('token', response.data.key);
+
                 axiosInstance.setAuthKey(response.data.key);
 
             }

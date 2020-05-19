@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import Toastify from "./toastify";
 import axiosInstance from "../connetion/axios";
@@ -50,7 +51,7 @@ export default class SignUpForm extends React.Component {
             country_code: this.state.country_code
         }
         if (this.state.phone_number.length === 10) {
-
+            axiosInstance.axios.defaults.headers.common['Authorization'] = null;
             axiosInstance.axios.post('/information/phone_number_validation/', sendPhoneNumber)
                 .then((response) => {
                     this.toast.info("کد اعتبار سنجی به شماره شما ارسال گردید.");

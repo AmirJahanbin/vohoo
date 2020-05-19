@@ -223,7 +223,7 @@ export default class Menu extends React.Component {
                             {this.state.lastEvents.map((lastEvent, index) => (
                                 <div className={"last-event"} key={index}>
                                     <input type={"image"} src={closeIcon} className={"last-event-close-icon"} alt={"closeIcon"}/>
-                                    <Link to={""} className={"last-event-text"}>
+                                    <Link to={"/menu"} className={"last-event-text"}>
                                         {lastEvent}
                                     </Link>
                                 </div>

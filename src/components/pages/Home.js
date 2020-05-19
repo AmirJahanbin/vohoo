@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import axiosInstance from '../../connetion/axios';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
@@ -36,26 +37,38 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            courseList: ['']
+            courseTitles: ['']
         }
-    }
-    componentDidMount() {
-        console.log(typeof this.state.courseList);
-        axios.get("http://5.253.25.176:8000/api/tree/course")
-            .then((response) => {
-                console.log(response);
-                const courseList = response.data.results;
-                const titleList = [];
-                courseList.map((course, index) => {
-                    console.log("index now is equal to: " + index);
-                    titleList[index] = course.name;
-                });
-                this.setState(() => ({courseList: titleList}));
-            })
-            .catch((error) => console.log(error)
-            )
+        this.sectionCourseNameList = [];
     }
 
+    async componentDidMount() {
+        axiosInstance.axios.get("http://5.253.25.176:8000/api/tree/section/")
+            .then(async (response) => {
+                const sectionList = response.data.results;
+                const titleList = [];
+                for (let i = 0 ; i < sectionList.length ; i++) {
+                    let courseUrl = sectionList[i].course;
+                    const courseResponse = await axiosInstance.axios.get(courseUrl);
+                    titleList.push(courseResponse.data.name);
+                    let temp = {};
+                    temp.section = sectionList[i].url;
+                    temp.courseName = courseResponse.data.name;
+                    this.sectionCourseNameList.push(temp);
+                }
+                this.setState(() => ({courseTitles: titleList}));
+            })
+            .catch((error) => {
+                console.log("this is what happened: " , error);
+                }
+            )
+    }
+    handleNavigateToCourseRegister = (event) => {
+        console.log(event.target.value);
+        const currentSection = event.target.value;
+        localStorage.setItem("currentSection", currentSection);
+        this.props.history.push("/course-register");
+    }
     render() {
         return (
             <StyledHomePage className={"home-page-container"}>
@@ -66,10 +79,11 @@ export default class Home extends React.Component {
                 <span>
                     :لیست دوره ها
                 </span>
-                {this.state.courseList.map((course, index) => (
-                    <Link to={"/course-register"} value={"/menu"} key={index}>
-                        {course}
-                    </Link>
+                {this.sectionCourseNameList.map((section, index) => (
+                    <button onClick={this.handleNavigateToCourseRegister} value={section.section} key={index}>
+                        {section.courseName}
+                    </button>
+
                 ))}
             </StyledHomePage>
         );

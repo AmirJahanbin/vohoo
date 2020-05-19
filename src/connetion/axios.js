@@ -5,12 +5,12 @@ class Axios {
         console.log('creating axios instance');
 
         this.axios = axios.create({
-            baseURL: 'http://5.253.25.176:8001/api',
+            baseURL: 'http://5.253.25.176:8000/api',
             // timeout: 10000
         });
 
-        const existingToken = localStorage.getItem('token')
-        if (existingToken) this.axios.defaults.headers.common['Authorization'] = `Token ${existingToken}`;
+        // const existingToken = localStorage.getItem('token')
+        // if (existingToken) this.axios.defaults.headers.common['Authorization'] = `Token ${existingToken}`;
 
         this.axios.interceptors.request.use(function (config) {
 
@@ -38,7 +38,11 @@ class Axios {
     }
 
     setAuthKey = (token) => {
+        localStorage.setItem('token', token);
         this.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+    }
+    getAuthKey = () => {
+        return localStorage.getItem('token');
     }
 }
 

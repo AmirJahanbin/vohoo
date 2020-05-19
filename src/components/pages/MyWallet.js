@@ -7,7 +7,9 @@ import MenuLink from "../MenuLink";
 import StyledMyWallet from "../../styled-components/StyledMyWallet";
 import closeIcon from "../../assets/images/close icon.png";
 import closeIconHover from "../../assets/images/close white icon.png";
-
+import axiosInstance from "../../connetion/axios";
+import Toastify from "../toastify";
+Modal.setAppElement('#root')
 const StyledModal = styled(Modal)`
 width: 500px;
 height: 300px;
@@ -107,17 +109,46 @@ export default class MyWallet extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: null
+            showModal: false,
+            addCreditAmount: null,
+            tracking_code: "",
+            transaction_id: ""
         }
+        this.toast = new Toastify().toast;
     }
 
     handlePaymentGateway = (event) => {
-        this.setState(() => ({showModal: true}))
+        const token = axiosInstance.getAuthKey();
+        console.log("token::::", token);
+        axiosInstance.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+        let amount = this.state.addCreditAmount;
+        axiosInstance.axios.post('/payment/charge/', {amount})
+            .then(response => {
+                this.setState(() => ({
+                    tracking_code: response.data.tracking_code,
+                    transaction_id: response.data.transaction_id
+                }))
+                this.toast.success("اکنون به درگاه بانکی وارد می‌شوید")
+                setTimeout(() => {
+                    window.open(`http://panel.aqayepardakht.ir/api/create/${this.state.transaction_id}/`);
+                },3000)
+            })
+            .catch((error) => {
+                this.toast.error("لطفا ابتدا وارد سایت شوید");
+                this.props.history.push("/login");
+            })
+        this.handleCloseModal();
+    }
+    handleOpenModal = () => {
+        this.setState(() => ({showModal: true}));
     }
     handleCloseModal = () => {
         this.setState({showModal: false})
     }
-
+    handleOnChange = (event) => {
+        let value = event.target.value;
+        this.setState(() => ({addCreditAmount: value}));
+    }
     render() {
         return (
             <div className={"main-container"} style={{backgroundColor: "#D9D9D9"}}>
@@ -135,7 +166,7 @@ export default class MyWallet extends React.Component {
                             </div>
                         </div>
                         <div className={"add-credit-container"}>
-                            <button type={"button"} onClick={this.handlePaymentGateway}>افزایش اعتبار کیف پول من
+                            <button type={"button"} onClick={this.handleOpenModal}>افزایش اعتبار کیف پول من
                             </button>
                         </div>
                         <div className={"transaction-history-container"}>
