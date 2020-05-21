@@ -43,6 +43,7 @@ export default class Home extends React.Component {
     }
 
     async componentDidMount() {
+        axiosInstance.axios.defaults.headers.common['Authorization'] = null;
         axiosInstance.axios.get("http://5.253.25.176:8000/api/tree/section/")
             .then(async (response) => {
                 const sectionList = response.data.results;
