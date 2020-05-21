@@ -54,7 +54,7 @@ export default class SignUpForm extends React.Component {
             axiosInstance.axios.defaults.headers.common['Authorization'] = null;
             axiosInstance.axios.post('/information/phone_number_validation/', sendPhoneNumber)
                 .then((response) => {
-                    this.toast.info("کد اعتبار سنجی به شماره شما ارسال گردید.");
+                    this.toast.info("کد اعتبار سنجی به شماره شما ارسال گردید");
                     this.setState(() => ({verification_id: response.data.id}));
                     console.log("this is code: ", response.data.id);
                 })
@@ -113,7 +113,7 @@ export default class SignUpForm extends React.Component {
                                         })
                                 })
                                 .catch((e) => {
-                                    this.toast.error("این نام کاربری قبلا در سامانه ثبت شده‌است.");
+                                    this.toast.error("این نام کاربری قبلا در سامانه ثبت شده‌است");
                                 })
                         }
                     })

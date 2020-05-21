@@ -17,7 +17,7 @@ export default class ChangePassword extends React.Component {
         axiosInstance.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
         axiosInstance.axios.post('/user/get_user/')
             .then(userResponse => {
-                console.log(userResponse.data);
+                // console.log(userResponse.data);
                 this.setState(() => ({username: userResponse.data.username}))
                 this.props.getUserId(userResponse.data.id);
             })

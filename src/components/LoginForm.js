@@ -70,7 +70,7 @@ export default class LoginForm extends React.Component {
                         <div className={"form-group"} style={{width: "300px", margin: "35px"}}>
                             <input
                                 name={"password"}
-                                type={"text"}
+                                type={"password"}
                                 id={"password"}
                                 className={"form-field"}
                                 onChange={this.handleOnChange}

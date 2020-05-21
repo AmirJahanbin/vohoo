@@ -141,13 +141,15 @@ const StyledMyProfile = styled.div`
   }
   .case-history {
     background-color: #D9D9D9;
-    padding: 40px 80px;
+    padding: 20px 80px;
+    margin-bottom: 100px;
     color: #606060;
-    div {
+    > div {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: space-between;
       align-items: center;
-      height: 100px;
+      margin: 30px 0;
+      //height: 100px;
     }
     & .checkmark {
       border-color: #AAAAAA;

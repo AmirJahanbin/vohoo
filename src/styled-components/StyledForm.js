@@ -72,7 +72,7 @@ const StyledForm = styled.form`
   border: 0;
   border-bottom: 1px solid #D9D9D9;
   outline: 0;
-  font-size: 33px;
+  font-size: 30px;
   color: white;
   padding: 5px 0 0 0;
   background: transparent;
@@ -120,6 +120,7 @@ const StyledForm = styled.form`
   cursor: pointer;
   
   & option {
+    font-family: IRANSans, sans-serif;
     font-size: 20px;
     color: black;
     background-color: #D9D9D9;   

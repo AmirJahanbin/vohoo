@@ -25,27 +25,30 @@ export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user_profile: {},
             user_id: "",
             first_name: "",
             last_name: "",
+            image: null,
+            national_card_image: null,
             date_of_birth: momentJalaali(),
             birth_order: "",
             gender: "",
             marital_status: "",
             number_of_children: "",
-            current_jobs: {},
+            current_jobs: [],
             current_jobs_explanation: "",//temporary not an array
-            previous_jobs: {},
+            previous_jobs: [],
             previous_jobs_explanation: "",//temporary not an array
-            degrees: {},
+            degrees: [],
             degrees_explanation: "",//temporary not an array
-            birth_province: "",
+            birth_province: {},
             birth_city: {},
             current_province: {},
             current_city: {},
             current_address: "",
             landline_number: "",
-            phone_numbers: {},
+            phone_numbers: [],
             introducing_first_name: "",
             introducing_last_name: "",
             introducing_phone_number: "",
@@ -53,22 +56,20 @@ export default class MyProfile extends React.Component {
             films: [],
             books: [],
             interests_explanation: "",
-            social_media: [],
-            disease_history: null,
+            social_medias: [],
+            disease_history: "",
             disease_history_explanation: "",//temporary not an array
-            drug_history: null,
-            criminal_history: null,
-            criminal_history_explanation: "",//temporary not an array
+            drug_history: "",
+            criminal_history: "",
+            criminal_history_explanation: "",//temporary not an array,
 
 
             haveChildren: true,
             vCodeField: false,
             favoriteFilms: [""],
             favoriteBooks: [""],
-            imageProfile: null
         };
         //assets
-
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
         this.degrees = [];
@@ -81,25 +82,6 @@ export default class MyProfile extends React.Component {
         this.birthOrdersForJson = ["first", "middle", "last"];
         this.provinces = [];
         this.cities = [];
-        this.interests = ['بازی‌های تخته ای'
-            , 'پیک نیک'
-            , 'شب نشینی'
-            , 'بازی‌های رایانه‌ای'
-            , 'سفر'
-            , 'مهمانی رفتن'
-            , 'بازی‌ های متفرقه'
-            , 'اردو چند روز'
-            , 'رفتن به رستوران'
-            , 'بازی‌های کارتی'
-            , 'ورزش کردن'
-            , 'خرید کردن'
-            , 'رفتن به سینما یا تئاتر'
-            , 'کوه نوردی'
-            , 'دوچرخه سواری'
-            , 'فیلم دیدن'
-            , 'کتاب خواندن'];
-
-
     }
 
     componentDidMount() {
@@ -138,10 +120,12 @@ export default class MyProfile extends React.Component {
                 this.degrees = degrees.data.results;
             })
 
-        //get list of all interests
+        //get list of all entertainments
         axiosInstance.axios.get('/information/entertainment/')
-            .then((interests) => {
-                this.interests = interests.data.results;
+            .then((entertainments) => {
+                this.setState(() => ({
+                    entertainments: entertainments.data.results.map(e => ({...e, checked: false}))
+                }));
             })
 
 
@@ -151,94 +135,141 @@ export default class MyProfile extends React.Component {
         axiosInstance.axios.get(`/information/profile/${userId}/`)
             .then(async profileResponse => {
                 const usrPro = profileResponse.data;
+                this.setState(() => ({user_profile: usrPro}));
+                //get list of jobs, degrees, cities, provinces, socials, phones,  entertainments, films and books
+                let tempCurrent_jobs = [];
+                let tempPrevious_jobs = [];
+                let tempDegrees = [];
+                let tempBirth_city = {};
+                let tempBirth_province = {};
+                let tempCurrent_city = {};
+                let tempCurrent_province = {};
+                let tempSocial_medias = [];
+                let tempPhone_numbers = [];
+                // let tempEntertainments = [];
+                let tempBooks = [];
+                let tempFilms = [];
+                // let bbb = [];
+                // let j = 0;
 
-                //get list of jobs, degrees, city, socials, entertainments, films and books
-                let current_jobs = (await axiosInstance.axios.get(usrPro.current_jobs[0])).data;
-                let previous_jobs = (await axiosInstance.axios.get(usrPro.previous_jobs[0])).data;
-                let degrees = (await axiosInstance.axios.get(usrPro.degrees[0])).data;
-                let birth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
-                let current_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
-                let phone_numbers =(await axiosInstance.axios.get(usrPro.phone_numbers[0])).data;
-                let entertainments = [];
-                //this request may be wrong!
-                // usrPro.current_jobs.map(async cr => {
-                //     const jobResponse = await axiosInstance.axios.get(cr);
-                //     job_names.push(jobResponse.data.name);
-                // })
+                tempBirth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
+                tempBirth_province = (await axiosInstance.axios.get(tempBirth_city.state)).data;
+                tempCurrent_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
+                tempCurrent_province = (await axiosInstance.axios.get(tempCurrent_city.state)).data;
 
-                // for (let i = 0; i < usrPro.current_jobs.length; i++) {
-                //     const cr = usrPro.current_jobs[i];
-                //     const jobResponse = await axiosInstance.axios.get(cr);
-                //     current_jobs.push(jobResponse.data);
-                // }
-                // for (let i = 0; i < usrPro.previous_jobs.length; i++) {
-                //     const prev = usrPro.previous_jobs[i];
-                //     const jobResponse = await axiosInstance.axios.get(prev);
-                //     previous_job_names.push(jobResponse.data.name);
-                // }
-                // for (let i = 0; i < usrPro.degrees.length; i++) {
-                //     const deg = usrPro.degrees[i];
-                //     const degreeResponse = await axiosInstance.axios.get(deg);
-                //     degree_names.push(degreeResponse.data.title);
-                // }
+                Promise.all(usrPro.current_jobs.map(current_job => axiosInstance.axios.get(current_job)))
+                    .then((jobResponse) => {
+                        tempCurrent_jobs = jobResponse.map(j => j.data);
 
-                // let birthCityResponse = await axiosInstance.axios.get(usrPro.birth_city);
-                // birth_city_name = birthCityResponse.data.name;
-                // console.log("this is birth city: ", birth_city_name);
+                        this.setState(() => ({
+                            current_jobs: tempCurrent_jobs
+                        }))
+                        // console.log("current jobs called: ", tempCurrent_jobs);
+                    })
+                Promise.all(usrPro.previous_jobs.map(previous_job => axiosInstance.axios.get(previous_job)))
+                    .then((jobResponse) => {
+                        tempPrevious_jobs = jobResponse.map(j => j.data);
+                        this.setState(() => ({
+                            previous_jobs: tempPrevious_jobs
+                        }))
+                        // console.log("previous jobs called: ", tempPrevious_jobs);
+                    })
+                Promise.all(usrPro.degrees.map(degree => axiosInstance.axios.get(degree)))
+                    .then((degreeResponse) => {
+                        tempDegrees = degreeResponse.map(d => d.data);
+                        this.setState(() => ({
+                            degrees: tempDegrees
+                        }))
+                        // console.log("degrees called: ", tempDegrees);
+                    })
+                Promise.all(usrPro.phone_numbers.map(phone_number => axiosInstance.axios.get(phone_number)))
+                    .then((phoneResponse) => {
 
-                // let currentCityResponse = await axiosInstance.axios.get(usrPro.current_city);
-                // current_city_name = currentCityResponse.data.name;
-                // console.log("this is current city: ", current_city_name);
+                        tempPhone_numbers = phoneResponse.map(p => p.data);
+                        this.setState(() => ({
+                            phone_numbers: tempPhone_numbers
+                        }))
+                        // console.log("phone numbers called: ", tempPhone_numbers);
+                    })
 
-                // for (let i = 0; i < usrPro.phone_numbers.length; i++) {
-                //     const phoneUrl = usrPro.phone_numbers[i];
-                //     const phoneResponse = await axiosInstance.axios.get(phoneUrl);
-                //     phone_number_values.push(phoneResponse.data.phone_number);
-                // }
-
-                for (let i = 0; i < usrPro.entertainments.length; i++) {
-                    const entttUrl = usrPro.entertainments[i];
-                    const entertainmentResponse = await axiosInstance.axios.get(entttUrl);
-                    entertainments.push(entertainmentResponse.data);
+                for (const uEUrl of usrPro.entertainments) {
+                    this.state.entertainments.find(e => e.url === uEUrl).checked = true;
                 }
+                this.setState(() => ({entertainments: this.state.entertainments}));
 
+                // Promise.all(usrPro.entertainments.map(entertainment => axiosInstance.axios.get(entertainment)))
+                //     .then((entertainmentResponse) => {
+                //         tempEntertainments = entertainmentResponse.map(e => e.data);
+                //         for (let i = 0; i < this.interests.length; i++) {
+                //             if (this.interestsIds.includes(tempEntertainments[0].id)) {
+                //                 bbb[i] = tempEntertainments[j];
+                //                 j++;
+                //                 console.log("j", j)
+                //             } else {
+                //                 bbb[i] = "";
+                //             }
+                //         }
+                //         console.log("this.interests[i]: ", this.interestsIds);
+                //         console.log("tempEntertainments: ", tempEntertainments);
+                //         console.log("bbb: ", bbb);
+                //         this.setState(() => ({
+                //             entertainments: bbb
+                //         }))
+                //         console.log("entertainments called");
+                //     })
+                // Promise.all(usrPro.books.map(book => axiosInstance.axios.get(book)))
+                Promise.all(usrPro.books.map(book => axiosInstance.axios.get(book)))
+                    .then((bookResponse) => {
+                        tempBooks = bookResponse.map(b => b.data);
+                        this.setState(() => ({
+                            books: tempBooks
+                        }))
+                        // console.log("books called");
+                    })
+                Promise.all(usrPro.films.map(film => axiosInstance.axios.get(film)))
+                    .then((filmResponse) => {
+                        tempFilms = filmResponse.map(f => f.data);
+                        this.setState(() => ({
+                            films: tempFilms
+                        }))
+                        // console.log("films called");
+                    })
+                Promise.all(usrPro.social_medias.map(social_media => axiosInstance.axios.get(social_media)))
+                    .then((social_mediaResponse) => {
+                        tempSocial_medias = social_mediaResponse.map(s => s.data);
+                        this.setState(() => ({
+                            social_medias: tempSocial_medias
+                        }))
+                        // console.log("socials called");
+                    })
 
-                console.log("this is disesssss", usrPro.disease_history);
-                console.log("this is drug", usrPro.drug_history);
-                console.log("this is criminals: ", usrPro.criminal_history);
-
-                // console.log("here boy this is usrPro: ");
-                // console.log(profileResponse.data.first_name);
-                // console.log(profileResponse.data.last_name);
-
-                this.setState((prevState) => ({
+                this.setState(() => ({
                     user_id: userId,
                     first_name: usrPro.first_name,
                     last_name: usrPro.last_name,
                     reference: usrPro.reference,
                     referenced_profiles: usrPro.referenced_profiles,
                     date_of_birth: (usrPro.date_of_birth !== null) ?
-                        momentJalaali(usrPro.date_of_birth, "jYYYY/jM/jD") :
+                        momentJalaali(usrPro.date_of_birth, "YYYY/M/D") :
                         momentJalaali(),
                     birth_order: usrPro.birth_order,
                     gender: usrPro.gender,
                     marital_status: usrPro.marital_status,
                     haveChildren: usrPro.marital_status !== "single",
-                    number_of_children: usrPro.number_of_children,
-                    current_jobs: current_jobs, //array
+                    number_of_children: usrPro.number_of_children ? usrPro.number_of_children : "",
+
                     current_jobs_explanation: usrPro.current_jobs_explanation,//array
-                    previous_jobs: previous_jobs,//array
+
                     previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
-                    degrees: degrees,//array
+
                     degrees_explanation: usrPro.degrees_explanation,//array
-                    birth_city: birth_city,
-                    current_city: current_city,
+                    birth_province: tempBirth_province,
+                    birth_city: tempBirth_city,
+                    current_province: tempCurrent_province,
+                    current_city: tempCurrent_city,
                     current_address: usrPro.current_address,
-                    phone_numbers: phone_numbers,//array
                     social_medias: usrPro.social_medias,//array
-                    entertainments: entertainments,//array
-                    films: usrPro.films,//array
-                    books: usrPro.books,//array
+
                     interests_explanation: usrPro.interests_explanation,
                     disease_history: usrPro.disease_history && usrPro.disease_history,
                     disease_history_explanation: usrPro.disease_history_explanation,
@@ -248,10 +279,7 @@ export default class MyProfile extends React.Component {
             })
 
         setTimeout(() => {
-            console.log("this is entertainments === : ");
-            console.log(this.state.entertainments);
         }, 3000);
-
     }
 
     handleNextInput = (event) => {
@@ -264,9 +292,19 @@ export default class MyProfile extends React.Component {
     };
     handleSubmit = (e) => {
         e.preventDefault();
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_jobs: [this.state.current_jobs.url]});
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {previous_jobs: [this.state.previous_jobs.url]});
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {degrees: [this.state.degrees.url]});
+        console.log("handle submit called");
+        // console.log("this.state.current_jobs.url: ",this.state.current_jobs[0].url);
+        const updatedProfile = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString()
+        }
+
+
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile);
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_jobs: [this.state.current_jobs[0].url]})
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {previous_jobs: [this.state.previous_jobs[0].url]});
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {degrees: [this.state.degrees[0].url]});
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
@@ -329,10 +367,19 @@ export default class MyProfile extends React.Component {
         const selectedCity = event.target.value;
         this.setState(() => ({current_province: this.cities.find(c => c.name === selectedCity)}));
     }
+    handleOnChangePhoneNumber = (event) => {
+
+    }
     handleOnChangeEntertainments = (event) => {
-        console.log('event==', event.target.value.name);
-        const selectedEntertainment = event.target.checked;
-        this.setState(() => ({entertainments: this.interests.find(i => i.name === selectedEntertainment)}));
+        console.log("event name: ", event.target.name);
+        console.log('event checked: ', event.target.checked);
+        const selectedEntertainment = event.target.name;
+        this.state.entertainments.find(e => e.id.toString() === selectedEntertainment).checked = event.target.checked;
+        this.setState(() => ({
+            entertainments: this.state.entertainments
+        }));
+    }
+    handleOnChangeSocialMedia = (event) => {
     }
     handleMaritalStatus = (event) => {
         console.log("handleMaritalStatus called");
@@ -355,9 +402,27 @@ export default class MyProfile extends React.Component {
     handleAddOption = () => {
 
     };
-    handleImageFile = (event) => {
-        this.setState({imageProfile: URL.createObjectURL(event.target.files[0])});
-        console.log("you should handle this file!!!");
+    handleImage = (event) => {
+        const formData = new FormData();
+        formData.append("image", event.target.files[0]);
+        const config = {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        }
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, formData, config);
+        this.setState({image: event.target.files[0]});
+    }
+    handleNationalCardImage = (event) => {
+        const formData = new FormData();
+        formData.append("national_card_image", event.target.files[0]);
+        const config = {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        }
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, formData, config);
+        this.setState({national_card_image: event.target.files[0]});
     }
 
     render() {
@@ -401,12 +466,12 @@ export default class MyProfile extends React.Component {
                         {/*</div>*/}
                     </div>
                 </div>
-                <div className={"middle-container"}>
+                <div className={"middle-container"} style={{display: "unset"}}>
                     <StyledMyProfile>
-                        <StyledForm onSubmit={this.handleSubmit}>
+                        <StyledForm onSubmit={this.handleSubmit} id={"big-form"}>
                             <div className={"personal-info"}>
                                 <div className={"pro-form-group"}>
-                                    <UploadFile handleImageFile={this.handleImageFile} id={"image-profile-label"}/>
+                                    <UploadFile handleFile={this.handleImage} id={"image-profile-label"}/>
                                 </div>
                                 <ChangePassword getUserId={this.setProfileInfo}/>
                                 <hr className={"pro-hr"}/>
@@ -421,7 +486,7 @@ export default class MyProfile extends React.Component {
                                                 placeholder={"نام"}
                                                 onChange={this.handleOnChange}
                                                 onKeyDown={this.handleNextInput}
-                                                // required={true}
+                                                required={true}
                                                 value={this.state.first_name}
                                             />
                                             <label htmlFor={"first_name"} className={"form-label-text"}>
@@ -437,7 +502,7 @@ export default class MyProfile extends React.Component {
                                                 placeholder={"نام خانوادگی"}
                                                 onChange={this.handleOnChange}
                                                 onKeyDown={this.handleNextInput}
-                                                // required={true}
+                                                required={true}
                                                 value={this.state.last_name}
                                             />
                                             <label htmlFor={"last_name"} className={"form-label-text"}>
@@ -508,17 +573,18 @@ export default class MyProfile extends React.Component {
                                         </span>
                                     </div>
                                     <label className={"national-card-field"} style={{}}>
-                                        <UploadFile handleImageFile={this.handleImageFile} id={"national-card-label"}/>
+                                        <UploadFile handleFile={this.handleNationalCardImage} id={"national-card-label"}/>
                                         <img src={uploadIcon} alt={"uploadIcon"} style={{margin: "0 5px"}}/>
                                     </label>
                                 </div>
                                 <div className={"pro-form-group"} style={{width: "300px"}}>
                                     <DatePicker
                                         id={"date_of_birth"}
+                                        name={"date_of_birth"}
                                         timePicker={false}
                                         isGregorian={false}
+                                        placeholder={"تاریخ تولد"}
                                         onChange={date_of_birth => this.setState({date_of_birth})}
-
                                         value={this.state.date_of_birth}
                                         className={"form-field-text"}
                                         onKeyDown={this.handleNextInput}
@@ -562,6 +628,7 @@ export default class MyProfile extends React.Component {
                                             name={"gender"}
                                             className={"form-field-radio"}
                                             id={"gender_male"}
+                                            required={true}
                                             onChange={this.handleOnChange}
                                             onKeyDown={this.handleNextInput}
                                             value={"male"}
@@ -593,6 +660,7 @@ export default class MyProfile extends React.Component {
                                             name={"marital_status"}
                                             className={"form-field-radio"}
                                             id={"married"}
+                                            required={true}
                                             value={"married"}
                                             onChange={this.handleMaritalStatus}
                                             checked={this.state.marital_status === "married"}
@@ -657,11 +725,14 @@ export default class MyProfile extends React.Component {
                                             id={"current_jobs"}
                                             name={"current_jobs"}
                                             className={"select-form-field "}
+                                            required={true}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChangeCurrentJob}
-                                            value={this.state.current_jobs.name}//must be this.state.current_jobs[i].name for later
+                                            value={this.state.current_jobs[0] &&
+                                            this.state.current_jobs[0].name}//must be this.state.current_jobs[i].name for later
                                         >
                                             <option value={""}>شغل فعلی</option>
+                                            {/*nabayad option bashe bayad masalan label bashe*/}
                                             {this.jobs.map((job, index) => (
                                                 <option
                                                     value={job.name}
@@ -696,11 +767,14 @@ export default class MyProfile extends React.Component {
                                             id={"previous_jobs"}
                                             name={"previous_jobs"}
                                             className={"select-form-field"}
+                                            required={true}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChangePreviousJob}
-                                            value={this.state.previous_jobs.name}//must be this.state.previous_jobs[i].name for later
+                                            value={this.state.previous_jobs[0] &&
+                                            this.state.previous_jobs[0].name}//must be this.state.previous_jobs[i].name for later
                                         >
                                             <option value={""}>شغل قبلی</option>
+                                            {/**/}
                                             {this.jobs.map((job, index) => (
                                                 <option value={job.name} key={index}>
                                                     {job.name}
@@ -732,9 +806,11 @@ export default class MyProfile extends React.Component {
                                             id={"degrees"}
                                             name={"degrees"}
                                             className={"select-form-field"}
+                                            required={true}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChangeDegree}
-                                            value={this.state.degrees.title}//must be this.state.degrees[i].title for later
+                                            value={this.state.degrees[0] &&
+                                            this.state.degrees[0].title}//must be this.state.degrees[i].title for later
                                         >
                                             <option value={""}>مدرک تحصیلی</option>
                                             {this.degrees.map((degree, index) => (
@@ -806,6 +882,7 @@ export default class MyProfile extends React.Component {
                                             id={"current_province"}
                                             name={"current_province"}
                                             className={"select-form-field"}
+                                            required={true}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChangeCurrentProvince}
                                             value={this.state.current_province.name}
@@ -824,6 +901,7 @@ export default class MyProfile extends React.Component {
                                             id={"current_city"}
                                             name={"current_city"}
                                             className={"select-form-field"}
+                                            required={true}
                                             onKeyDown={this.handleNextInput}
                                             onChange={this.handleOnChangeCurrentCity}
                                             value={this.state.current_city.name}
@@ -847,7 +925,7 @@ export default class MyProfile extends React.Component {
                                         onChange={this.handleOnChange}
                                         placeholder={"آدرس محل سکونت"}
                                         onKeyDown={this.handleNextInput}
-                                        // required={true}
+                                        required={true}
                                         style={{width: "660px"}}
                                         value={this.state.current_address}
                                     />
@@ -864,6 +942,8 @@ export default class MyProfile extends React.Component {
                                         placeholder={"شماره ثابت"}
                                         // required={true}
                                         onKeyDown={this.handleNextInput}
+                                        onChange={this.handleOnChangeSocialMedia}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].landline_number}
                                     />
                                     <label htmlFor={"landline_number"} className={"form-label-text"}>
                                         شماره ثابت
@@ -883,11 +963,13 @@ export default class MyProfile extends React.Component {
                                             className={"form-field-text"}
                                             placeholder={"شماره همراه"}
                                             pattern={"[0-9]{10}"}
-                                            // required={true}
+                                            title={"این فیلد قابل تغییر نیست"}
                                             disabled={true}
-                                            onChange={this.handleOnChange}
+                                            onChange={this.handleOnChangePhoneNumber}
                                             onKeyDown={this.handleNextInput}
-                                            value={this.state.phone_numbers.phone_number}//must be this.state.phone_numbers[i].phone_number for later
+                                            value={this.state.phone_numbers[0] ?
+                                            this.state.phone_numbers[0].phone_number : ""}
+                                            //must be this.state.phone_numbers[i].phone_number for later
                                         />
                                         <label htmlFor={"phone_numbers"} className={"form-label-text"}>
                                             شماره همراه
@@ -898,28 +980,28 @@ export default class MyProfile extends React.Component {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={"pro-form-group"}>
-                                        <input
-                                            name={"verification_code"}
-                                            type={"text"}
-                                            id={"verification_code"}
-                                            className={"form-field-text"}
-                                            placeholder={"کد اعتبارسنجی"}
-                                            pattern={".{5}"}
-                                            required={this.state.vCodeField}
-                                            disabled={!this.state.vCodeField}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChange}
-                                        />
-                                        <label htmlFor={"verification_code"} className={"form-label-text"}>
-                                            کد اعتبارسنجی
-                                        </label>
-                                        <div className={"input-field-caption"}>
-                                            <button type={"button"} onClick={this.handleVerificationCode}>
-                                                دریافت کد اعتبار سنجی
-                                            </button>
-                                        </div>
-                                    </div>
+                                    {/*<div className={"pro-form-group"}>*/}
+                                    {/*    <input*/}
+                                    {/*        name={"verification_code"}*/}
+                                    {/*        type={"text"}*/}
+                                    {/*        id={"verification_code"}*/}
+                                    {/*        className={"form-field-text"}*/}
+                                    {/*        placeholder={"کد اعتبارسنجی"}*/}
+                                    {/*        pattern={".{5}"}*/}
+                                    {/*        required={this.state.vCodeField}*/}
+                                    {/*        disabled={!this.state.vCodeField}*/}
+                                    {/*        onKeyDown={this.handleNextInput}*/}
+                                    {/*        onChange={this.handleOnChange}*/}
+                                    {/*    />*/}
+                                    {/*    <label htmlFor={"verification_code"} className={"form-label-text"}>*/}
+                                    {/*        کد اعتبارسنجی*/}
+                                    {/*    </label>*/}
+                                    {/*    <div className={"input-field-caption"}>*/}
+                                    {/*        <button type={"button"} onClick={this.handleVerificationCode}>*/}
+                                    {/*            دریافت کد اعتبار سنجی*/}
+                                    {/*        </button>*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
                             <div className={"entertainments"}>
@@ -927,19 +1009,20 @@ export default class MyProfile extends React.Component {
                                     تفریحات من
                                 </h3>
                                 <div id={"favorite-habits-container"}>
-                                    {this.interests.map((interest, i) =>
+                                    {this.state.entertainments &&
+                                    this.state.entertainments.map((entertainment, i) =>
                                         (
                                             <div className={"pro-form-group"} key={i}>
                                                 <label htmlFor={"entertainments" + i} className={"checkbox-label"}>
-                                                    {interest.name}
+                                                    {entertainment.name}
                                                     <input
                                                         type={"checkbox"}
                                                         className={"checkbox-input"}
                                                         id={"entertainments" + i}
-                                                        name={"entertainments" + i}
+                                                        name={entertainment.id}
                                                         // value={this.interests[i].name}
-                                                        checked={!!this.state.entertainments[i]}
-                                                        disabled={true}
+                                                        checked={this.state.entertainments[i] &&
+                                                        this.state.entertainments[i].checked}
                                                         onChange={this.handleOnChangeEntertainments}
                                                     />
                                                     <span className={"checkmark"}> </span>
@@ -957,7 +1040,6 @@ export default class MyProfile extends React.Component {
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
                                             placeholder={"فیلم یا سریال محبوب من"}
-                                            // required={true}
                                             style={{width: "400px"}}
                                         />
                                         <label htmlFor={"favorite_films"} className={"form-label-text"}>
@@ -984,7 +1066,6 @@ export default class MyProfile extends React.Component {
                                             className={"form-field-text"}
                                             onChange={this.handleOnChange}
                                             placeholder={"کتاب محبوب من"}
-                                            // required={true}
                                             style={{width: "400px"}}
                                         />
                                         <label htmlFor={"favorite_books"} className={"form-label-text"}>
@@ -1011,7 +1092,6 @@ export default class MyProfile extends React.Component {
                                         onChange={this.handleOnChange}
                                         placeholder={"توضیحات تکمیلی درمورد علایق"}
                                         onKeyDown={this.handleNextInput}
-                                        // required={true}
                                         style={{width: "600px"}}
                                         value={this.state.interests_explanation}
                                     />
@@ -1107,6 +1187,7 @@ export default class MyProfile extends React.Component {
                                                 name={"disease_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_disease_history"}
+                                                required={true}
                                                 value={this.state.disease_history}
                                                 checked={this.state.disease_history}
                                                 onChange={this.handleOnChangeCaseHistory}
@@ -1128,22 +1209,26 @@ export default class MyProfile extends React.Component {
                                             <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
-                                    {/*<div className={"pro-form-group"} style={{width: "100%", paddingRight: "44%"}}>*/}
-                                    {/*    <input*/}
-                                    {/*        type={"text"}*/}
-                                    {/*        name={"disease_history_explanation"}*/}
-                                    {/*        id={"disease_history_explanation"}*/}
-                                    {/*        className={"form-field-text"}*/}
-                                    {/*        onChange={this.handleOnChange}*/}
-                                    {/*        placeholder={"توضیح دهید"}*/}
-                                    {/*        onKeyDown={this.handleNextInput}*/}
-                                    {/*        style={{width: "50%", borderColor: "#606060"}}*/}
-                                    {/*    />*/}
-                                    {/*    <label htmlFor={"disease_history_explanation"} className={"form-label-text checkbox-label"}*/}
-                                    {/*           style={{color: "#606060"}}>*/}
-                                    {/*        توضیح دهید*/}
-                                    {/*    </label>*/}
-                                    {/*</div>*/}
+                                    {this.state.disease_history &&
+                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                        <input
+                                            type={"text"}
+                                            name={"disease_history_explanation"}
+                                            id={"disease_history_explanation"}
+                                            className={"form-field-text"}
+                                            onChange={this.handleOnChange}
+                                            placeholder={"توضیح دهید"}
+                                            onKeyDown={this.handleNextInput}
+                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                        />
+                                        <label htmlFor={"disease_history_explanation"}
+                                               className={"form-label-text"}
+                                               style={{color: "#AAAAAA"}}
+                                        >
+                                            توضیح دهید
+                                        </label>
+                                    </div>
+                                    }
                                 </div>
                                 <div className={"case-drug inline-form-groups"}>
                                     <span style={{width: "45%"}}>
@@ -1158,6 +1243,7 @@ export default class MyProfile extends React.Component {
                                                 name={"drug_history"}
                                                 className={"form-field-radio"}
                                                 id={"has_drug_history"}
+                                                required={true}
                                                 value={this.state.drug_history}
                                                 checked={this.state.drug_history}
                                                 onChange={this.handleOnChangeCaseHistory}
@@ -1179,6 +1265,26 @@ export default class MyProfile extends React.Component {
                                             <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
+                                    {this.state.drug_history &&
+                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                        <input
+                                            type={"text"}
+                                            name={"drug_history_explanation"}
+                                            id={"drug_history_explanation"}
+                                            className={"form-field-text"}
+                                            onChange={this.handleOnChange}
+                                            placeholder={"توضیح دهید"}
+                                            onKeyDown={this.handleNextInput}
+                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                        />
+                                        <label htmlFor={"drug_history_explanation"}
+                                               className={"form-label-text"}
+                                               style={{color: "#AAAAAA"}}
+                                        >
+                                            توضیح دهید
+                                        </label>
+                                    </div>
+                                    }
                                 </div>
                                 <div className={"case-criminal inline-form-groups"}>
                                     <span style={{width: "45%"}}>
@@ -1214,6 +1320,25 @@ export default class MyProfile extends React.Component {
                                             <span className={"checkmark"}> </span>
                                         </label>
                                     </div>
+                                    {this.state.criminal_history &&
+                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                        <input
+                                            type={"text"}
+                                            name={"criminal_history_explanation"}
+                                            id={"criminal_history_explanation"}
+                                            className={"form-field-text"}
+                                            onChange={this.handleOnChange}
+                                            placeholder={"توضیح دهید"}
+                                            onKeyDown={this.handleNextInput}
+                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                        />
+                                        <label htmlFor={"criminal_history_explanation"}
+                                               className={"form-label-text"}
+                                               style={{color: "#AAAAAA"}}>
+                                            توضیح دهید
+                                        </label>
+                                    </div>
+                                    }
                                 </div>
                             </div>
                         </StyledForm>
@@ -1223,7 +1348,7 @@ export default class MyProfile extends React.Component {
                     <div className={"left-fixed-container"}>
                         <HomePageLink className={"top-left-home-page-logo"}/>
                         <div className={"pro-submit-btn-container"}>
-                            <button type={"button"} className={"edit-profile-btn"} onClick={this.handleSubmit}>
+                            <button type={"submit"} className={"edit-profile-btn"} onClick={this.handleSubmit} form={"big-form"}>
                                 ثبت تغییرات
                             </button>
                         </div>

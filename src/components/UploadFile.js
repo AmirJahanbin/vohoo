@@ -57,13 +57,13 @@ export default class UploadFile extends React.Component {
         super(props);
         this.state = {
             imageProfile: avatar,
-            nationalCard: nationalCard
+            nationalCard: nationalCard,
         }
     }
     componentDidMount() {
         axiosInstance.axios.post('/user/get_user/')
             .then(userResponse => {
-                console.log(userResponse.data);
+                // console.log(userResponse.data);
                 axiosInstance.axios.get(`/information/profile/${userResponse.data.id}/`)
                     .then((usrPro) => {
                         if(usrPro.data.image !== null) {
@@ -76,7 +76,6 @@ export default class UploadFile extends React.Component {
                                 nationalCard: usrPro.data.national_card_image
                             }));
                         }
-
                     })
             })
 
@@ -86,17 +85,15 @@ export default class UploadFile extends React.Component {
         if(event.target.files[0] !== undefined){
             this.setState({nationalCard: URL.createObjectURL(event.target.files[0])});
             this.setState({imageProfile: URL.createObjectURL(event.target.files[0])});
-            console.log("this is image url: ");
-            console.log(event.target.files[0]);
-            this.props.handleImageFile(event);
+            const tempFile = event.target.files[0];
+            this.setState(() => ({imageFile: tempFile}));
+            this.props.handleFile(event);
         }
     }
     render() {
         return (
             <StyledUploadFile avatar={this.state.imageProfile} nationalCard={this.state.nationalCard}>
                 <label className={"form-label-file"} id={this.props.id}>
-                    {/*<img src={this.state.imageProfile} className={"input-file-image"}*/}
-                    {/*     id={"image-profile"}/>*/}
                     <input
                         type={"file"}
                         name={"profile_image"}
