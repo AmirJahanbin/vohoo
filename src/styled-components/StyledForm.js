@@ -134,29 +134,28 @@ const StyledForm = styled.form`
 }
 
 
-//.select-form-field:not(:empty) ~ .select-form-label {
-//  font-size: 36px;
-//  cursor: text;
-//  top: 15px;
-//  color: #D9D9D9;
-//}
-//.select-form-label {
-//  position: absolute;
-//  top: -5px;
-//  display: block;
-//  transition: 0.2s;
-//  font-size: 2rem;
-//  color: #606060;
-//}
-//.select-form-field:focus ~ .select-form-label {
-//  position: absolute;
-//  top: -5px;
-//  display: block;
-//  font-size: 2rem;
-//  font-weight: 400;
-//  color: #606060;
-//}
-
+.select-form-field:not(:empty) ~ .select-form-label {
+  font-size: 36px;
+  cursor: text;
+  top: 15px;
+  color: #D9D9D9;
+}
+.select-form-label {
+  position: absolute;
+  top: -5px;
+  display: block;
+  transition: 0.2s;
+  font-size: 2rem;
+  color: #606060;
+}
+.select-form-field:focus ~ .select-form-label {
+  position: absolute;
+  top: -5px;
+  display: block;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #606060;
+}
 
 
 .select-arrow-icon {

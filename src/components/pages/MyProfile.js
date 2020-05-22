@@ -8,6 +8,7 @@ import HomePageLink from "../HomePageLink";
 import MenuLink from "../MenuLink";
 import ChangePassword from "../ChangePassword";
 import UploadFile from "../UploadFile";
+import SelectComponent from "../SelectComponent";
 
 import uploadIcon from "../../assets/images/upload-1.png"
 import calendarIcon from "../../assets/images/011-calendar.png"
@@ -73,11 +74,6 @@ export default class MyProfile extends React.Component {
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
         this.degrees = [];
-        // this.birthOrders = {
-        //     first: "فرزند اول",
-        //     middle: "فرزند میانی",
-        //     last: "فرزند آخر"
-        // };
         this.birthOrders = ["فرزند اول", "فرزند میانی", "فرزند آخر"];
         this.birthOrdersForJson = ["first", "middle", "last"];
         this.provinces = [];
@@ -140,10 +136,10 @@ export default class MyProfile extends React.Component {
                 let tempCurrent_jobs = [];
                 let tempPrevious_jobs = [];
                 let tempDegrees = [];
-                let tempBirth_city = {};
-                let tempBirth_province = {};
-                let tempCurrent_city = {};
-                let tempCurrent_province = {};
+                let tempBirth_city = "";
+                let tempBirth_province = "";
+                let tempCurrent_city = "";
+                let tempCurrent_province = "";
                 let tempSocial_medias = [];
                 let tempPhone_numbers = [];
                 // let tempEntertainments = [];
@@ -152,10 +148,14 @@ export default class MyProfile extends React.Component {
                 // let bbb = [];
                 // let j = 0;
 
-                tempBirth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
-                tempBirth_province = (await axiosInstance.axios.get(tempBirth_city.state)).data;
-                tempCurrent_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
-                tempCurrent_province = (await axiosInstance.axios.get(tempCurrent_city.state)).data;
+                if(usrPro.birth_city) {
+                    tempBirth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
+                    tempBirth_province = (await axiosInstance.axios.get(tempBirth_city.state)).data;
+                }
+                if(usrPro.current_city) {
+                    tempCurrent_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
+                    tempCurrent_province = (await axiosInstance.axios.get(tempCurrent_city.state)).data;
+                }
 
                 Promise.all(usrPro.current_jobs.map(current_job => axiosInstance.axios.get(current_job)))
                     .then((jobResponse) => {
@@ -252,30 +252,33 @@ export default class MyProfile extends React.Component {
                     date_of_birth: (usrPro.date_of_birth !== null) ?
                         momentJalaali(usrPro.date_of_birth, "YYYY/M/D") :
                         momentJalaali(),
-                    birth_order: usrPro.birth_order,
+                    birth_order: usrPro.birth_order ? usrPro.birth_order : "",
                     gender: usrPro.gender,
                     marital_status: usrPro.marital_status,
                     haveChildren: usrPro.marital_status !== "single",
                     number_of_children: usrPro.number_of_children ? usrPro.number_of_children : "",
 
-                    current_jobs_explanation: usrPro.current_jobs_explanation,//array
+                    current_jobs_explanation: usrPro.current_jobs_explanation ? usrPro.current_jobs_explanation : "",//array
 
-                    previous_jobs_explanation: usrPro.previous_jobs_explanation,//array
+                    previous_jobs_explanation: usrPro.previous_jobs_explanation ? usrPro.previous_jobs_explanation : "",//array
 
-                    degrees_explanation: usrPro.degrees_explanation,//array
-                    birth_province: tempBirth_province,
-                    birth_city: tempBirth_city,
-                    current_province: tempCurrent_province,
-                    current_city: tempCurrent_city,
-                    current_address: usrPro.current_address,
-                    social_medias: usrPro.social_medias,//array
+                    degrees_explanation: usrPro.degrees_explanation ? usrPro.degrees_explanation : "",//array
+                    birth_province: tempBirth_province ? tempBirth_province : "" ,
+                    birth_city: tempBirth_city ? tempBirth_city : "",
+                    current_province: tempCurrent_province ? tempCurrent_province : "",
+                    current_city: tempCurrent_city ? tempCurrent_city : "",
+                    current_address: usrPro.current_address ? usrPro.current_address : "",
+                    social_medias: usrPro.social_medias ? usrPro.social_medias : "",//array
 
-                    interests_explanation: usrPro.interests_explanation,
-                    disease_history: usrPro.disease_history && usrPro.disease_history,
-                    disease_history_explanation: usrPro.disease_history_explanation,
-                    drug_history: usrPro.drug_history && usrPro.drug_history,
-                    criminal_history: usrPro.criminal_history && usrPro.criminal_history
+                    interests_explanation: usrPro.interests_explanation ? usrPro.interests_explanation : "",
+                    disease_history: usrPro.disease_history ? usrPro.disease_history: "",
+                    disease_history_explanation: usrPro.disease_history_explanation ? usrPro.disease_history_explanation : "",
+                    drug_history: usrPro.drug_history ? usrPro.drug_history : "",
+                    criminal_history: usrPro.criminal_history ? usrPro.criminal_history : ""
                 }));
+            })
+            .catch((error) => {
+                console.log("error ocurred in setPorfileInfo", error);
             })
 
         setTimeout(() => {
@@ -293,23 +296,30 @@ export default class MyProfile extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called");
-        // console.log("this.state.current_jobs.url: ",this.state.current_jobs[0].url);
+        console.log("this.state.current_jobs: ",this.state.current_jobs);
+        // let tempCurrentJobs = this.state.current_jobs.map(j=>j.url);{/*for future releases!*/}
         const updatedProfile = {
             first_name: this.state.first_name,
             last_name: this.state.last_name,
-            date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString()
+            date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString(),
+            birth_order: this.state.birth_order,
+            gender: this.state.gender,
+            marital_status: this.state.marital_status,
+            number_of_children: this.state.number_of_children ? this.state.number_of_children : null,
+            current_jobs: [this.state.current_jobs[0].url],
+            previous_jobs: [this.state.previous_jobs[0].url],
+            degrees: [this.state.degrees[0].url],
+            birth_city: this.state.birth_city.url,
+            current_city: this.state.current_city.url
         }
 
 
         axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile);
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_jobs: [this.state.current_jobs[0].url]})
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {previous_jobs: [this.state.previous_jobs[0].url]});
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {degrees: [this.state.degrees[0].url]});
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
         let name = event.target.name;
-        let val = event.target.value;
+        let val = event.target.value ? event.target.value : "";
 
         this.setState(() => ({[name]: val}));
         console.log(event);
@@ -333,39 +343,40 @@ export default class MyProfile extends React.Component {
         }))
     }
     handleOnChangeCurrentJob = (event) => {
-        console.log('event==', event);
-        const selectedCurrentJob = event.target.value;
-        this.setState(() => ({current_jobs: this.jobs.find(j => j.name === selectedCurrentJob)}));
+        console.log('event name==', event.target.name);
+        console.log("event value==", event.target.value);
+        const selectedCurrentJob = event.target.value ? event.target.value : "";
+        this.setState(() => ({current_jobs: [this.jobs.find(j => j.url === selectedCurrentJob)]}));
     }
     handleOnChangePreviousJob = (event) => {
         console.log('event==', event);
-        const selectedPreviousJob = event.target.value;
-        this.setState(() => ({previous_jobs: this.jobs.find(j => j.name === selectedPreviousJob)}));
+        const selectedPreviousJob = event.target.value ? event.target.value : "";
+        this.setState(() => ({previous_jobs: [this.jobs.find(j => j.url === selectedPreviousJob)]}));
     }
     handleOnChangeDegree = (event) => {
         console.log('event==', event);
-        const selectedDegree = event.target.value;
-        this.setState(() => ({degrees: this.degrees.find(d => d.title === selectedDegree)}));
+        const selectedDegree = event.target.value ? event.target.value : "";
+        this.setState(() => ({degrees: [this.degrees.find(d => d.url === selectedDegree)]}));
     }
     handleOnChangeBirthProvince = (event) => {
         console.log('event==', event);
-        const selectedProvince = event.target.value;
-        this.setState(() => ({birth_province: this.provinces.find(p => p.name === selectedProvince)}));
+        const selectedProvince = event.target.value ? event.target.value : "";
+        this.setState(() => ({birth_province: this.provinces.find(p => p.url === selectedProvince)}));
     }
     handleOnChangeBirthCity = (event) => {
         console.log('event==', event);
-        const selectedCity = event.target.value;
-        this.setState(() => ({birth_city: this.cities.find(c => c.name === selectedCity)}));
+        const selectedCity = event.target.value ? event.target.value : "";
+        this.setState(() => ({birth_city: this.cities.find(c => c.url === selectedCity)}));
     }
     handleOnChangeCurrentProvince = (event) => {
         console.log('event==', event);
-        const selectedProvince = event.target.value;
-        this.setState(() => ({current_province: this.cities.find(p => p.name === selectedProvince)}));
+        const selectedProvince = event.target.value ? event.target.value : "";
+        this.setState(() => ({current_province: this.cities.find(p => p.url === selectedProvince)}));
     }
     handleOnChangeCurrentCity = (event) => {
         console.log('event==', event);
-        const selectedCity = event.target.value;
-        this.setState(() => ({current_province: this.cities.find(c => c.name === selectedCity)}));
+        const selectedCity = event.target.value ? event.target.value : "";
+        this.setState(() => ({current_province: this.cities.find(c => c.url === selectedCity)}));
     }
     handleOnChangePhoneNumber = (event) => {
 
@@ -595,30 +606,25 @@ export default class MyProfile extends React.Component {
                                     <img src={calendarIcon} alt={"calendar icon"}
                                          style={{position: "absolute", left: "5px", top: "30px"}}/>
                                 </div>
-                                <div className={"pro-form-group hide-select-arrow"} style={{width: "300px"}}>
-                                    <select
-                                        id={"birth_order"}
-                                        name={"birth_order"}
-                                        className={"select-form-field"}
-                                        onKeyDown={this.handleNextInput}
-                                        onChange={this.handleOnChange}
-                                        value={this.state.birth_order}
-                                    >
-                                        <option value={""}>فرزند چندم</option>
-                                        {this.birthOrders.map((order, index) => (
-                                            <option
-                                                value={this.birthOrdersForJson[index]}
-                                                key={index}
-                                            >
-                                                {order}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {/*<label htmlFor={"birth_order"} className={"select-form-label"}>*/}
-                                    {/*    فرزند چندم*/}
-                                    {/*</label>*/}
-                                    <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                </div>
+                                <SelectComponent
+                                    id={"birth_order"}
+                                    name={"birth_order"}
+                                    className={"pro-form-group hide-select-arrow"}
+                                    handleOnChange={this.handleOnChange}
+                                    value={this.state.birth_order}
+                                    label={"فرزند چندم"}
+                                    style={{width: "300px"}}
+                                >
+                                    <option value={""}> </option>
+                                    {this.birthOrders.map((order, index) => (
+                                        <option
+                                            value={this.birthOrdersForJson[index]}
+                                            key={index}
+                                        >
+                                            {order}
+                                        </option>
+                                    ))}
+                                </SelectComponent>
                                 <div className={"pro-form-group"}
                                      style={{width: "300px", justifyContent: "space-between", display: "flex"}}>
                                     <label htmlFor={"gender_male"} className={"form-label-radio checkbox-label"}>
@@ -697,53 +703,47 @@ export default class MyProfile extends React.Component {
                                     </label>
                                 </div>
                                 {this.state.haveChildren &&
-                                <div className={"pro-form-group hide-select-arrow"} style={{width: "310px"}}>
-                                    <select
-                                        id={"number_of_children"}
-                                        name={"number_of_children"}
-                                        className={"select-form-field "}
-                                        onKeyDown={this.handleNextInput}
-                                        onChange={this.handleOnChange}
-                                        disabled={!this.state.haveChildren}
-                                        value={this.state.number_of_children}
+                                <SelectComponent
+                                    id={"number_of_children"}
+                                    name={"number_of_children"}
+                                    handleOnChange={this.handleOnChange}
+                                    disabled={!this.state.haveChildren}
+                                    value={this.state.number_of_children}
+                                    label={"تعداد فرزندان"}
+                                    style={{width: "310px"}}
+                                >
+                                    <option value={""}>
+                                    </option>
+                                    {this.number_of_children.map((number, index) => (
+                                        <option
+                                            value={number}
+                                            key={index}
+                                        >
+                                            {number}
+                                        </option>
+                                    ))}
+                                </SelectComponent>
+                                }
+                                <div className={"inline-form-groups"}>
+                                    <SelectComponent
+                                        id={"current_jobs"}
+                                        name={"current_jobs"}
+                                        handleOnChange={this.handleOnChangeCurrentJob}
+                                        value={this.state.current_jobs[0] &&
+                                                this.state.current_jobs[0].url}//must be this.state.current_jobs[i].name for later
+                                        label={"شغل فعلی"}
+                                        style={{marginLeft: '40px'}}
                                     >
-                                        <option value={"تعداد فرزندان"}>تعداد فرزندان</option>
-                                        {this.number_of_children.map((number, index) => (
+                                        <option value={""}> </option>
+                                        {this.jobs.map((job, index) => (
                                             <option
-                                                value={number}
+                                                value={job.url}
                                                 key={index}
                                             >
-                                                {number}
+                                                {job.name}
                                             </option>
                                         ))}
-                                    </select>
-                                    <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                </div>}
-                                <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"current_jobs"}
-                                            name={"current_jobs"}
-                                            className={"select-form-field "}
-                                            required={true}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeCurrentJob}
-                                            value={this.state.current_jobs[0] &&
-                                            this.state.current_jobs[0].name}//must be this.state.current_jobs[i].name for later
-                                        >
-                                            <option value={""}>شغل فعلی</option>
-                                            {/*nabayad option bashe bayad masalan label bashe*/}
-                                            {this.jobs.map((job, index) => (
-                                                <option
-                                                    value={job.name}
-                                                    key={index}
-                                                >
-                                                    {job.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
+                                    </SelectComponent>
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
@@ -762,27 +762,43 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"previous_jobs"}
-                                            name={"previous_jobs"}
-                                            className={"select-form-field"}
-                                            required={true}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangePreviousJob}
-                                            value={this.state.previous_jobs[0] &&
-                                            this.state.previous_jobs[0].name}//must be this.state.previous_jobs[i].name for later
-                                        >
-                                            <option value={""}>شغل قبلی</option>
-                                            {/**/}
-                                            {this.jobs.map((job, index) => (
-                                                <option value={job.name} key={index}>
-                                                    {job.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
+                                    <SelectComponent
+                                        id={"previous_jobs"}
+                                        name={"previous_jobs"}
+                                        handleOnChange={this.handleOnChangePreviousJob}
+                                        value={this.state.previous_jobs[0] &&
+                                                this.state.previous_jobs[0].url}//must be this.state.current_jobs[i].name for later
+                                        label={"شغل قبلی"}
+                                        style={{marginLeft: '40px'}}
+                                    >
+                                        <option value={""}> </option>
+                                        {this.jobs.map((job, index) => (
+                                            <option value={job.url} key={index}>
+                                                {job.name}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
+                                    {/*<div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>*/}
+                                    {/*    <select*/}
+                                    {/*        id={"previous_jobs"}*/}
+                                    {/*        name={"previous_jobs"}*/}
+                                    {/*        className={"select-form-field"}*/}
+                                    {/*        required={true}*/}
+                                    {/*        onKeyDown={this.handleNextInput}*/}
+                                    {/*        onChange={this.handleOnChangePreviousJob}*/}
+                                    {/*        value={this.state.previous_jobs[0] &&*/}
+                                    {/*        this.state.previous_jobs[0].name}//must be this.state.previous_jobs[i].name for later*/}
+                                    {/*    >*/}
+                                    {/*        <option value={""}>شغل قبلی</option>*/}
+                                    {/*        /!**!/*/}
+                                    {/*        {this.jobs.map((job, index) => (*/}
+                                    {/*            <option value={job.name} key={index}>*/}
+                                    {/*                {job.name}*/}
+                                    {/*            </option>*/}
+                                    {/*        ))}*/}
+                                    {/*    </select>*/}
+                                    {/*    <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>*/}
+                                    {/*</div>*/}
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
@@ -801,26 +817,22 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"degrees"}
-                                            name={"degrees"}
-                                            className={"select-form-field"}
-                                            required={true}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeDegree}
-                                            value={this.state.degrees[0] &&
-                                            this.state.degrees[0].title}//must be this.state.degrees[i].title for later
-                                        >
-                                            <option value={""}>مدرک تحصیلی</option>
-                                            {this.degrees.map((degree, index) => (
-                                                <option value={degree.title} key={index}>
-                                                    {degree.title}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
+                                    <SelectComponent
+                                        id={"degrees"}
+                                        name={"degrees"}
+                                        handleOnChange={this.handleOnChangeDegree}
+                                        value={this.state.degrees[0] &&
+                                        this.state.degrees[0].url}//must be this.state.degrees[i].title for later
+                                        label={"مدرک تحصیلی"}
+                                        style={{marginLeft: '40px'}}
+                                    >
+                                        <option value={""}> </option>
+                                        {this.degrees.map((degree, index) => (
+                                            <option value={degree.url} key={index}>
+                                                {degree.title}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
                                     <div className={"pro-form-group"}>
                                         <input
                                             type={"text"}
@@ -839,44 +851,56 @@ export default class MyProfile extends React.Component {
                                     </div>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"birth_province"}
-                                            name={"birth_province"}
-                                            className={"select-form-field"}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeBirthProvince}
-                                            value={this.state.birth_province.name}
-                                        >
-                                            <option value={""}>استان محل تولد</option>
-                                            {this.provinces.map((province, index) => (
-                                                <option value={province.name} key={index}>
-                                                    {province.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
-                                    <div className={"pro-form-group hide-select-arrow"}>
-                                        <select
-                                            id={"birth_city"}
-                                            name={"birth_city"}
-                                            className={"select-form-field"}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeBirthCity}
-                                            value={this.state.birth_city.name}
-                                        >
-                                            <option value={""}>شهر محل تولد</option>
-                                            {this.cities.map((city, index) => (
-                                                <option value={city.name} key={index}>
-                                                    {city.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
+                                    <SelectComponent
+                                        id={"birth_province"}
+                                        name={"birth_province"}
+                                        handleOnChange={this.handleOnChangeBirthProvince}
+                                        value={this.state.birth_province.url}
+                                        label={"استان محل تولد"}
+                                        style={{marginLeft: '40px'}}
+                                        required={true}
+                                    >
+                                        <option value={""}> </option>
+                                        {this.provinces.map((province, index) => (
+                                            <option value={province.url} key={index}>
+                                                {province.name}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
+                                    <SelectComponent
+                                        id={"birth_city"}
+                                        name={"birth_city"}
+                                        handleOnChange={this.handleOnChangeBirthCity}
+                                        value={this.state.birth_city.url}
+                                        label={"شهر محل تولد"}
+                                        required={true}
+                                    >
+                                        <option value={""}> </option>
+                                        {this.cities.map((city, index) => (
+                                            <option value={city.url} key={index}>
+                                                {city.name}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
                                 </div>
                                 <div className={"inline-form-groups"}>
+                                    {/*<SelectComponent*/}
+                                    {/*    id={"current_province"}*/}
+                                    {/*    name={"current_province"}*/}
+                                    {/*    handleOnChange={this.handleOnChangeCurrentProvince}*/}
+                                    {/*    value={this.state.current_province.url}*/}
+                                    {/*    label={"استان محل سکونت"}*/}
+                                    {/*    required={true}*/}
+                                    {/*    style={{marginLeft: '40px'}}*/}
+                                    {/*>*/}
+                                    {/*    <option value={""}> </option>*/}
+                                    {/*    {this.provinces.map((province, index) => (*/}
+                                    {/*        <option value={province.url} key={index}>*/}
+                                    {/*            {province.name}*/}
+                                    {/*        </option>*/}
+                                    {/*    ))}*/}
+                                    {/*</SelectComponent>*/}
+
                                     <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"current_province"}
@@ -896,6 +920,23 @@ export default class MyProfile extends React.Component {
                                         </select>
                                         <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
                                     </div>
+                                    {/*<SelectComponent*/}
+                                    {/*    id={"current_city"}*/}
+                                    {/*    name={"current_city"}*/}
+                                    {/*    handleOnChange={this.handleOnChangeCurrentCity}*/}
+                                    {/*    value={this.state.current_city.url}*/}
+                                    {/*    label={"شهر محل سکونت"}*/}
+                                    {/*    required={true}*/}
+                                    {/*    style={{marginLeft: '40px'}}*/}
+                                    {/*>*/}
+                                    {/*    <option value={""}> </option>*/}
+                                    {/*    {this.cities.map((city, index) => (*/}
+                                    {/*        <option value={city.url} key={index}>*/}
+                                    {/*            {city.name}*/}
+                                    {/*        </option>*/}
+                                    {/*    ))}*/}
+                                    {/*</SelectComponent>*/}
+
                                     <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
                                         <select
                                             id={"current_city"}
