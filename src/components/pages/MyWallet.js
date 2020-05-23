@@ -127,11 +127,18 @@ export default class MyWallet extends React.Component {
                 this.setState(() => ({
                     tracking_code: response.data.tracking_code,
                     transaction_id: response.data.transaction_id
-                }))
-                this.toast.success("اکنون به درگاه بانکی وارد می‌شوید");
+                }), () => {
+                    this.toast.success("اکنون به درگاه بانکی وارد می‌شوید");
+                })
+
 
                 setTimeout(() => {
                     console.log("transaction_id" , this.state.transaction_id);
+                    axiosInstance.axios.defaults.headers.common['Authorization'] = null;
+                    axiosInstance.axios.post(`http://panel.aqayepardakht.ir/startpay/${this.state.transaction_id}`)
+                        .then((response) => {
+                            console.log("response of transaction", response.data);
+                        })
                     window.open(`http://panel.aqayepardakht.ir/startpay/${this.state.transaction_id}`, "_blank");
                 },3000)
             })
@@ -201,7 +208,6 @@ export default class MyWallet extends React.Component {
                         <StyledModal
                             isOpen={this.state.showModal}
                             onRequestClose={this.handleCloseModal}
-
                         >
                             <button onClick={this.handleCloseModal} className={"modal-close-icon"}>
                             </button>

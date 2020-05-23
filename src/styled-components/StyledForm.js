@@ -29,7 +29,7 @@ const StyledForm = styled.form`
 }
 .form-field:placeholder-shown ~ .form-label {
   font-size: 25px;
-  cursor: text;
+  cursor: pointer;
   top: 15px;
 }
 .form-label {
@@ -83,7 +83,7 @@ const StyledForm = styled.form`
 
 .form-field-text:placeholder-shown ~ .form-label-text {
   font-size: 36px;
-  cursor: text;
+  cursor: pointer;
   top: 15px;
   color: #D9D9D9;
 }
@@ -136,7 +136,7 @@ const StyledForm = styled.form`
 
 .select-form-field:not(:empty) ~ .select-form-label {
   font-size: 36px;
-  cursor: text;
+  cursor: pointer;
   top: 15px;
   color: #D9D9D9;
 }

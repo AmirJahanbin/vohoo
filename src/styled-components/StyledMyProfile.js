@@ -139,22 +139,29 @@ const StyledMyProfile = styled.div`
       margin: 5px 15px 5px 5px;
     }
   }
-  .case-history {
+  .case-history-container {
     background-color: #D9D9D9;
     padding: 20px 80px;
     margin-bottom: 100px;
     color: #606060;
-    > div {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 30px 0;
-      //height: 100px;
-    }
     & .checkmark {
       border-color: #AAAAAA;
     }
+    .case-history {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      .case-check {
+        height: 70px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+    }
   }
+  
   #my-profile-submit-btn {
     font-family: MJ_thameen, sans-serif;
     display: flex;

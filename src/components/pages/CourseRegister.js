@@ -213,6 +213,7 @@ export default class CourseRegister extends React.Component {
                 this.props.history.push("/login");
             })
     }
+
     render() {
         if(this.state.events[0]) {
             console.log("render: ", this.state.events[0].start);

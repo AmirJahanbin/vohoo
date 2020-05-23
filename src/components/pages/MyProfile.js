@@ -12,7 +12,6 @@ import SelectComponent from "../SelectComponent";
 
 import uploadIcon from "../../assets/images/upload-1.png"
 import calendarIcon from "../../assets/images/011-calendar.png"
-import arrowBottom from "../../assets/images/arrowBottom.png";
 import telegram from "../../assets/images/social icons/telegram-1@2x.png";
 import whatsapp from "../../assets/images/social icons/whatsapp-1@2x.png";
 import mail from "../../assets/images/social icons/mail-1@2x.png";
@@ -48,7 +47,6 @@ export default class MyProfile extends React.Component {
             current_province: {},
             current_city: {},
             current_address: "",
-            landline_number: "",
             phone_numbers: [],
             introducing_first_name: "",
             introducing_last_name: "",
@@ -61,14 +59,15 @@ export default class MyProfile extends React.Component {
             disease_history: "",
             disease_history_explanation: "",//temporary not an array
             drug_history: "",
+            drug_history_explanation: "",//temporary not an array
             criminal_history: "",
             criminal_history_explanation: "",//temporary not an array,
 
 
             haveChildren: true,
             vCodeField: false,
-            favoriteFilms: [""],
-            favoriteBooks: [""],
+            newFavorFilm: "",
+            newFavorBook: ""
         };
         //assets
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -82,15 +81,6 @@ export default class MyProfile extends React.Component {
 
     componentDidMount() {
         console.log('this is my token ===', axiosInstance.axios.defaults.headers.common['Authorization']);
-        // axiosInstance.axios.post('/user/get_user/')
-        //     .then(userResponse => {
-        //         console.log(userResponse.data);
-        //         return axiosInstance.axios.get(`/information/profile/${userResponse.data.id}`)
-        //     })
-        //     .then(profileResponse => {
-        //         console.log(profileResponse.data);
-        //     })
-
 
         //get list of all cities
         axiosInstance.axios.get('/information/city/')
@@ -142,11 +132,8 @@ export default class MyProfile extends React.Component {
                 let tempCurrent_province = "";
                 let tempSocial_medias = [];
                 let tempPhone_numbers = [];
-                // let tempEntertainments = [];
                 let tempBooks = [];
                 let tempFilms = [];
-                // let bbb = [];
-                // let j = 0;
 
                 if(usrPro.birth_city) {
                     tempBirth_city = (await axiosInstance.axios.get(usrPro.birth_city)).data;
@@ -156,6 +143,11 @@ export default class MyProfile extends React.Component {
                     tempCurrent_city = (await axiosInstance.axios.get(usrPro.current_city)).data;
                     tempCurrent_province = (await axiosInstance.axios.get(tempCurrent_city.state)).data;
                 }
+                // get list of entertainments
+                for (const uEUrl of usrPro.entertainments) {
+                    this.state.entertainments.find(e => e.url === uEUrl).checked = true;
+                }
+                this.setState(() => ({entertainments: this.state.entertainments}));
 
                 Promise.all(usrPro.current_jobs.map(current_job => axiosInstance.axios.get(current_job)))
                     .then((jobResponse) => {
@@ -191,33 +183,6 @@ export default class MyProfile extends React.Component {
                         }))
                         // console.log("phone numbers called: ", tempPhone_numbers);
                     })
-
-                for (const uEUrl of usrPro.entertainments) {
-                    this.state.entertainments.find(e => e.url === uEUrl).checked = true;
-                }
-                this.setState(() => ({entertainments: this.state.entertainments}));
-
-                // Promise.all(usrPro.entertainments.map(entertainment => axiosInstance.axios.get(entertainment)))
-                //     .then((entertainmentResponse) => {
-                //         tempEntertainments = entertainmentResponse.map(e => e.data);
-                //         for (let i = 0; i < this.interests.length; i++) {
-                //             if (this.interestsIds.includes(tempEntertainments[0].id)) {
-                //                 bbb[i] = tempEntertainments[j];
-                //                 j++;
-                //                 console.log("j", j)
-                //             } else {
-                //                 bbb[i] = "";
-                //             }
-                //         }
-                //         console.log("this.interests[i]: ", this.interestsIds);
-                //         console.log("tempEntertainments: ", tempEntertainments);
-                //         console.log("bbb: ", bbb);
-                //         this.setState(() => ({
-                //             entertainments: bbb
-                //         }))
-                //         console.log("entertainments called");
-                //     })
-                // Promise.all(usrPro.books.map(book => axiosInstance.axios.get(book)))
                 Promise.all(usrPro.books.map(book => axiosInstance.axios.get(book)))
                     .then((bookResponse) => {
                         tempBooks = bookResponse.map(b => b.data);
@@ -257,24 +222,19 @@ export default class MyProfile extends React.Component {
                     marital_status: usrPro.marital_status,
                     haveChildren: usrPro.marital_status !== "single",
                     number_of_children: usrPro.number_of_children ? usrPro.number_of_children : "",
-
                     current_jobs_explanation: usrPro.current_jobs_explanation ? usrPro.current_jobs_explanation : "",//array
-
                     previous_jobs_explanation: usrPro.previous_jobs_explanation ? usrPro.previous_jobs_explanation : "",//array
-
                     degrees_explanation: usrPro.degrees_explanation ? usrPro.degrees_explanation : "",//array
                     birth_province: tempBirth_province ? tempBirth_province : "" ,
                     birth_city: tempBirth_city ? tempBirth_city : "",
-                    current_province: tempCurrent_province ? tempCurrent_province : "",
+                    current_province: tempCurrent_province ? tempCurrent_province : {},
                     current_city: tempCurrent_city ? tempCurrent_city : "",
                     current_address: usrPro.current_address ? usrPro.current_address : "",
-                    social_medias: usrPro.social_medias ? usrPro.social_medias : "",//array
-
                     interests_explanation: usrPro.interests_explanation ? usrPro.interests_explanation : "",
-                    disease_history: usrPro.disease_history ? usrPro.disease_history: "",
+                    disease_history: usrPro.disease_history ? "yes" : (usrPro.disease_history === false ? "no" : ""),
                     disease_history_explanation: usrPro.disease_history_explanation ? usrPro.disease_history_explanation : "",
-                    drug_history: usrPro.drug_history ? usrPro.drug_history : "",
-                    criminal_history: usrPro.criminal_history ? usrPro.criminal_history : ""
+                    drug_history: usrPro.drug_history ? "yes" : (usrPro.drug_history === false ? "no" : ""),
+                    criminal_history: usrPro.criminal_history ? "yes" : (usrPro.criminal_history === false ? "no" : "")
                 }));
             })
             .catch((error) => {
@@ -296,7 +256,7 @@ export default class MyProfile extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called");
-        console.log("this.state.current_jobs: ",this.state.current_jobs);
+        console.log("social media: ", this.state.social_medias);
         // let tempCurrentJobs = this.state.current_jobs.map(j=>j.url);{/*for future releases!*/}
         const updatedProfile = {
             first_name: this.state.first_name,
@@ -310,11 +270,17 @@ export default class MyProfile extends React.Component {
             previous_jobs: [this.state.previous_jobs[0].url],
             degrees: [this.state.degrees[0].url],
             birth_city: this.state.birth_city.url,
-            current_city: this.state.current_city.url
+            current_city: this.state.current_city.url,
+            current_address: this.state.current_address ? this.state.current_address: null,
+            entertainments: this.state.entertainments.filter(e=>e.checked===true).map(u=>u.url),
+            interests_explanation: this.state.interests_explanation,
+            disease_history: this.state.disease_history === "yes",
+            drug_history: this.state.drug_history === "yes",
+            criminal_history: this.state.criminal_history === "yes",
+
         }
-
-
         axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile);
+        axiosInstance.axios.patch(this.state.user_profile.social_medias, this.state.social_medias[0]);
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
@@ -329,9 +295,7 @@ export default class MyProfile extends React.Component {
     handleOnChangeCaseHistory = (event) => {
         console.log("handle case history called", event.target.name, event.target.value);
         let name = event.target.name;
-        this.setState((prevState) => ({
-            [name]: !prevState[name]
-        }));
+        this.setState({[name]: event.target.value});
     }
     handleOnChangeArrays = (event) => {
         console.log("handle on change select box: ", event.target.value);
@@ -371,12 +335,12 @@ export default class MyProfile extends React.Component {
     handleOnChangeCurrentProvince = (event) => {
         console.log('event==', event);
         const selectedProvince = event.target.value ? event.target.value : "";
-        this.setState(() => ({current_province: this.cities.find(p => p.url === selectedProvince)}));
+        this.setState(() => ({current_province: this.provinces.find(p => p.url === selectedProvince)}));
     }
     handleOnChangeCurrentCity = (event) => {
         console.log('event==', event);
         const selectedCity = event.target.value ? event.target.value : "";
-        this.setState(() => ({current_province: this.cities.find(c => c.url === selectedCity)}));
+        this.setState(() => ({current_city: this.cities.find(c => c.url === selectedCity)}));
     }
     handleOnChangePhoneNumber = (event) => {
 
@@ -391,6 +355,12 @@ export default class MyProfile extends React.Component {
         }));
     }
     handleOnChangeSocialMedia = (event) => {
+        let name = event.target.name;
+        let val = event.target.value;
+        this.setState((prevState) => {
+            prevState.social_medias[0][name] = val;
+            return (prevState);
+        })
     }
     handleMaritalStatus = (event) => {
         console.log("handleMaritalStatus called");
@@ -410,8 +380,45 @@ export default class MyProfile extends React.Component {
     handleVerificationCode = () => {
         this.setState({vCodeField: true});
     };
-    handleAddOption = () => {
-
+    handleOnChangeFilm = (event) => {
+        const favorFilm = event.target.value;
+        this.setState(() => ({
+            newFavorFilm: favorFilm
+        }))
+    };
+    handleOnChangeBook = (event) => {
+        const favorBook = event.target.value;
+        this.setState(() => ({
+            newFavorBook: favorBook
+        }))
+    };
+    handleAddFilm = () => {
+        const films = {
+            name: this.state.newFavorFilm,
+            profile: this.state.user_profile.url
+        }
+        this.setState((prevState) => ({films: prevState.films.concat(films)}));
+        axiosInstance.axios.post("/information/film/", films)
+            .then((filmResponse) => {
+                this.setState((prevState) => {
+                    prevState.films[prevState.films.length -1] = filmResponse.data;
+                    return (prevState);
+                }, () => { console.log("book state updated: ", this.state.books)})
+            })
+    };
+    handleAddBook = () => {
+        const books = {
+            name: this.state.newFavorBook,
+            profile: this.state.user_profile.url
+        }
+        this.setState((prevState) => ({books: prevState.books.concat(books)}));
+        axiosInstance.axios.post("/information/book/", books)
+            .then((bookResponse) => {
+                this.setState((prevState) => {
+                    prevState.books[prevState.books.length - 1] = bookResponse.data;
+                    return (prevState);
+                },() => { console.log("book state updated: ", this.state.books)});
+            })
     };
     handleImage = (event) => {
         const formData = new FormData();
@@ -826,7 +833,9 @@ export default class MyProfile extends React.Component {
                                         label={"مدرک تحصیلی"}
                                         style={{marginLeft: '40px'}}
                                     >
-                                        <option value={""}> </option>
+                                        <option value={""}>
+
+                                        </option>
                                         {this.degrees.map((degree, index) => (
                                             <option value={degree.url} key={index}>
                                                 {degree.title}
@@ -855,12 +864,14 @@ export default class MyProfile extends React.Component {
                                         id={"birth_province"}
                                         name={"birth_province"}
                                         handleOnChange={this.handleOnChangeBirthProvince}
-                                        value={this.state.birth_province.url}
+                                        value={this.state.birth_province && this.state.birth_province.url}
                                         label={"استان محل تولد"}
                                         style={{marginLeft: '40px'}}
                                         required={true}
                                     >
-                                        <option value={""}> </option>
+                                        <option value={""}>
+
+                                        </option>
                                         {this.provinces.map((province, index) => (
                                             <option value={province.url} key={index}>
                                                 {province.name}
@@ -871,11 +882,13 @@ export default class MyProfile extends React.Component {
                                         id={"birth_city"}
                                         name={"birth_city"}
                                         handleOnChange={this.handleOnChangeBirthCity}
-                                        value={this.state.birth_city.url}
+                                        value={this.state.birth_city && this.state.birth_city.url}
                                         label={"شهر محل تولد"}
                                         required={true}
                                     >
-                                        <option value={""}> </option>
+                                        <option value={""}>
+
+                                        </option>
                                         {this.cities.map((city, index) => (
                                             <option value={city.url} key={index}>
                                                 {city.name}
@@ -884,78 +897,42 @@ export default class MyProfile extends React.Component {
                                     </SelectComponent>
                                 </div>
                                 <div className={"inline-form-groups"}>
-                                    {/*<SelectComponent*/}
-                                    {/*    id={"current_province"}*/}
-                                    {/*    name={"current_province"}*/}
-                                    {/*    handleOnChange={this.handleOnChangeCurrentProvince}*/}
-                                    {/*    value={this.state.current_province.url}*/}
-                                    {/*    label={"استان محل سکونت"}*/}
-                                    {/*    required={true}*/}
-                                    {/*    style={{marginLeft: '40px'}}*/}
-                                    {/*>*/}
-                                    {/*    <option value={""}> </option>*/}
-                                    {/*    {this.provinces.map((province, index) => (*/}
-                                    {/*        <option value={province.url} key={index}>*/}
-                                    {/*            {province.name}*/}
-                                    {/*        </option>*/}
-                                    {/*    ))}*/}
-                                    {/*</SelectComponent>*/}
+                                    <SelectComponent
+                                        id={"current_province"}
+                                        name={"current_province"}
+                                        handleOnChange={this.handleOnChangeCurrentProvince}
+                                        value={this.state.current_province && this.state.current_province.url}
+                                        label={"استان محل سکونت"}
+                                        required={true}
+                                        style={{marginLeft: '40px'}}
+                                    >
+                                        <option value={""}>
 
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"current_province"}
-                                            name={"current_province"}
-                                            className={"select-form-field"}
-                                            required={true}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeCurrentProvince}
-                                            value={this.state.current_province.name}
-                                        >
-                                            <option value={""}>استان محل سکونت</option>
-                                            {this.provinces.map((province, index) => (
-                                                <option value={province.name} key={index}>
-                                                    {province.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
-                                    {/*<SelectComponent*/}
-                                    {/*    id={"current_city"}*/}
-                                    {/*    name={"current_city"}*/}
-                                    {/*    handleOnChange={this.handleOnChangeCurrentCity}*/}
-                                    {/*    value={this.state.current_city.url}*/}
-                                    {/*    label={"شهر محل سکونت"}*/}
-                                    {/*    required={true}*/}
-                                    {/*    style={{marginLeft: '40px'}}*/}
-                                    {/*>*/}
-                                    {/*    <option value={""}> </option>*/}
-                                    {/*    {this.cities.map((city, index) => (*/}
-                                    {/*        <option value={city.url} key={index}>*/}
-                                    {/*            {city.name}*/}
-                                    {/*        </option>*/}
-                                    {/*    ))}*/}
-                                    {/*</SelectComponent>*/}
+                                        </option>
+                                        {this.provinces.map((province, index) => (
+                                            <option value={province.url} key={index}>
+                                                {province.name}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
+                                    <SelectComponent
+                                        id={"current_city"}
+                                        name={"current_city"}
+                                        handleOnChange={this.handleOnChangeCurrentCity}
+                                        value={this.state.current_city && this.state.current_city.url}
+                                        label={"شهر محل سکونت"}
+                                        required={true}
+                                        style={{marginLeft: '40px'}}
+                                    >
+                                        <option value={""}>
 
-                                    <div className={"pro-form-group hide-select-arrow"} style={{marginLeft: '40px'}}>
-                                        <select
-                                            id={"current_city"}
-                                            name={"current_city"}
-                                            className={"select-form-field"}
-                                            required={true}
-                                            onKeyDown={this.handleNextInput}
-                                            onChange={this.handleOnChangeCurrentCity}
-                                            value={this.state.current_city.name}
-                                        >
-                                            <option value={""}>شهر محل سکونت</option>
-                                            {this.cities.map((city, index) => (
-                                                <option value={city.name} key={index}>
-                                                    {city.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <img src={arrowBottom} alt={"arrow bottom"} className={"select-arrow-icon"}/>
-                                    </div>
+                                        </option>
+                                        {this.cities.map((city, index) => (
+                                            <option value={city.url} key={index}>
+                                                {city.name}
+                                            </option>
+                                        ))}
+                                    </SelectComponent>
                                 </div>
                                 <div className={"pro-form-group"}>
                                     <input
@@ -1079,7 +1056,7 @@ export default class MyProfile extends React.Component {
                                             name={"favorite_films"}
                                             id={"favorite_films"}
                                             className={"form-field-text"}
-                                            onChange={this.handleOnChange}
+                                            onChange={this.handleOnChangeFilm}
                                             placeholder={"فیلم یا سریال محبوب من"}
                                             style={{width: "400px"}}
                                         />
@@ -1087,13 +1064,13 @@ export default class MyProfile extends React.Component {
                                             فیلم یا سریال محبوب من
                                         </label>
                                     </div>
-                                    <button type={"button"} onClick={this.handleAddOption} className={"form-add-btn"}>
+                                    <button type={"button"} onClick={this.handleAddFilm} className={"form-add-btn"}>
                                         +
                                     </button>
-                                    {this.state.favoriteFilms.map((favFilm, index) => {
+                                    {this.state.films.map((film, index) => {
                                         return (
                                             <span key={index}>
-                                        {favFilm}
+                                        {film.name}
                                     </span>
                                         )
                                     })}
@@ -1105,7 +1082,7 @@ export default class MyProfile extends React.Component {
                                             name={"favorite_books"}
                                             id={"favorite_books"}
                                             className={"form-field-text"}
-                                            onChange={this.handleOnChange}
+                                            onChange={this.handleOnChangeBook}
                                             placeholder={"کتاب محبوب من"}
                                             style={{width: "400px"}}
                                         />
@@ -1113,16 +1090,14 @@ export default class MyProfile extends React.Component {
                                             کتاب محبوب من
                                         </label>
                                     </div>
-                                    <button type={"button"} onClick={this.handleAddOption} className={"form-add-btn"}>
+                                    <button type={"button"} onClick={this.handleAddBook} className={"form-add-btn"}>
                                         +
                                     </button>
-                                    {this.state.favoriteBooks.map((book, index) => {
-                                        return (
-                                            <span key={index}>
-                                        {book}
-                                    </span>
-                                        )
-                                    })}
+                                    {this.state.books.map((book, index) => (
+                                        <span key={index}>
+                                            {book.name}
+                                        </span>
+                                    ))}
                                 </div>
                                 <div className={"pro-form-group"}>
                                     <input
@@ -1147,111 +1122,118 @@ export default class MyProfile extends React.Component {
                                     <img src={mail} alt={"mail"}/>
                                     <input
                                         type={"text"}
-                                        name={"mail"}
-                                        id={"mail"}
+                                        name={"email_address"}
+                                        id={"email_address"}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].email_address}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={whatsapp} alt={"whatsapp"}/>
                                     <input
                                         type={"text"}
-                                        name={"whatsapp"}
-                                        id={"whatsapp"}
+                                        name={"whatsapp_number"}
+                                        id={"whatsapp_number"}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].whatsapp_number}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={telegram} alt={"telegram"}/>
                                     <input
                                         type={"text"}
-                                        name={"telegram"}
-                                        id={"telegram"}
+                                        name={"telegram_id"}
+                                        id={"telegram_id"}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].telegram_id}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={instagram} alt={"instagram"}/>
                                     <input
                                         type={"text"}
-                                        name={"instagram"}
-                                        id={"instagram"}
+                                        name={"instagram_id"}
+                                        id={"instagram_id"}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].instagram_id}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={facebook} alt={"facebook"}/>
                                     <input
                                         type={"text"}
-                                        name={"facebook"}
-                                        id={"facebook"}
+                                        name={"facebook_link"}
+                                        id={"facebook_link"}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].facebook_link}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={youtube} alt={"youtube"}/>
                                     <input
                                         type={"text"}
-                                        name={"youtube"}
-                                        id={"youtube"}
+                                        name={"youtube_link"}
+                                        id={"youtube_link"}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].youtube_link}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                                 <div className={"social-media-input"}>
                                     <img src={twitter} alt={"twitter"}/>
                                     <input
                                         type={"text"}
-                                        name={"twitter"}
-                                        id={"twitter"}
+                                        name={"twitter_id"}
+                                        id={"twitter_id"}
                                         className={"form-field-text"}
-                                        onChange={this.handleOnChange}
+                                        value={this.state.social_medias[0] && this.state.social_medias[0].twitter_id}
+                                        onChange={this.handleOnChangeSocialMedia}
                                     />
                                 </div>
                             </div>
-                            <div className={"case-history"}>
-                                <div className={"case-diseases inline-form-groups"}>
-                                    <span style={{width: "45%"}}>
-                                        سابقه بیماری جسمی یا روحی
-                                    </span>
-                                    <div style={{width: "45%"}}>
-                                        <label htmlFor={"has_disease_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            دارم
-                                            <input
-                                                type={"radio"}
-                                                name={"disease_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_disease_history"}
-                                                required={true}
-                                                value={this.state.disease_history}
-                                                checked={this.state.disease_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
-                                        <label htmlFor={"has_not_disease_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            ندارم
-                                            <input
-                                                type={"radio"}
-                                                name={"disease_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_not_disease_history"}
-                                                value={this.state.disease_history}
-                                                checked={!this.state.disease_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
+                            <div className={"case-history-container"}>
+                                <div className={"case-history"}>
+                                    <div className={"inline-form-groups case-check"}>
+                                        <span>سابقه بیماری جسمی یا روحی</span>
+                                        <div style={{marginLeft: "20%"}}>
+                                            <label htmlFor={"has_disease_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                دارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"disease_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_disease_history"}
+                                                    required={true}
+                                                    value={"yes"}
+                                                    checked={this.state.disease_history === "yes"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                            <label htmlFor={"has_not_disease_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                ندارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"disease_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_not_disease_history"}
+                                                    value={"no"}
+                                                    checked={this.state.disease_history === "no"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    {this.state.disease_history &&
-                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                    {this.state.disease_history === "yes" &&
+                                    <div className={"pro-form-group"} style={{marginLeft: "4%"}}>
                                         <input
                                             type={"text"}
                                             name={"disease_history_explanation"}
@@ -1260,7 +1242,7 @@ export default class MyProfile extends React.Component {
                                             onChange={this.handleOnChange}
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
-                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                            style={{width: "400px",borderColor: "#AAAAAA", color: "#606060"}}
                                         />
                                         <label htmlFor={"disease_history_explanation"}
                                                className={"form-label-text"}
@@ -1271,43 +1253,43 @@ export default class MyProfile extends React.Component {
                                     </div>
                                     }
                                 </div>
-                                <div className={"case-drug inline-form-groups"}>
-                                    <span style={{width: "45%"}}>
-                                        سابقه مصرف دارو
-                                    </span>
-                                    <div style={{width: "45%"}}>
-                                        <label htmlFor={"has_drug_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            دارم
-                                            <input
-                                                type={"radio"}
-                                                name={"drug_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_drug_history"}
-                                                required={true}
-                                                value={this.state.drug_history}
-                                                checked={this.state.drug_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
-                                        <label htmlFor={"has_not_drug_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            ندارم
-                                            <input
-                                                type={"radio"}
-                                                name={"drug_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_not_drug_history"}
-                                                value={this.state.drug_history}
-                                                checked={!this.state.drug_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
+                                <div className={"case-history"}>
+                                    <div className={"inline-form-groups case-check"}>
+                                        <span>سابقه مصرف دارو</span>
+                                        <div style={{marginLeft: "20%"}}>
+                                            <label htmlFor={"has_drug_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                دارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"drug_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_drug_history"}
+                                                    required={true}
+                                                    value={"yes"}
+                                                    checked={this.state.drug_history === "yes"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                            <label htmlFor={"has_not_drug_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                ندارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"drug_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_not_drug_history"}
+                                                    value={"no"}
+                                                    checked={this.state.drug_history === "no"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    {this.state.drug_history &&
-                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                    {this.state.drug_history === "yes" &&
+                                    <div className={"pro-form-group"} style={{marginLeft: "4%"}}>
                                         <input
                                             type={"text"}
                                             name={"drug_history_explanation"}
@@ -1316,7 +1298,7 @@ export default class MyProfile extends React.Component {
                                             onChange={this.handleOnChange}
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
-                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                            style={{width: "400px", borderColor: "#AAAAAA", color: "#606060"}}
                                         />
                                         <label htmlFor={"drug_history_explanation"}
                                                className={"form-label-text"}
@@ -1327,42 +1309,42 @@ export default class MyProfile extends React.Component {
                                     </div>
                                     }
                                 </div>
-                                <div className={"case-criminal inline-form-groups"}>
-                                    <span style={{width: "45%"}}>
-                                        سابقه کیفری
-                                    </span>
-                                    <div style={{width: "45%"}}>
-                                        <label htmlFor={"has_criminal_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            دارم
-                                            <input
-                                                type={"radio"}
-                                                name={"criminal_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_criminal_history"}
-                                                value={this.state.criminal_history}
-                                                checked={this.state.criminal_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
-                                        <label htmlFor={"has_not_criminal_history"}
-                                               className={"form-label-radio checkbox-label"}>
-                                            ندارم
-                                            <input
-                                                type={"radio"}
-                                                name={"criminal_history"}
-                                                className={"form-field-radio"}
-                                                id={"has_not_criminal_history"}
-                                                value={this.state.criminal_history}
-                                                checked={!this.state.criminal_history}
-                                                onChange={this.handleOnChangeCaseHistory}
-                                            />
-                                            <span className={"checkmark"}> </span>
-                                        </label>
+                                <div className={"case-history"}>
+                                    <div className={"inline-form-groups case-check"}>
+                                        <span>سابقه کیفری</span>
+                                        <div style={{marginLeft: "20%"}}>
+                                            <label htmlFor={"has_criminal_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                دارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"criminal_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_criminal_history"}
+                                                    value={"yes"}
+                                                    checked={this.state.criminal_history === "yes"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                            <label htmlFor={"has_not_criminal_history"}
+                                                   className={"form-label-radio checkbox-label"}>
+                                                ندارم
+                                                <input
+                                                    type={"radio"}
+                                                    name={"criminal_history"}
+                                                    className={"form-field-radio"}
+                                                    id={"has_not_criminal_history"}
+                                                    value={"no"}
+                                                    checked={this.state.criminal_history === "no"}
+                                                    onChange={this.handleOnChangeCaseHistory}
+                                                />
+                                                <span className={"checkmark"}> </span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    {this.state.criminal_history &&
-                                    <div className={"pro-form-group"} style={{paddingRight: "55%"}}>
+                                    {this.state.criminal_history === "yes" &&
+                                    <div className={"pro-form-group"} style={{marginLeft: "4%"}}>
                                         <input
                                             type={"text"}
                                             name={"criminal_history_explanation"}
@@ -1371,7 +1353,7 @@ export default class MyProfile extends React.Component {
                                             onChange={this.handleOnChange}
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
-                                            style={{width: "540px", borderColor: "#AAAAAA", color: "#606060"}}
+                                            style={{width: "400px", borderColor: "#AAAAAA", color: "#606060"}}
                                         />
                                         <label htmlFor={"criminal_history_explanation"}
                                                className={"form-label-text"}
@@ -1389,7 +1371,7 @@ export default class MyProfile extends React.Component {
                     <div className={"left-fixed-container"}>
                         <HomePageLink className={"top-left-home-page-logo"}/>
                         <div className={"pro-submit-btn-container"}>
-                            <button type={"submit"} className={"edit-profile-btn"} onClick={this.handleSubmit} form={"big-form"}>
+                            <button type={"button"} className={"edit-profile-btn"} onClick={this.handleSubmit} form={"big-form"}>
                                 ثبت تغییرات
                             </button>
                         </div>

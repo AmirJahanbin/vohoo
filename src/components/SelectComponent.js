@@ -111,7 +111,6 @@ export default class SelectComponent extends React.Component {
         this.props.handleOnChange(event);
     }
     render() {
-        console.log("render select component");
         return (
             <StyledSelect value={this.state.value} style={this.props.style}>
                 <select
