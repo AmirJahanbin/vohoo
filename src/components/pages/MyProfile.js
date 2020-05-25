@@ -9,6 +9,7 @@ import MenuLink from "../MenuLink";
 import ChangePassword from "../ChangePassword";
 import UploadFile from "../UploadFile";
 import SelectComponent from "../SelectComponent";
+import Toastify from "../toastify";
 
 import uploadIcon from "../../assets/images/upload-1.png"
 import calendarIcon from "../../assets/images/011-calendar.png"
@@ -21,14 +22,25 @@ import youtube from "../../assets/images/social icons/youtube-1@2x.png";
 import twitter from "../../assets/images/social icons/twitter-1@2x.png";
 
 
+
 export default class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: "",
+            is_valid_username: "",
+            current_password: "",
+            new_password: "",
+            repeat_new_password: "",
+            use_name_instead_username: "",
+
             user_profile: {},
             user_id: "",
             first_name: "",
             last_name: "",
+            reference_first_name: "",
+            reference_last_name: "",
+            reference_phone_number: "",
             image: null,
             national_card_image: null,
             date_of_birth: momentJalaali(),
@@ -48,9 +60,6 @@ export default class MyProfile extends React.Component {
             current_city: {},
             current_address: "",
             phone_numbers: [],
-            introducing_first_name: "",
-            introducing_last_name: "",
-            introducing_phone_number: "",
             entertainments: [],
             films: [],
             books: [],
@@ -69,6 +78,7 @@ export default class MyProfile extends React.Component {
             newFavorFilm: "",
             newFavorBook: ""
         };
+        this.toast = new Toastify().toast;
         //assets
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
@@ -85,39 +95,39 @@ export default class MyProfile extends React.Component {
         //get list of all cities
         axiosInstance.axios.get('/information/city/')
             .then((cities) => {
-                this.cities = cities.data.results;
+                this.cities = cities.data;
             })
 
         //get list of all states(provinces)
         axiosInstance.axios.get('/information/state/')
             .then((states) => {
-                this.provinces = states.data.results;
+                this.provinces = states.data;
             })
 
         //get list of all jobs
         axiosInstance.axios.get('/information/job/')
             .then((jobs) => {
-                this.jobs = jobs.data.results;
+                this.jobs = jobs.data;
             })
 
         //get list of all degrees
         axiosInstance.axios.get('/information/degree/')
             .then((degrees) => {
-                this.degrees = degrees.data.results;
+                this.degrees = degrees.data;
             })
 
         //get list of all entertainments
         axiosInstance.axios.get('/information/entertainment/')
             .then((entertainments) => {
                 this.setState(() => ({
-                    entertainments: entertainments.data.results.map(e => ({...e, checked: false}))
+                    entertainments: entertainments.data.map(e => ({...e, checked: false}))
                 }));
             })
 
 
     }
 
-    setProfileInfo = async (userId) => {
+    setProfileInfo = async (userId, userName) => {
         axiosInstance.axios.get(`/information/profile/${userId}/`)
             .then(async profileResponse => {
                 const usrPro = profileResponse.data;
@@ -209,11 +219,13 @@ export default class MyProfile extends React.Component {
                     })
 
                 this.setState(() => ({
+                    username: userName,
                     user_id: userId,
                     first_name: usrPro.first_name,
                     last_name: usrPro.last_name,
-                    reference: usrPro.reference,
-                    referenced_profiles: usrPro.referenced_profiles,
+                    reference_first_name: usrPro.reference_first_name ? usrPro.reference_first_name : "",
+                    reference_last_name: usrPro.reference_last_name ? usrPro.reference_last_name : "",
+                    reference_phone_number: usrPro.reference_phone_number ? usrPro.reference_phone_number : "",
                     date_of_birth: (usrPro.date_of_birth !== null) ?
                         momentJalaali(usrPro.date_of_birth, "YYYY/M/D") :
                         momentJalaali(),
@@ -234,7 +246,9 @@ export default class MyProfile extends React.Component {
                     disease_history: usrPro.disease_history ? "yes" : (usrPro.disease_history === false ? "no" : ""),
                     disease_history_explanation: usrPro.disease_history_explanation ? usrPro.disease_history_explanation : "",
                     drug_history: usrPro.drug_history ? "yes" : (usrPro.drug_history === false ? "no" : ""),
-                    criminal_history: usrPro.criminal_history ? "yes" : (usrPro.criminal_history === false ? "no" : "")
+                    drug_history_explanation: usrPro.drug_history_explanation ? usrPro.drug_history_explanation : "",
+                    criminal_history: usrPro.criminal_history ? "yes" : (usrPro.criminal_history === false ? "no" : ""),
+                    criminal_history_explanation: usrPro.criminal_history_explanation ? usrPro.criminal_history_explanation : ""
                 }));
             })
             .catch((error) => {
@@ -256,31 +270,84 @@ export default class MyProfile extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called");
-        console.log("social media: ", this.state.social_medias);
+
+        if(this.state.new_password !== this.state.repeat_new_password) {
+            console.log("رمز عبور با تکرار آن یکسان نیست");
+        }
+        else if(this.state.new_password){
+            const updateUserPass = {
+                username: this.state.username,
+                password: this.state.new_password
+            }
+            console.log(updateUserPass);
+            axiosInstance.axios.patch(`/user/user/${this.state.user_id}/`, updateUserPass)
+                .then((response) => {
+                    this.toast.success("تغییرات حساب کاربری با موفقیت اعمال گردید");
+                })
+                .catch((error) => {
+                    this.toast.error("تغییرات رمز عبور صحیح نیست");
+                    console.log("error in update password: ", error.response.data);
+                })
+        }
         // let tempCurrentJobs = this.state.current_jobs.map(j=>j.url);{/*for future releases!*/}
         const updatedProfile = {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
+            first_name: this.state.first_name ? this.state.first_name : null,
+            last_name: this.state.last_name ? this.state.last_name : null,
+            reference_first_name: this.state.reference_first_name,
+            reference_last_name: this.state.reference_last_name,
+            reference_phone_number: this.state.reference_phone_number,
             date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString(),
-            birth_order: this.state.birth_order,
-            gender: this.state.gender,
-            marital_status: this.state.marital_status,
+            birth_order: this.state.birth_order ? this.state.birth_order : null,
+            gender: this.state.gender ? this.state.gender : null,
+            marital_status: this.state.marital_status ? this.state.marital_status : null,
             number_of_children: this.state.number_of_children ? this.state.number_of_children : null,
-            current_jobs: [this.state.current_jobs[0].url],
-            previous_jobs: [this.state.previous_jobs[0].url],
-            degrees: [this.state.degrees[0].url],
-            birth_city: this.state.birth_city.url,
-            current_city: this.state.current_city.url,
-            current_address: this.state.current_address ? this.state.current_address: null,
+            current_jobs: this.state.current_jobs[0] ? [this.state.current_jobs[0].url] : [],
+            current_jobs_explanation: this.state.current_jobs_explanation,
+            previous_jobs: this.state.previous_jobs[0] ? [this.state.previous_jobs[0].url] : [],
+            previous_jobs_explanation: this.state.previous_jobs_explanation,
+            degrees: this.state.degrees[0] ? [this.state.degrees[0].url] : [] ,
+            degrees_explanation: this.state.degrees_explanation,
+            birth_city: this.state.birth_city ? this.state.birth_city.url : "",
+            current_city: this.state.current_city ? this.state.current_city.url : "",
+            current_address: this.state.current_address ? this.state.current_address: "",
             entertainments: this.state.entertainments.filter(e=>e.checked===true).map(u=>u.url),
             interests_explanation: this.state.interests_explanation,
             disease_history: this.state.disease_history === "yes",
+            disease_history_explanation: this.state.disease_history_explanation,
             drug_history: this.state.drug_history === "yes",
+            drug_history_explanation: this.state.drug_history_explanation,
             criminal_history: this.state.criminal_history === "yes",
-
+            criminal_history_explanation: this.state.criminal_history_explanation
         }
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile);
+        // if(this.state.birth_city) {
+        //
+        //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {birth_city: this.state.birth_city.url})
+        //         .then((res) => {
+        //             console.log("res: ", res.data);
+        //         })
+        // }
+        // if(this.state.current_city) {
+        //     console.log("this.state.current_city url: ", this.state.current_city.url);
+        //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_city: this.state.current_city.url});
+        // }
+        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile)
+            .then((response) => {
+                this.toast.success("تغییرات با موفقیت اعمال گردید")
+            })
+            .catch((error) => {
+                console.log("an error in submission: ", error.response.data);
+            })
         axiosInstance.axios.patch(this.state.user_profile.social_medias, this.state.social_medias[0]);
+    }
+    setAccount = (event) => {
+        console.log("handleSetAccount called");
+        let name = event.target.name;
+        let val = event.target.value ? event.target.value : "";
+
+        this.setState(() => ({[name]: val}));
+        console.log(event);
+        console.log("event.target.name: " + name);
+        console.log("event.target.value: " + val);
     }
     handleOnChange = (event) => {
         console.log("handleOnChange called");
@@ -421,6 +488,7 @@ export default class MyProfile extends React.Component {
             })
     };
     handleImage = (event) => {
+        this.setState({image: event.target.files[0]});
         const formData = new FormData();
         formData.append("image", event.target.files[0]);
         const config = {
@@ -429,9 +497,9 @@ export default class MyProfile extends React.Component {
             }
         }
         axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, formData, config);
-        this.setState({image: event.target.files[0]});
     }
     handleNationalCardImage = (event) => {
+        this.setState({national_card_image: event.target.files[0]});
         const formData = new FormData();
         formData.append("national_card_image", event.target.files[0]);
         const config = {
@@ -440,7 +508,6 @@ export default class MyProfile extends React.Component {
             }
         }
         axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, formData, config);
-        this.setState({national_card_image: event.target.files[0]});
     }
 
     render() {
@@ -491,7 +558,7 @@ export default class MyProfile extends React.Component {
                                 <div className={"pro-form-group"}>
                                     <UploadFile handleFile={this.handleImage} id={"image-profile-label"}/>
                                 </div>
-                                <ChangePassword getUserId={this.setProfileInfo}/>
+                                <ChangePassword getUserId={this.setProfileInfo} setAccount={this.setAccount}/>
                                 <hr className={"pro-hr"}/>
                                 <div className={"inline-form-groups"} style={{alignItems: "flex-start"}}>
                                     <div style={{width: "50%"}}>
@@ -532,48 +599,46 @@ export default class MyProfile extends React.Component {
                                         <div className={"pro-form-group"}>
                                             <input
                                                 type={"text"}
-                                                name={"introducing_first_name"}
-                                                id={"introducing_first_name"}
+                                                name={"reference_first_name"}
+                                                id={"reference_first_name"}
                                                 className={"form-field-text"}
                                                 onChange={this.handleOnChange}
                                                 placeholder={"نام معرف"}
                                                 onKeyDown={this.handleNextInput}
-                                                // required={true}
-                                                value={this.state.introducing_first_name}
+                                                value={this.state.reference_first_name}
                                             />
-                                            <label htmlFor={"introducing_first_name"} className={"form-label-text"}>
+                                            <label htmlFor={"reference_first_name"} className={"form-label-text"}>
                                                 نام معرف
                                             </label>
                                         </div>
                                         <div className={"pro-form-group"}>
                                             <input
                                                 type={"text"}
-                                                name={"introducing_last_name"}
-                                                id={"introducing_last_name"}
+                                                name={"reference_last_name"}
+                                                id={"reference_last_name"}
                                                 className={"form-field-text"}
                                                 onChange={this.handleOnChange}
                                                 placeholder={"نام خانوادگی معرف"}
                                                 onKeyDown={this.handleNextInput}
-                                                // required={true}
-                                                value={this.state.introducing_last_name}
+                                                value={this.state.reference_last_name}
                                             />
-                                            <label htmlFor={"introducing_last_name"} className={"form-label-text"}>
+                                            <label htmlFor={"reference_last_name"} className={"form-label-text"}>
                                                 نام خانوادگی معرف
                                             </label>
                                         </div>
                                         <div className={"pro-form-group"}>
                                             <input
                                                 type={"tel"}
-                                                name={"introducing_phone_number"}
-                                                id={"introducing_phone_number"}
+                                                name={"reference_phone_number"}
+                                                id={"reference_phone_number"}
                                                 className={"form-field-text"}
                                                 onChange={this.handleOnChange}
+                                                pattern={"[0-9]{10}"}
                                                 placeholder={"شماره همراه معرف"}
                                                 onKeyDown={this.handleNextInput}
-                                                // required={true}
-                                                value={this.state.introducing_phone_number}
+                                                value={this.state.reference_phone_number}
                                             />
-                                            <label htmlFor={"introducing_phone_number"} className={"form-label-text"}>
+                                            <label htmlFor={"reference_phone_number"} className={"form-label-text"}>
                                                 شماره همراه معرف
                                             </label>
                                             <div className={"input-field-caption"}>
@@ -591,7 +656,9 @@ export default class MyProfile extends React.Component {
                                         </span>
                                     </div>
                                     <label className={"national-card-field"} style={{}}>
-                                        <UploadFile handleFile={this.handleNationalCardImage} id={"national-card-label"}/>
+                                        <UploadFile
+                                            handleFile={this.handleNationalCardImage}
+                                            id={"national-card-label"}/>
                                         <img src={uploadIcon} alt={"uploadIcon"} style={{margin: "0 5px"}}/>
                                     </label>
                                 </div>
@@ -854,7 +921,7 @@ export default class MyProfile extends React.Component {
                                             style={{width: "600px"}}
                                             value={this.state.degrees_explanation}
                                         />
-                                        <label htmlFor={"degree_explanation"} className={"form-label-text"}>
+                                        <label htmlFor={"degrees_explanation"} className={"form-label-text"}>
                                             رشته تحصیلی
                                         </label>
                                     </div>
@@ -889,11 +956,13 @@ export default class MyProfile extends React.Component {
                                         <option value={""}>
 
                                         </option>
-                                        {this.cities.map((city, index) => (
-                                            <option value={city.url} key={index}>
-                                                {city.name}
-                                            </option>
-                                        ))}
+                                        {
+                                            this.cities.filter(city => city.state === this.state.birth_province.url).map((c, i) => (
+                                                <option value={c.url} key={i}>
+                                                    {c.name}
+                                                </option>
+                                            ))
+                                        }
                                     </SelectComponent>
                                 </div>
                                 <div className={"inline-form-groups"}>
@@ -927,11 +996,13 @@ export default class MyProfile extends React.Component {
                                         <option value={""}>
 
                                         </option>
-                                        {this.cities.map((city, index) => (
-                                            <option value={city.url} key={index}>
-                                                {city.name}
-                                            </option>
-                                        ))}
+                                        {
+                                            this.cities.filter(city => city.state === this.state.current_province.url).map((c, i) => (
+                                                <option value={c.url} key={i}>
+                                                    {c.name}
+                                                </option>
+                                            ))
+                                        }
                                     </SelectComponent>
                                 </div>
                                 <div className={"pro-form-group"}>
@@ -958,7 +1029,6 @@ export default class MyProfile extends React.Component {
                                         id={"landline_number"}
                                         className={"form-field-text"}
                                         placeholder={"شماره ثابت"}
-                                        // required={true}
                                         onKeyDown={this.handleNextInput}
                                         onChange={this.handleOnChangeSocialMedia}
                                         value={this.state.social_medias[0] && this.state.social_medias[0].landline_number}
@@ -1243,6 +1313,7 @@ export default class MyProfile extends React.Component {
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "400px",borderColor: "#AAAAAA", color: "#606060"}}
+                                            value={this.state.disease_history_explanation}
                                         />
                                         <label htmlFor={"disease_history_explanation"}
                                                className={"form-label-text"}
@@ -1299,6 +1370,7 @@ export default class MyProfile extends React.Component {
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "400px", borderColor: "#AAAAAA", color: "#606060"}}
+                                            value={this.state.drug_history_explanation}
                                         />
                                         <label htmlFor={"drug_history_explanation"}
                                                className={"form-label-text"}
@@ -1354,6 +1426,7 @@ export default class MyProfile extends React.Component {
                                             placeholder={"توضیح دهید"}
                                             onKeyDown={this.handleNextInput}
                                             style={{width: "400px", borderColor: "#AAAAAA", color: "#606060"}}
+                                            value={this.state.criminal_history_explanation}
                                         />
                                         <label htmlFor={"criminal_history_explanation"}
                                                className={"form-label-text"}

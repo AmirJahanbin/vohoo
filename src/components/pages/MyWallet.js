@@ -134,8 +134,13 @@ export default class MyWallet extends React.Component {
 
                 setTimeout(() => {
                     console.log("transaction_id" , this.state.transaction_id);
+                    const config = {
+                        headers: {
+                            "cors": true
+                        }
+                    }
                     axiosInstance.axios.defaults.headers.common['Authorization'] = null;
-                    axiosInstance.axios.post(`http://panel.aqayepardakht.ir/startpay/${this.state.transaction_id}`)
+                    axiosInstance.axios.post(`http://panel.aqayepardakht.ir/startpay/${this.state.transaction_id}`, config)
                         .then((response) => {
                             console.log("response of transaction", response.data);
                         })

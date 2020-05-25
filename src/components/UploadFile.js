@@ -55,12 +55,16 @@ const StyledUploadFile = styled.div`
 export default class UploadFile extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             imageProfile: avatar,
             nationalCard: nationalCard,
         }
+
     }
-    componentDidMount() {
+    async componentDidMount() {
+        const token = await axiosInstance.getAuthKey();
+        axiosInstance.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
         axiosInstance.axios.post('/user/get_user/')
             .then(userResponse => {
                 // console.log(userResponse.data);
@@ -78,15 +82,15 @@ export default class UploadFile extends React.Component {
                         }
                     })
             })
+            .catch((error) => {
+                console.log("error in upload file: ", error.response.data);
+            })
 
     }
-
     handleImageFile = (event) => {
         if(event.target.files[0] !== undefined){
             this.setState({nationalCard: URL.createObjectURL(event.target.files[0])});
             this.setState({imageProfile: URL.createObjectURL(event.target.files[0])});
-            const tempFile = event.target.files[0];
-            this.setState(() => ({imageFile: tempFile}));
             this.props.handleFile(event);
         }
     }

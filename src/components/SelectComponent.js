@@ -34,7 +34,7 @@ width: 300px;
 }
 .select-form-field:not(:empty) ~ .select-form-label {
   font-size: ${props => props.value ? "2rem" : "36px"};
-  cursor: text;
+  cursor: pointer;
   top: ${props => props.value ? "-5px" : "15px"};
   color: ${props => props.value ? "#606060" : "#D9D9D9"};
 }
