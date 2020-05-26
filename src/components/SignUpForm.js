@@ -241,8 +241,8 @@ export default class SignUpForm extends React.Component {
                         id={"verificationCode"}
                         className={"form-field"}
                         placeholder={"کد اعتبارسنجی"}
-                        pattern={".{4}"}
-                        title={"کد ۴ رقمی ارسال شده را وارد کنید"}
+                        pattern={".{5}"}
+                        title={"کد ۵ رقمی ارسال شده را وارد کنید"}
                         required={true}
                         onKeyDown={this.handleNextInput}
                         onChange={this.handleOnChange}

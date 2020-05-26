@@ -128,7 +128,7 @@ export default class MyProfile extends React.Component {
     }
 
     setProfileInfo = async (userId, userName) => {
-        axiosInstance.axios.get(`/information/profile/${userId}/`)
+        await axiosInstance.axios.get(`/information/profile/${userId}/`)
             .then(async profileResponse => {
                 const usrPro = profileResponse.data;
                 this.setState(() => ({user_profile: usrPro}));
@@ -270,7 +270,8 @@ export default class MyProfile extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log("handle submit called");
-
+        console.log("submit username: ", this.state.username);
+        console.log("submit password: ", this.state.new_password);
         if(this.state.new_password !== this.state.repeat_new_password) {
             console.log("رمز عبور با تکرار آن یکسان نیست");
         }
@@ -307,8 +308,8 @@ export default class MyProfile extends React.Component {
             previous_jobs_explanation: this.state.previous_jobs_explanation,
             degrees: this.state.degrees[0] ? [this.state.degrees[0].url] : [] ,
             degrees_explanation: this.state.degrees_explanation,
-            birth_city: this.state.birth_city ? this.state.birth_city.url : "",
-            current_city: this.state.current_city ? this.state.current_city.url : "",
+            birth_city: (this.state.birth_city && this.state.birth_province) ? this.state.birth_city.url : "",
+            current_city: (this.state.current_city && this.state.current_province) ? this.state.current_city.url : "",
             current_address: this.state.current_address ? this.state.current_address: "",
             entertainments: this.state.entertainments.filter(e=>e.checked===true).map(u=>u.url),
             interests_explanation: this.state.interests_explanation,
@@ -488,15 +489,8 @@ export default class MyProfile extends React.Component {
             })
     };
     handleImage = (event) => {
+        console.log("hamdle image called");
         this.setState({image: event.target.files[0]});
-        const formData = new FormData();
-        formData.append("image", event.target.files[0]);
-        const config = {
-            headers: {
-                "content-type": "multipart/form-data"
-            }
-        }
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, formData, config);
     }
     handleNationalCardImage = (event) => {
         this.setState({national_card_image: event.target.files[0]});
@@ -708,7 +702,7 @@ export default class MyProfile extends React.Component {
                                             name={"gender"}
                                             className={"form-field-radio"}
                                             id={"gender_male"}
-                                            required={true}
+                                            // required={true}
                                             onChange={this.handleOnChange}
                                             onKeyDown={this.handleNextInput}
                                             value={"male"}
@@ -740,7 +734,7 @@ export default class MyProfile extends React.Component {
                                             name={"marital_status"}
                                             className={"form-field-radio"}
                                             id={"married"}
-                                            required={true}
+                                            // required={true}
                                             value={"married"}
                                             onChange={this.handleMaritalStatus}
                                             checked={this.state.marital_status === "married"}
@@ -934,7 +928,7 @@ export default class MyProfile extends React.Component {
                                         value={this.state.birth_province && this.state.birth_province.url}
                                         label={"استان محل تولد"}
                                         style={{marginLeft: '40px'}}
-                                        required={true}
+                                        // required={true}
                                     >
                                         <option value={""}>
 
@@ -951,12 +945,13 @@ export default class MyProfile extends React.Component {
                                         handleOnChange={this.handleOnChangeBirthCity}
                                         value={this.state.birth_city && this.state.birth_city.url}
                                         label={"شهر محل تولد"}
-                                        required={true}
+                                        // required={true}
                                     >
                                         <option value={""}>
 
                                         </option>
                                         {
+                                            this.state.birth_province &&
                                             this.cities.filter(city => city.state === this.state.birth_province.url).map((c, i) => (
                                                 <option value={c.url} key={i}>
                                                     {c.name}
@@ -972,13 +967,14 @@ export default class MyProfile extends React.Component {
                                         handleOnChange={this.handleOnChangeCurrentProvince}
                                         value={this.state.current_province && this.state.current_province.url}
                                         label={"استان محل سکونت"}
-                                        required={true}
+                                        // required={true}
                                         style={{marginLeft: '40px'}}
                                     >
                                         <option value={""}>
 
                                         </option>
-                                        {this.provinces.map((province, index) => (
+                                        {
+                                            this.provinces.map((province, index) => (
                                             <option value={province.url} key={index}>
                                                 {province.name}
                                             </option>
@@ -990,13 +986,13 @@ export default class MyProfile extends React.Component {
                                         handleOnChange={this.handleOnChangeCurrentCity}
                                         value={this.state.current_city && this.state.current_city.url}
                                         label={"شهر محل سکونت"}
-                                        required={true}
+                                        // required={true}
                                         style={{marginLeft: '40px'}}
                                     >
                                         <option value={""}>
 
                                         </option>
-                                        {
+                                        {this.state.current_province &&
                                             this.cities.filter(city => city.state === this.state.current_province.url).map((c, i) => (
                                                 <option value={c.url} key={i}>
                                                     {c.name}
@@ -1014,7 +1010,7 @@ export default class MyProfile extends React.Component {
                                         onChange={this.handleOnChange}
                                         placeholder={"آدرس محل سکونت"}
                                         onKeyDown={this.handleNextInput}
-                                        required={true}
+                                        // required={true}
                                         style={{width: "660px"}}
                                         value={this.state.current_address}
                                     />
@@ -1279,7 +1275,7 @@ export default class MyProfile extends React.Component {
                                                     name={"disease_history"}
                                                     className={"form-field-radio"}
                                                     id={"has_disease_history"}
-                                                    required={true}
+                                                    // required={true}
                                                     value={"yes"}
                                                     checked={this.state.disease_history === "yes"}
                                                     onChange={this.handleOnChangeCaseHistory}
@@ -1336,7 +1332,7 @@ export default class MyProfile extends React.Component {
                                                     name={"drug_history"}
                                                     className={"form-field-radio"}
                                                     id={"has_drug_history"}
-                                                    required={true}
+                                                    // required={true}
                                                     value={"yes"}
                                                     checked={this.state.drug_history === "yes"}
                                                     onChange={this.handleOnChangeCaseHistory}
@@ -1444,7 +1440,7 @@ export default class MyProfile extends React.Component {
                     <div className={"left-fixed-container"}>
                         <HomePageLink className={"top-left-home-page-logo"}/>
                         <div className={"pro-submit-btn-container"}>
-                            <button type={"button"} className={"edit-profile-btn"} onClick={this.handleSubmit} form={"big-form"}>
+                            <button type={"submit"} className={"edit-profile-btn"} onSubmit={this.handleSubmit} form={"big-form"}>
                                 ثبت تغییرات
                             </button>
                         </div>

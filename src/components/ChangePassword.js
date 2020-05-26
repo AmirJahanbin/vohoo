@@ -52,6 +52,7 @@ export default class ChangePassword extends React.Component {
         // console.log("event.target.value: " + val);
     };
     handleIsValidUsername = (event) => {
+        this.props.setAccount(event);
         this.timer = true;
         let val = event.target.value;
         this.setState(() => ({
@@ -66,7 +67,9 @@ export default class ChangePassword extends React.Component {
                             this.timer = false;
                             console.log("handle is valid username called: ", stateResponse.data);
                             this.setState(() => ({is_valid_username: false}));
-
+                        }
+                        else {
+                            console.log("username is valid and Im going to set that fucking shit");
                         }
                     })
             }
@@ -117,7 +120,6 @@ export default class ChangePassword extends React.Component {
                         onChange={this.handleOnChange}
                         onKeyDown={this.handleNextInput}
                         // required={true}
-                        // defaultValue={this.state.username}
                     />
                     <label htmlFor={"current_password"} className={"form-label-text"}>
                         رمز عبور فعلی
@@ -139,8 +141,7 @@ export default class ChangePassword extends React.Component {
                         title={"رمز عبور باید حداقل ۸ کاراکتر داشته باشد"}
                         onChange={this.handleOnChange}
                         onKeyDown={this.handleNextInput}
-                        // required={true}
-                        // defaultValue={this.state.username}
+                        required={this.state.username !== this.state.old_username}
                     />
                     <label htmlFor={"new_password"} className={"form-label-text"}>
                         رمز عبور جدید
@@ -160,8 +161,7 @@ export default class ChangePassword extends React.Component {
                         placeholder={"تکرار رمز عبور"}
                         onChange={this.handleOnChange}
                         onKeyDown={this.handleNextInput}
-                        // required={true}
-                        // defaultValue={this.state.username}
+                        required={this.state.username !== this.state.old_username}
                     />
                     <label htmlFor={"repeat_new_password"} className={"form-label-text"}>
                         تکرار رمز عبور
