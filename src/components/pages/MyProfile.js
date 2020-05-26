@@ -627,9 +627,10 @@ export default class MyProfile extends React.Component {
                                                 id={"reference_phone_number"}
                                                 className={"form-field-text"}
                                                 onChange={this.handleOnChange}
-                                                pattern={"[0-9]{10}"}
+                                                pattern={"[0-9]{11}"}
                                                 placeholder={"شماره همراه معرف"}
                                                 onKeyDown={this.handleNextInput}
+                                                title={"شماره را به انگلیسی وارد کنید"}
                                                 value={this.state.reference_phone_number}
                                             />
                                             <label htmlFor={"reference_phone_number"} className={"form-label-text"}>
