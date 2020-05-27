@@ -5,7 +5,7 @@ class Axios {
         console.log('creating axios instance');
 
         this.axios = axios.create({
-            baseURL: 'http://5.253.25.176:8000/api',
+            baseURL: 'http://5.253.25.176:8000/api'
             // timeout: 10000
         });
 

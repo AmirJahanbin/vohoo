@@ -1,5 +1,6 @@
 import React from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 import Home from "../components/pages/Home";
 import CourseRegister from "../components/pages/CourseRegister";
 import Menu from "../components/pages/Menu";
@@ -24,16 +25,22 @@ const AppRouter = () => (
                 <Route path={"/course-register"} component={CourseRegister}/>
                 <Route path={"/menu"}            component={Menu}/>
                 <Route path={"/sign-up"}         component={SignUp}/>
-                <Route path={"/login"}           component={Login}/>
+                <Route path={"/login"}>
+                    <Login/>
+                </Route>
                 <Route path={"/my-courses"}      component={MyCourses}/>
-                <Route path={"/my-profile"}      component={MyProfile}/>
+                <PrivateRoute path={"/my-profile"}>
+                    <MyProfile/>
+                </PrivateRoute>
                 <Route path={"/invoice"}         component={Invoice}/>
                 <Route path={"/massages"}        component={Messages}/>
                 <Route path={"/calendar"}        component={Calendar}/>
                 <Route path={"/gathering"}       component={Gathering}/>
                 <Route path={"/my-activity"}     component={MyActivity}/>
                 <Route path={"/contact-us"}      component={ContactUs}/>
-                <Route path={"/my-wallet"}       component={MyWallet}/>
+                <PrivateRoute path={"/my-wallet"}>
+                    <MyWallet/>
+                </PrivateRoute>
                 <Route><NotFound/></Route>
             </Switch>
         </div>

@@ -1,7 +1,6 @@
 import React from "react";
-import axios from 'axios';
 import styled from "styled-components";
-import Toastify from "./toastify";
+import Toastify from "./Toastify";
 import axiosInstance from "../connetion/axios";
 import StyledForm from "../styled-components/StyledForm";
 
@@ -20,6 +19,7 @@ const Input = styled.input`
     border-width: 2px;
   }
 `;
+const toast = new Toastify().toast;
 export default class SignUpForm extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +35,7 @@ export default class SignUpForm extends React.Component {
             verification_id: "",
             have_code: false
         }
-        this.toast = new Toastify().toast;
+
     }
 
     handleOnChange = (event) => {
@@ -54,16 +54,16 @@ export default class SignUpForm extends React.Component {
             axiosInstance.axios.defaults.headers.common['Authorization'] = null;
             axiosInstance.axios.post('/information/phone_number_validation/', sendPhoneNumber)
                 .then((response) => {
-                    this.toast.info("کد اعتبار سنجی به شماره شما ارسال گردید");
+                    toast.info("کد اعتبار سنجی به شماره شما ارسال گردید");
                     this.setState(() => ({verification_id: response.data.id}));
                     console.log("this is code: ", response.data.id);
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.toast.error("این شماره قبلاً در سامانه ثبت شده‌است");
+                    toast.error("این شماره قبلاً در سامانه ثبت شده‌است");
                 })
         } else {
-            this.toast.error("لطفا شماره همراه خود را بصورت صحیح وارد نمائید");
+            toast.error("لطفا شماره همراه خود را بصورت صحیح وارد نمائید");
         }
 
 
@@ -74,53 +74,49 @@ export default class SignUpForm extends React.Component {
     handleOnSubmit = (event) => {
         event.preventDefault();
         console.log("handle submit called");
-
-            if(this.state.password !== this.state.repeatPassword) {
-                this.toast.error("رمز عبور با تکرار آن برار نیست")
+        if (this.state.password !== this.state.repeatPassword) {
+            toast.error("رمز عبور با تکرار آن برار نیست")
+        } else {
+            const sendCode = {
+                id: this.state.verification_id,
+                code: this.state.verificationCode
             }
-            else {
-                const sendCode = {
-                    id: this.state.verification_id,
-                    code: this.state.verificationCode
-                }
-                const sendSignUpForm = {
-                    username: this.state.username,
-                    password: this.state.password,
-                    country_code: this.state.country_code,
-                    phone_number: this.state.phone_number,
-                    first_name: this.state.first_name,
-                    last_name: this.state.last_name
-                }
-                const sendLoginUserPass = {
-                    username: this.state.username,
-                    password: this.state.password
-                }
-                axiosInstance.axios.post('/information/code_validation/', sendCode)
-                    .then((response) => {
-                        if (response.statusText === "OK") {
-                            axiosInstance.axios.post('/user/signup/', sendSignUpForm)
-                                .then(() => {
-                                    axiosInstance.axios.post('/auth/login/', sendLoginUserPass)
-                                        .then((getToken) => {
-                                            localStorage.setItem('token', getToken.data.key);
-                                            axiosInstance.setAuthKey(getToken.data.key);
-                                            this.props.handleRedirectToMenu();
-                                            this.toast.success(`${this.state.first_name} سلام `);
-                                        })
-                                        .catch((e) => {
-                                            console.log(e.status);
-                                            this.toast.error("چرا اینجا میای؟")
-                                        })
-                                })
-                                .catch((e) => {
-                                    this.toast.error("این نام کاربری قبلا در سامانه ثبت شده‌است");
-                                })
-                        }
-                    })
-                    .catch((e) => {
-                        this.toast.error("کد اعتبارسنجی نادرست است")
-                    })
+            const sendSignUpForm = {
+                username: this.state.username,
+                password: this.state.password,
+                country_code: this.state.country_code,
+                phone_number: this.state.phone_number,
+                first_name: this.state.first_name,
+                last_name: this.state.last_name
             }
+            const sendLoginUserPass = {
+                username: this.state.username,
+                password: this.state.password
+            }
+            axiosInstance.axios.post('/information/code_validation/', sendCode)
+                .then((response) => {
+                    if (response.statusText === "OK") {
+                        axiosInstance.axios.post('/user/signup/', sendSignUpForm)
+                            .then(() => {
+                                axiosInstance.axios.post('/auth/login/', sendLoginUserPass)
+                                    .then((getToken) => {
+                                        localStorage.setItem('token', getToken.data.key);
+                                        axiosInstance.setAuthKey(getToken.data.key);
+                                        this.props.handleRedirectToMenu();
+                                        toast.success(`${this.state.first_name} سلام `);
+                                    })
+                                    .catch((e) => {
+                                    })
+                            })
+                            .catch((e) => {
+                                toast.error("این نام کاربری قبلا در سامانه ثبت شده‌است");
+                            })
+                    }
+                })
+                .catch((e) => {
+                    toast.error("کد اعتبارسنجی نادرست است")
+                })
+        }
     }
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
@@ -143,6 +139,8 @@ export default class SignUpForm extends React.Component {
                         className={"form-field"}
                         placeholder={"نام کاربری"}
                         autoFocus={true}
+                        pattern={"[A-Za-z0-9._]{1,}"}
+                        title={"کاراکتر‌های مجاز:حرف و عدد لاتین نثطه و ـ"}
                         required={true}
                         onChange={this.handleOnChange}
                         onKeyDown={this.handleNextInput}
@@ -150,6 +148,11 @@ export default class SignUpForm extends React.Component {
                     <label htmlFor={"username"} className={"form-label"}>
                         نام کاربری
                     </label>
+                    <div className={"form-field-caption"}>
+                        <span style={{fontSize: "19px", color: "#C7BADC"}}>
+                            کاراکتر‌های مجاز:حرف و عدد لاتین نقطه و ـ
+                        </span>
+                    </div>
                 </div>
                 <div className={"inline-form-groups"}
                      style={{flexWrap: "unset", alignItems: "baseline", marginBottom: "-30px"}}>
@@ -168,15 +171,10 @@ export default class SignUpForm extends React.Component {
                         <label htmlFor={"phone_number"} className={"form-label"}>
                             شماره همراه
                         </label>
-                        <div className={"input-field-caption"}>
-                            <button
-                                type={"button"}
-                                onClick={this.handleVerificationCode}
-                                style={{color: "#C7BADC"}}
-                                disabled={this.state.have_code}
-                            >
-                                دریافت کد اعتبار سنجی
-                            </button>
+                        <div className={"form-field-caption"} style={{direction: "ltr"}}>
+                        <span style={{fontSize: "19px", color: "#C7BADC"}}>
+                            913 123 4567
+                        </span>
                         </div>
                     </div>
                     <div className={"form-group"} style={{width: "40px"}}>
@@ -204,6 +202,8 @@ export default class SignUpForm extends React.Component {
                         id={"first_name"}
                         className={"form-field"}
                         placeholder={"نام"}
+                        title={"لطفاً صفحه‌کلید خود را در حالت فارسی قرار دهید"}
+                        pattern={"[^{A-Za-z}]{1,}"}
                         required={true}
                         onKeyDown={this.handleNextInput}
                         onChange={this.handleOnChange}
@@ -211,6 +211,11 @@ export default class SignUpForm extends React.Component {
                     <label htmlFor={"first_name"} className={"form-label"}>
                         نام
                     </label>
+                    <div className={"form-field-caption"}>
+                        <span style={{fontSize: "19px", color: "#C7BADC"}}>
+                            لطفاً صفحه‌کلید خود را در حالت فارسی قرار دهید
+                        </span>
+                    </div>
                 </div>
                 <div className={"form-group"} style={{ marginBottom: "-5px"}}>
                     <input
@@ -250,6 +255,16 @@ export default class SignUpForm extends React.Component {
                     <label htmlFor={"verificationCode"} className={"form-label"}>
                         کد اعتبارسنجی
                     </label>
+                    <div className={"input-field-caption"}>
+                        <button
+                            type={"button"}
+                            onClick={this.handleVerificationCode}
+                            style={{color: "#C7BADC"}}
+                            disabled={this.state.have_code}
+                        >
+                            دریافت کد اعتبار سنجی
+                        </button>
+                    </div>
                 </div>
                 <div className={"form-group"}>
                     <input
@@ -259,12 +274,19 @@ export default class SignUpForm extends React.Component {
                         className={"form-field"}
                         placeholder={"نام خانوادگی"}
                         required={true}
+                        title={"لطفاً صفحه‌کلید خود را در حالت فارسی قرار دهید"}
+                        pattern={"[^{A-Za-z}]{1,}"}
                         onKeyDown={this.handleNextInput}
                         onChange={this.handleOnChange}
                     />
                     <label htmlFor={"last_name"} className={"form-label"}>
                         نام خانوادگی
                     </label>
+                    <div className={"form-field-caption"}>
+                        <span style={{fontSize: "19px", color: "#C7BADC"}}>
+                            لطفاً صفحه‌کلید خود را در حالت فارسی قرار دهید
+                        </span>
+                    </div>
                 </div>
                 <div className={"form-group"}>
                     <input
@@ -281,7 +303,7 @@ export default class SignUpForm extends React.Component {
                         تکرار رمز عبور
                     </label>
                 </div>
-                <Input type={"submit"} value={"ثبت نام"} className={"sign-up-btn"}/>
+                <Input type={"submit"} value={"ثبت نام"} className={"sign-up-btn"} onSubmit={this.handleOnSubmit}/>
             </StyledForm>
             // </div>
         )

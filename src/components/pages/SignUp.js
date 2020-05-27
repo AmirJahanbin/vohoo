@@ -44,6 +44,7 @@ export default class SignUp extends React.Component{
             last_name: ""
         }
     }
+
     handleRedirectToMenu = () => {
         this.props.history.push("/menu");
     }

@@ -10,16 +10,23 @@ export default class Toastify extends Component {
         super(props);
         this.toast = toast;
         toast.configure({
-            autoClose: 8000,
-            draggable: false,
-            //etc you get the idea
-        });
+            autoClose: 5000
+        })
     }
 
     render(){
+        console.log("toastify rendered");
         return (
             <div>
-                <ToastContainer />
+                <ToastContainer
+                autoClose={5000}
+                newestOnTop={true}
+                closeOnClick
+                rtl={true}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover
+                />
             </div>
         );
     }

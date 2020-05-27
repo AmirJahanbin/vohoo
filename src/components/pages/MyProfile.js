@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 import axiosInstance from '../../connetion/axios';
 import DatePicker from 'react-datepicker2';
 import momentJalaali from 'moment-jalaali';
@@ -9,7 +10,7 @@ import MenuLink from "../MenuLink";
 import ChangePassword from "../ChangePassword";
 import UploadFile from "../UploadFile";
 import SelectComponent from "../SelectComponent";
-import Toastify from "../toastify";
+import Toastify from "../Toastify";
 
 import uploadIcon from "../../assets/images/upload-1.png"
 import calendarIcon from "../../assets/images/011-calendar.png"
@@ -23,11 +24,12 @@ import twitter from "../../assets/images/social icons/twitter-1@2x.png";
 
 
 
-export default class MyProfile extends React.Component {
+class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
+            old_username: "",
             is_valid_username: "",
             current_password: "",
             new_password: "",
@@ -79,6 +81,11 @@ export default class MyProfile extends React.Component {
             newFavorBook: ""
         };
         this.toast = new Toastify().toast;
+
+        // this.history = useHistory();
+        // this.location = useLocation();
+        // this.from = this.location || {from : {pathname: "/"}}
+
         //assets
         this.number_of_children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.jobs = [];
@@ -220,6 +227,7 @@ export default class MyProfile extends React.Component {
 
                 this.setState(() => ({
                     username: userName,
+                    old_username: userName,
                     user_id: userId,
                     first_name: usrPro.first_name,
                     last_name: usrPro.last_name,
@@ -267,78 +275,98 @@ export default class MyProfile extends React.Component {
             event.preventDefault();
         }
     };
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
         console.log("handle submit called");
         console.log("submit username: ", this.state.username);
         console.log("submit password: ", this.state.new_password);
-        if(this.state.new_password !== this.state.repeat_new_password) {
-            console.log("رمز عبور با تکرار آن یکسان نیست");
-        }
-        else if(this.state.new_password){
-            const updateUserPass = {
-                username: this.state.username,
-                password: this.state.new_password
+        let token = "";
+        if(this.state.current_password) {
+            const userPass = {
+                username: this.state.old_username,
+                password: this.state.current_password
             }
-            console.log(updateUserPass);
-            axiosInstance.axios.patch(`/user/user/${this.state.user_id}/`, updateUserPass)
+            try {
+                const responseLogin = await axiosInstance.axios.post('/auth/login/', userPass, {headers: {Authorization: null}});
+                token = responseLogin.data.key;
+            }
+            catch (e) {
+                this.toast.error("رمز عبور فعلی نادرست است");
+
+            }
+        }
+        if (this.state.current_password === "" || token){
+            if(this.state.new_password !== this.state.repeat_new_password) {
+                console.log("رمز عبور با تکرار آن یکسان نیست");
+            }
+            else if(this.state.new_password){
+                const updateUserPass = {
+                    username: this.state.username,
+                    password: this.state.new_password
+                }
+                console.log(updateUserPass);
+                axiosInstance.axios.patch(`/user/user/${this.state.user_id}/`, updateUserPass)
+                    .then((response) => {
+                        this.toast.success("تغییرات حساب کاربری با موفقیت اعمال گردید");
+                    })
+                    .catch((error) => {
+                        this.toast.error("تغییرات رمز عبور صحیح نیست");
+                        console.log("error in update password: ", error.response.data);
+                    })
+            }
+            // let tempCurrentJobs = this.state.current_jobs.map(j=>j.url);{/*for future releases!*/}
+            const updatedProfile = {
+                first_name: this.state.first_name ? this.state.first_name : null,
+                last_name: this.state.last_name ? this.state.last_name : null,
+                reference_first_name: this.state.reference_first_name,
+                reference_last_name: this.state.reference_last_name,
+                reference_phone_number: this.state.reference_phone_number,
+                date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString(),
+                birth_order: this.state.birth_order ? this.state.birth_order : null,
+                gender: this.state.gender ? this.state.gender : null,
+                marital_status: this.state.marital_status ? this.state.marital_status : null,
+                number_of_children: this.state.number_of_children ? this.state.number_of_children : null,
+                current_jobs: this.state.current_jobs[0] ? [this.state.current_jobs[0].url] : [],
+                current_jobs_explanation: this.state.current_jobs_explanation,
+                previous_jobs: this.state.previous_jobs[0] ? [this.state.previous_jobs[0].url] : [],
+                previous_jobs_explanation: this.state.previous_jobs_explanation,
+                degrees: this.state.degrees[0] ? [this.state.degrees[0].url] : [] ,
+                degrees_explanation: this.state.degrees_explanation,
+                birth_city: (this.state.birth_city && this.state.birth_province) ? this.state.birth_city.url : "",
+                current_city: (this.state.current_city && this.state.current_province) ? this.state.current_city.url : "",
+                current_address: this.state.current_address ? this.state.current_address: "",
+                entertainments: this.state.entertainments.filter(e=>e.checked===true).map(u=>u.url),
+                interests_explanation: this.state.interests_explanation,
+                disease_history: this.state.disease_history === "yes",
+                disease_history_explanation: this.state.disease_history_explanation,
+                drug_history: this.state.drug_history === "yes",
+                drug_history_explanation: this.state.drug_history_explanation,
+                criminal_history: this.state.criminal_history === "yes",
+                criminal_history_explanation: this.state.criminal_history_explanation
+            }
+            // if(this.state.birth_city) {
+            //
+            //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {birth_city: this.state.birth_city.url})
+            //         .then((res) => {
+            //             console.log("res: ", res.data);
+            //         })
+            // }
+            // if(this.state.current_city) {
+            //     console.log("this.state.current_city url: ", this.state.current_city.url);
+            //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_city: this.state.current_city.url});
+            // }
+            await axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile)
                 .then((response) => {
-                    this.toast.success("تغییرات حساب کاربری با موفقیت اعمال گردید");
+                    this.toast.success("تغییرات با موفقیت اعمال گردید")
                 })
                 .catch((error) => {
-                    this.toast.error("تغییرات رمز عبور صحیح نیست");
-                    console.log("error in update password: ", error.response.data);
+                    console.log("an error in submission: ", error.response.data);
                 })
+            await axiosInstance.axios.patch(this.state.user_profile.social_medias, this.state.social_medias[0]);
+            let { from } = this.props.location.state || { from: { pathname: "/" }};
+            this.props.history.replace(from);
         }
-        // let tempCurrentJobs = this.state.current_jobs.map(j=>j.url);{/*for future releases!*/}
-        const updatedProfile = {
-            first_name: this.state.first_name ? this.state.first_name : null,
-            last_name: this.state.last_name ? this.state.last_name : null,
-            reference_first_name: this.state.reference_first_name,
-            reference_last_name: this.state.reference_last_name,
-            reference_phone_number: this.state.reference_phone_number,
-            date_of_birth: this.state.date_of_birth.format("YYYY-MM-DD").toString(),
-            birth_order: this.state.birth_order ? this.state.birth_order : null,
-            gender: this.state.gender ? this.state.gender : null,
-            marital_status: this.state.marital_status ? this.state.marital_status : null,
-            number_of_children: this.state.number_of_children ? this.state.number_of_children : null,
-            current_jobs: this.state.current_jobs[0] ? [this.state.current_jobs[0].url] : [],
-            current_jobs_explanation: this.state.current_jobs_explanation,
-            previous_jobs: this.state.previous_jobs[0] ? [this.state.previous_jobs[0].url] : [],
-            previous_jobs_explanation: this.state.previous_jobs_explanation,
-            degrees: this.state.degrees[0] ? [this.state.degrees[0].url] : [] ,
-            degrees_explanation: this.state.degrees_explanation,
-            birth_city: (this.state.birth_city && this.state.birth_province) ? this.state.birth_city.url : "",
-            current_city: (this.state.current_city && this.state.current_province) ? this.state.current_city.url : "",
-            current_address: this.state.current_address ? this.state.current_address: "",
-            entertainments: this.state.entertainments.filter(e=>e.checked===true).map(u=>u.url),
-            interests_explanation: this.state.interests_explanation,
-            disease_history: this.state.disease_history === "yes",
-            disease_history_explanation: this.state.disease_history_explanation,
-            drug_history: this.state.drug_history === "yes",
-            drug_history_explanation: this.state.drug_history_explanation,
-            criminal_history: this.state.criminal_history === "yes",
-            criminal_history_explanation: this.state.criminal_history_explanation
-        }
-        // if(this.state.birth_city) {
-        //
-        //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {birth_city: this.state.birth_city.url})
-        //         .then((res) => {
-        //             console.log("res: ", res.data);
-        //         })
-        // }
-        // if(this.state.current_city) {
-        //     console.log("this.state.current_city url: ", this.state.current_city.url);
-        //     axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, {current_city: this.state.current_city.url});
-        // }
-        axiosInstance.axios.patch(`/information/profile/${this.state.user_id}/`, updatedProfile)
-            .then((response) => {
-                this.toast.success("تغییرات با موفقیت اعمال گردید")
-            })
-            .catch((error) => {
-                console.log("an error in submission: ", error.response.data);
-            })
-        axiosInstance.axios.patch(this.state.user_profile.social_medias, this.state.social_medias[0]);
+
     }
     setAccount = (event) => {
         console.log("handleSetAccount called");
@@ -1452,3 +1480,4 @@ export default class MyProfile extends React.Component {
         );
     }
 }
+export default withRouter(MyProfile);

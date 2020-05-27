@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
+import axiosInstance from "../../connetion/axios";
 import HomePageLink from "../HomePageLink";
 
 import closeIcon from "../../assets/images/close icon@2x.png";
@@ -79,6 +80,24 @@ const StyledContactUsMiddleContainer = styled.div`
 `;
 
 export default class ContactUs extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            social: ""
+        }
+
+    }
+
+    componentDidMount() {
+        axiosInstance.axios.get(`/information/profile/1/`)
+            .then((response) => {
+                axiosInstance.axios.get(response.data.social_medias[0])
+                    .then((socialResponse) => {
+                        console.log("social: ",socialResponse.data);
+                        this.setState(() => ({social: socialResponse.data}));
+                    })
+            })
+    }
 
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
@@ -99,49 +118,49 @@ export default class ContactUs extends React.Component {
                         <div className={"social-group"}>
                             <a href={"/"} id={"social1"}>
                                 <img src={telephone} alt={"telephone"}/>
-                                03132612613
+                                {this.state.social.landline_number}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social2"}>
                                 <img src={telegram} alt={"telegram"}/>
-                                09131137002
+                                {this.state.social.telegram_id}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social3"}>
                                 <img src={whatsapp} alt={"whatsapp"}/>
-                                whatsapp/vohoo
+                                {this.state.social.whatsapp_number}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social4"}>
                                 <img src={mail} alt={"mail"}/>
-                                vohoo@gmail.com
+                                {this.state.social.email_address}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social5"}>
                                 <img src={instagram} alt={"instagram"}/>
-                                @vohoo
+                                {this.state.social.instagram_id}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social6"}>
                                 <img src={facebook} alt={"facebook"}/>
-                                www.facebook.com/me
+                                {this.state.social.facebook_link}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social7"}>
                                 <img src={youtube} alt={"youtube"}/>
-                                www.youtube.com/vohoo
+                                {this.state.social.youtube_link}
                             </a>
                         </div>
                         <div className={"social-group"}>
                             <a href={"/"} id={"social8"}>
                                 <img src={twitter} alt={"twitter"}/>
-                                www.twitter.com/vohoo
+                                {this.state.social.twitter_id}
                             </a>
                         </div>
                     </div>

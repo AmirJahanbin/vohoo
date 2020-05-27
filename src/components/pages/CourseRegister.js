@@ -3,7 +3,7 @@ import React from "react";
 import axiosInstance from '../../connetion/axios';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import Toastify from "../toastify";
+import Toastify from "../Toastify";
 import Calendar from "jalali-react-big-calendar";
 import moment from "moment-jalaali";
 import {momentLocalizer} from 'react-big-calendar'

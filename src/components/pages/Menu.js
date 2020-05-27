@@ -5,6 +5,7 @@ import styled from "styled-components";
 import closeIcon from "../../assets/images/close icon.png";
 import closeIconHover from "../../assets/images/close icon hover.png";
 import background from "../../assets/images/birds3-@2x.png"
+import axiosInstance from "../../connetion/axios";
 
 const StyledMenuMiddleContainer = styled.div`
   background-color: rgba(64, 45, 96, 0.5);
@@ -121,7 +122,7 @@ const StyledMenuRightContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   text-align: right;
-  min-height: 100vh;
+  min-height: 300px;
   font-size: 1.5vw;
   border-right: 1px solid #23083D;
   padding-right: 5px;
@@ -193,6 +194,22 @@ export default class Menu extends React.Component {
         }
     }
 
+    async componentDidMount() {
+        const token = axiosInstance.getAuthKey();
+        axiosInstance.axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+        const response = await axiosInstance.axios.post('/user/get_user/')
+        const profileResponse = await axiosInstance.axios.get(`/information/profile/${response.data.id}/`);
+        const {notifications} = profileResponse.data;
+
+        // axiosInstance.axios.get(notifications)
+        //     .then((notificationResponse) => {
+        //         console.log("menu pro: ", notificationResponse.data);
+        //         let lastEvents = notificationResponse.data;
+        //         this.setState(() => ({lastEvents: lastEvents}))
+        //     })
+
+    }
+
     render() {
         return (
             <div className={"main-container"}>
@@ -246,20 +263,6 @@ export default class Menu extends React.Component {
                         </div>
                     </StyledMenuLeftContainer>
                 </div>
-
-
-                {/*<Link to={"/"}>Go home</Link>*/}
-                {/*<Link to={""}>درخت آگاهی من</Link>*/}
-                {/*<Link to={"/my-courses"}>دوره های من</Link>*/}
-                {/*<Link to={""}>ارتباطات من</Link>*/}
-
-                {/*<Link to={"/my-profile"}>مشخصات من</Link>*/}
-                {/*<Link to={"/invoice"}>صورت مالی من</Link>*/}
-                {/*<Link to={"/my-activity"}>حضور من</Link>*/}
-                {/*<Link to={"/sign-up"}>عضویت در سایت</Link>*/}
-                {/*<Link to={""}>داستان ما</Link>*/}
-                {/*<Link to={"/about-us"}>ارتباط با ما</Link>*/}
-                {/*<h3>This is Menu page!</h3>*/}
             </div>
         );
     }

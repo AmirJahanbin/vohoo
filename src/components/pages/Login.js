@@ -1,14 +1,14 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import axiosInstance from "../../connetion/axios";
 import HomePageLink from "../HomePageLink";
 import LoginForm from "../LoginForm";
 import closeIcon from "../../assets/images/close icon@2x.png";
-import Toastify from "../toastify";
+import Toastify from "../Toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {inspect} from 'util';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
         this.toast = new Toastify().toast;
@@ -25,9 +25,12 @@ export default class Login extends React.Component {
                 axiosInstance.setAuthKey(response.data.key);
 
             }
-            this.props.history.push("/menu");
+            let {from} = this.props.location.state || { from: { pathname: "/" }};
+            this.props.history.replace(from)
+            // this.props.history.push("/menu");
         } catch (e) {
             // this.toast.error(e.message || 'Wrong user pass');
+            console.log("e.respones: ", e.response);
             console.log(inspect(e, false, null, true));
             if(e.response.status >= 400 || e.response.status <= 199) {
                 this.toast.error("نام کاربری یا رمز عبور نادرست است")
@@ -63,4 +66,5 @@ export default class Login extends React.Component {
             </div>
         );
     }
-};
+}
+export default withRouter(Login)

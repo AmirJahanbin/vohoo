@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment-jalaali";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
@@ -28,6 +29,9 @@ const StyledDiv = styled.div`
     }
   }
   .payment-amount-and-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     & .payment-amount {
       display: flex;
       flex-direction: row-reverse;
@@ -39,31 +43,49 @@ const StyledDiv = styled.div`
 export default class transactionHistory extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {}
 
-        }
     }
+
     render() {
+        console.log("render history called, props: ", this.props.transaction);
         return (
-            <StyledDiv>
-                <div className={"payment-subject-and-type"}>
-                    <div className={"deposit-type"}>
-                        {("") ? <span>+</span> : <span>-</span>}
+            <div>
+                <StyledDiv>
+                    <div className={"payment-subject-and-type"}>
+                        <div className={"deposit-type"}>
+                            {
+                                // ("") ? <span>+</span> : <span>-</span>
+                                this.props.transaction && this.props.transaction.sign
+                            }
+                        </div>
+                        <div className={"payment-subject"}>
+                            {
+                                this.props.transaction.title
+                            }
+                        </div>
                     </div>
-                    <div className={"payment-subject"}>
-                        {"واریز پول"}
+                    <div className={"payment-amount-and-date"}>
+                        <div className={"payment-amount"}>
+                            <span style={{fontSize: "36px", color: "#606060"}}>
+                                {
+                                    this.props.transaction.amount
+                                }
+                            </span>
+                            <span style={{fontSize: "18px", color: "#AAAAAA"}}>تومان</span>
+                        </div>
+                        <div className={"payment-date"}>
+                            <span style={{fontSize: "18px", color: "#AAAAAA", paddingLeft: "40px"}}>
+                                {
+                                    // this.props.transaction.date.format("jYYYY/M/D")
+                                    moment(this.props.transaction.date, "YYYY/M/D").format("jYYYY/jM/jD")
+                                }
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div className={"payment-amount-and-date"}>
-                    <div className={"payment-amount"}>
-                        <span style={{fontSize: "36px", color: "#606060"}}>{100000}</span>
-                        <span style={{fontSize: "18px", color: "#AAAAAA"}}>تومان</span>
-                    </div>
-                    <div className={"payment-date"}>
-                        <span style={{fontSize: "18px", color: "#AAAAAA",paddingLeft: "40px"}}>{"99/3/3"}</span>
-                    </div>
-                </div>
-            </StyledDiv>
+                </StyledDiv>
+                <hr style={{border: "0.5px solid #AAAAAA", width: "92%"}}/>
+            </div>
         );
     }
 }
