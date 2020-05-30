@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/images/Component 203 – 12@2x.png";
+import logo from "../assets/images/logo main png@2x.png";
 
 const StyledHomePageLogo = styled.div`
   //width: 80%;

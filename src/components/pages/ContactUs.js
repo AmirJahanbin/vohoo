@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import axiosInstance from "../../connetion/axios";
 import HomePageLink from "../HomePageLink";
+import Toastify from "../Toastify";
 
 import closeIcon from "../../assets/images/close icon@2x.png";
 import facebook from "../../assets/images/social icons/facebook-1@2x.png";
@@ -78,7 +79,7 @@ const StyledContactUsMiddleContainer = styled.div`
   }
   }
 `;
-
+const toast = new Toastify().toast;
 export default class ContactUs extends React.Component {
     constructor(props) {
         super(props);
@@ -86,19 +87,32 @@ export default class ContactUs extends React.Component {
             social: ""
         }
 
+
     }
 
     componentDidMount() {
-        axiosInstance.axios.get(`/information/profile/1/`)
+        axiosInstance.axios.get(`/website/site-information/1/`)
             .then((response) => {
-                axiosInstance.axios.get(response.data.social_medias[0])
+                axiosInstance.axios.get(response.data.social_media)
                     .then((socialResponse) => {
-                        console.log("social: ",socialResponse.data);
                         this.setState(() => ({social: socialResponse.data}));
                     })
             })
     }
 
+    handleOnSubmit = (event) => {
+        event.preventDefault();
+
+        const sendMessage = {
+            first_name: event.target.elements.first_name.value,
+            last_name: event.target.elements.last_name.value,
+            phone_number: event.target.elements.phone_number.value,
+            message: event.target.elements.message.value
+        }
+        axiosInstance.axios.post('/website/contact/', sendMessage)
+            .then(res => toast.success("پیام شما ارسال گردید"))
+            .catch(e => toast.error("مشکلی در ارسال فرم پیش آمده است. لطفا دوباره تلاش کنید"));
+    }
     handleNextInput = (event) => {
         if (event.keyCode === 13) {
             const form = event.target.form;
@@ -116,97 +130,98 @@ export default class ContactUs extends React.Component {
                 <StyledContactUsMiddleContainer className={"middle-container"} id={"contact-us-container"}>
                     <div className={"social-link-box"}>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social1"}>
+                            <a href={"#"} id={"social1"}>
                                 <img src={telephone} alt={"telephone"}/>
                                 {this.state.social.landline_number}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social2"}>
+                            <a href={"#"} id={"social2"}>
                                 <img src={telegram} alt={"telegram"}/>
                                 {this.state.social.telegram_id}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social3"}>
+                            <a href={"#"} id={"social3"}>
                                 <img src={whatsapp} alt={"whatsapp"}/>
                                 {this.state.social.whatsapp_number}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social4"}>
+                            <a href={"#"} id={"social4"}>
                                 <img src={mail} alt={"mail"}/>
                                 {this.state.social.email_address}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social5"}>
+                            <a href={"#"} id={"social5"}>
                                 <img src={instagram} alt={"instagram"}/>
                                 {this.state.social.instagram_id}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social6"}>
+                            <a href={"#"} id={"social6"}>
                                 <img src={facebook} alt={"facebook"}/>
                                 {this.state.social.facebook_link}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social7"}>
+                            <a href={"#"} id={"social7"}>
                                 <img src={youtube} alt={"youtube"}/>
                                 {this.state.social.youtube_link}
                             </a>
                         </div>
                         <div className={"social-group"}>
-                            <a href={"/"} id={"social8"}>
+                            <a href={"#"} id={"social8"}>
                                 <img src={twitter} alt={"twitter"}/>
                                 {this.state.social.twitter_id}
                             </a>
                         </div>
                     </div>
                     <div id={"contact-us-form"}>
-                        <StyledForm>
+                        <StyledForm onSubmit={this.handleOnSubmit}>
                             <div className={"form-group"}>
                                 <input
-                                    name={"name"}
+                                    name={"first_name"}
                                     type={"text"}
-                                    id={"name"}
+                                    id={"first_name"}
                                     className={"form-field"}
                                     placeholder={"نام"}
                                     autoFocus={true}
                                     required={true}
+
                                     onKeyDown={this.handleNextInput}
                                 />
-                                <label htmlFor={"name"} className={"form-label"}>
+                                <label htmlFor={"first_name"} className={"form-label"}>
                                     نام
                                 </label>
                             </div>
                             <div className={"form-group"}>
                                 <input
-                                    name={"family"}
+                                    name={"last_name"}
                                     type={"text"}
-                                    id={"family"}
+                                    id={"last_name"}
                                     className={"form-field"}
                                     placeholder={"نام خانوادگی"}
                                     required={true}
                                     onKeyDown={this.handleNextInput}
                                 />
-                                <label htmlFor={"family"} className={"form-label"}>
+                                <label htmlFor={"last_name"} className={"form-label"}>
                                     نام خانوادگی
                                 </label>
                             </div>
                             <div className={"form-group"}>
                                 <input
-                                    name={"phoneNumber"}
+                                    name={"phone_number"}
                                     type={"tel"}
-                                    id={"phoneNumber"}
+                                    id={"phone_number"}
                                     className={"form-field"}
                                     placeholder={"شماره تماس"}
                                     required={true}
-                                    pattern={"[0-9]{10}"}
+                                    // pattern={"[0-9]{10}"}
                                     onKeyDown={this.handleNextInput}
                                 />
-                                <label htmlFor={"phoneNumber"} className={"form-label"}>
+                                <label htmlFor={"phone_number"} className={"form-label"}>
                                     شماره تماس
                                 </label>
                             </div>

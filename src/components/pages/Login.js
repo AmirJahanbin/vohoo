@@ -25,7 +25,7 @@ class Login extends React.Component {
                 axiosInstance.setAuthKey(response.data.key);
 
             }
-            let {from} = this.props.location.state || { from: { pathname: "/" }};
+            let {from} = this.props.location.state || { from: { pathname: "/menu" }};
             this.props.history.replace(from)
             // this.props.history.push("/menu");
         } catch (e) {
