@@ -3,43 +3,64 @@ import axios from "axios";
 import axiosInstance from '../../connetion/axios';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-import HomePageLink from "../HomePageLink";
 import MenuLink from "../MenuLink";
-import mainTree from "../../assets/images/home page/main sample2.png";
-import imageTitle1 from "../../assets/images/home page/Group 62853@2x.png";
+import mainTree from "../../assets/images/home page/mait tree.jpg";
+import menuIcon from "../../assets/images/home page/Component 202 – 11.png";
+import healthIcon from "../../assets/images/home page/health.png";
+import cofeeIcon from "../../assets/images/home page/iconfinder_coffee_cup_drink_hot_tea_392514.png";
+import eyeIcon from "../../assets/images/home page/iconfinder_eye_preview_see_seen_view_392505.png";
+import musicIcon from "../../assets/images/home page/iconfinder_icon-music_2867929.png";
+import weespoSchool from "../../assets/images/home page/weespo school.png";
+import aaIcon from "../../assets/images/home page/aa.png";
+import flagIcon from "../../assets/images/home page/flag.png";
+
+
+import football from "../../assets/ywrw_2008_0.mp3";
 
 const StyledHomePage = styled.div`
-  font-family: MJ_thameen, sans-serif;
-  font-size: xx-large;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  & button {
-    font-family: MJ_thameen, sans-serif;
-    font-size: xx-large;
-    background-color: #D9D9D9;
-    border: 1px solid #23083D;
-    border-radius: 20px;
-    //padding: 20px 0;
-    width: 20%;
-    margin: 20px;
+  background-color: #0E4736;
+  //width: fit-content;
+  width: 100vw;
+  //height: 100vh;
+  #main-tree {
+    //max-width: 1626px;
+    max-width: 82vw;
+    //max-height: 847px;    
+    margin: auto;
+    display: block;
   }
-  & Link {
-    width: 20%;
+  //
+  .home-taskbar-container {
+    background-color: #D58411;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    width: 100vw;
+    //margin-top: -58px;
+    > div {
+      flex-basis: 33%;
+      display: flex;
+      flex-wrap: nowrap;
+      & img {
+        margin: 0 38px;
+      }
+    }
   }
-  & select {
-    text-align: right;
-    width: 20%;
-    padding: 10px 0;
+  #weespo-school {
+    width: 330px;
+    height: 70px;
+    margin: auto;
+    display: block;
   }
 `;
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            courseTitles: ['']
+            courseTitles: [''],
+            isPlaying: true
         }
         this.sectionCourseNameList = [];
     }
@@ -73,34 +94,73 @@ export default class Home extends React.Component {
         localStorage.setItem("currentSection", currentSection);
         // this.props.history.push("/course-register");
     }
+    handlePlayPause = () => {
+
+        this.setState((pre) => ({isPlaying: !pre.isPlaying}), () => {
+            console.log("music");
+            const aud = document.getElementById("music-home-page");
+            console.log(aud);
+            this.state.isPlaying ? aud.play() : aud.pause();
+        })
+    }
     render() {
-        console.log("section course name list:", this.sectionCourseNameList);
         return (
-            <div style={{backgroundColor: "#0E4736"}}>
-                <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"}/>
+            <StyledHomePage>
+                <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"} id={"main-tree"}/>
                 {/*<map name={"image-map"}>*/}
-                {/*    <area coords={"207,508,72"} shape={"circle"} alt={"sib"}/>*/}
+                {/*    <area alt="test" title="test" coords="207,508,72" shape="circle" style={{backgroundColor: "red"}}/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="359,588,67" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="398,901,64" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="618,655,61" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="773,685,60" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1125,684,57" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1278,655,62" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1539,590,68" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1688,508,65" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1501,901,67" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="163,772,50" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="524,144,45" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="829,397,60" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="949,302,64" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1067,399,61" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1371,147,49" shape="circle"/>*/}
+                {/*    <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>*/}
                 {/*</map>*/}
-                    <map name={"image-map"}>
-                        <area target="" alt="test" title="test" href="#" coords="207,508,72" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="359,588,67" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="398,901,64" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="618,655,61" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="773,685,60" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1125,684,57" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1278,655,62" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1539,590,68" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1688,508,65" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1501,901,67" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="163,772,50" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="524,144,45" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="829,397,60" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="949,302,64" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1067,399,61" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1371,147,49" shape="circle"/>
-                        <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>
-                    </map>
-            </div>
+                <div className={"home-taskbar-container"}>
+                    <div style={{width: "506px"}}>
+                        <Link to={"/menu"} style={{marginLeft: "42px"}}>
+                            <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "120px"}}/>
+                        </Link>
+                        <Link to={"#"}>
+                            <img src={flagIcon} alt={"دوره‌های آموزشی من"} title={"دوره‌های آموزشی من"}/>
+                        </Link>
+                        <Link to={"#"}>
+                            <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
+                        </Link>
+                        <Link to={"#"}>
+                            <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"}/>
+                        </Link>
+                    </div>
+                    <div>
+                        {/*<Link to={"#"}>*/}
+                            <img src={weespoSchool} alt={"مدرسه بالندگی ویسپو"} id={"weespo-school"}/>
+                        {/*</Link>*/}
+                    </div>
+                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                        <Link to={"#"}>
+                            <img src={aaIcon} alt={"حامی"} title={"حامی"}/>
+                        </Link>
+                        {/*<Link to={"#"}>*/}
+                        <audio src={football} id={"music-home-page"} autoPlay={true}>
+                        </audio>
+                        <img src={musicIcon} alt={"آهنگ سایت"} title={"موزیک"}  onClick={this.handlePlayPause}/>
+                        {/*</Link>*/}
+                        <Link to={"#"}>
+                            <img src={eyeIcon} alt={"دوره‌های آموزشی"} title={"دوره‌های آموزشی"}/>
+                        </Link>
+                    </div>
+                </div>
+            </StyledHomePage>
 
         );
     }

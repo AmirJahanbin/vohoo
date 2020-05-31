@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import menuIcon from "../assets/images/menu-icon.png"
+import menuIcon from "../assets/images/menu-icon.png";
 import {Link} from "react-router-dom";
 
 const StyledMenuLink = styled.div`
