@@ -76,7 +76,7 @@ export default class Home extends React.Component {
     render() {
         console.log("section course name list:", this.sectionCourseNameList);
         return (
-            <div>
+            <div style={{backgroundColor: "#0E4736"}}>
                 <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"}/>
                 {/*<map name={"image-map"}>*/}
                 {/*    <area coords={"207,508,72"} shape={"circle"} alt={"sib"}/>*/}
