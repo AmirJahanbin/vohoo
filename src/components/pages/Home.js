@@ -5,6 +5,8 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 import HomePageLink from "../HomePageLink";
 import MenuLink from "../MenuLink";
+import mainTree from "../../assets/images/home page/main sample2.png";
+import imageTitle1 from "../../assets/images/home page/Group 62853@2x.png";
 
 const StyledHomePage = styled.div`
   font-family: MJ_thameen, sans-serif;
@@ -54,6 +56,7 @@ export default class Home extends React.Component {
                     titleList.push(courseResponse.data.name);
                     let temp = {};
                     temp.section = sectionList[i].url;
+                    temp.id = sectionList[i].id;
                     temp.courseName = courseResponse.data.name;
                     this.sectionCourseNameList.push(temp);
                 }
@@ -65,28 +68,40 @@ export default class Home extends React.Component {
             )
     }
     handleNavigateToCourseRegister = (event) => {
-        console.log(event.target.value);
+        console.log("id: ", event.target.value);
         const currentSection = event.target.value;
         localStorage.setItem("currentSection", currentSection);
-        this.props.history.push("/course-register");
+        // this.props.history.push("/course-register");
     }
     render() {
+        console.log("section course name list:", this.sectionCourseNameList);
         return (
-            <StyledHomePage className={"home-page-container"}>
-                <div className={"home-menu-link"}>
-                    <HomePageLink className={"top-left-home-page-logo"}/>
-                    <MenuLink className={"down-left-menu-link"}/>
-                </div>
-                <span>
-                    :لیست دوره ها
-                </span>
-                {this.sectionCourseNameList.map((section, index) => (
-                    <button onClick={this.handleNavigateToCourseRegister} value={section.section} key={index}>
-                        {section.courseName}
-                    </button>
+            <div>
+                <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"}/>
+                {/*<map name={"image-map"}>*/}
+                {/*    <area coords={"207,508,72"} shape={"circle"} alt={"sib"}/>*/}
+                {/*</map>*/}
+                    <map name={"image-map"}>
+                        <area target="" alt="test" title="test" href="#" coords="207,508,72" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="359,588,67" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="398,901,64" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="618,655,61" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="773,685,60" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1125,684,57" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1278,655,62" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1539,590,68" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1688,508,65" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1501,901,67" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="163,772,50" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="524,144,45" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="829,397,60" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="949,302,64" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1067,399,61" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1371,147,49" shape="circle"/>
+                        <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>
+                    </map>
+            </div>
 
-                ))}
-            </StyledHomePage>
         );
     }
 }

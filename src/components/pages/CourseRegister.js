@@ -70,7 +70,8 @@ export default class CourseRegister extends React.Component {
     }
 
     componentDidMount() {
-        const sectionUrl = localStorage.getItem("currentSection");
+        console.log("this is course register page, match:", this.props.match);
+        const sectionId = localStorage.getItem("currentSection");
         let tempTexts = [];
         let tempFiles = [];
         let tempSessions = [];
@@ -78,7 +79,7 @@ export default class CourseRegister extends React.Component {
         let tempPayments = [];
         let tempPaymentLists = [];
         let tempPaymentDetails = [];
-        axiosInstance.axios.get(sectionUrl)
+        axiosInstance.axios.get(`tree/section/${sectionId}`)
             .then(async (response) => {
                 this.setState(() => ({sectionObject: response.data}));
                 axiosInstance.axios.get(response.data.location)
@@ -225,8 +226,6 @@ export default class CourseRegister extends React.Component {
             let tempMonth = moment(temp, "jYYYY/jM/jD").jMonth();
             startDay = tempDate + "  " + this.persianMonths[tempMonth + 1];
         }
-
-        console.log("here: ", this.state.courseContentTextObjects[4]);
 
         return (
             <StyledCourseRegister>

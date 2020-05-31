@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../components/pages/Home";
+import CourseList from "../components/pages/CourseList";
 import CourseRegister from "../components/pages/CourseRegister";
 import Menu from "../components/pages/Menu";
 import SignUp from "../components/pages/SignUp";
@@ -22,7 +23,7 @@ const AppRouter = () => (
         <div>
             <Switch>
                 <Route path={"/"} exact={true}   component={Home}/>
-                <Route path={"/course-register"} component={CourseRegister}/>
+                <Route path={"/course-list"} component={CourseList}/>
                 <Route path={"/menu"}            component={Menu}/>
                 <Route path={"/sign-up"}         component={SignUp}/>
                 <Route path={"/login"}>
