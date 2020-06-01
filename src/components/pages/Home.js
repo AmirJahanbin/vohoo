@@ -19,17 +19,15 @@ import football from "../../assets/ywrw_2008_0.mp3";
 
 const StyledHomePage = styled.div`
   background-color: #0E4736;
-  //width: fit-content;
-  width: 100vw;
+  //width: 100vw;
   //height: 100vh;
   #main-tree {
     //max-width: 1626px;
-    max-width: 82vw;
-    //max-height: 847px;    
+    max-width: 100vw;
+    max-height: 847px;    
     margin: auto;
     display: block;
   }
-  //
   .home-taskbar-container {
     background-color: #D58411;
     display: flex;
@@ -47,6 +45,14 @@ const StyledHomePage = styled.div`
         margin: 0 38px;
       }
     }
+  }
+  .left-taskbar {
+    img {
+      height: 40px;
+    }
+  }
+  .right-taskbar {
+    margin-right: 40px;
   }
   #weespo-school {
     width: 330px;
@@ -127,7 +133,7 @@ export default class Home extends React.Component {
                 {/*    <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>*/}
                 {/*</map>*/}
                 <div className={"home-taskbar-container"}>
-                    <div style={{width: "506px"}}>
+                    <div style={{width: "506px"}} className={"left-taskbar"}>
                         <Link to={"/menu"} style={{marginLeft: "42px"}}>
                             <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "120px"}}/>
                         </Link>
@@ -146,12 +152,12 @@ export default class Home extends React.Component {
                             <img src={weespoSchool} alt={"مدرسه بالندگی ویسپو"} id={"weespo-school"}/>
                         {/*</Link>*/}
                     </div>
-                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    <div style={{display: "flex", justifyContent: "flex-end"}} className={"right-taskbar"}>
                         <Link to={"#"}>
                             <img src={aaIcon} alt={"حامی"} title={"حامی"}/>
                         </Link>
                         {/*<Link to={"#"}>*/}
-                        <audio src={football} id={"music-home-page"} autoPlay={true}>
+                        <audio src={football} id={"music-home-page"} >
                         </audio>
                         <img src={musicIcon} alt={"آهنگ سایت"} title={"موزیک"}  onClick={this.handlePlayPause}/>
                         {/*</Link>*/}

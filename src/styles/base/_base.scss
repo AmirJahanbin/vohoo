@@ -5,7 +5,10 @@ html {
   color: #606060;
 }
 body {
-
+  overflow: scroll;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 button {
   font-family: MJ_thameen, sans-serif;
