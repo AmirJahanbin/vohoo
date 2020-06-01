@@ -20,10 +20,10 @@ import football from "../../assets/ywrw_2008_0.mp3";
 const StyledHomePage = styled.div`
   background-color: #0E4736;
   width: 100vw;
-  max-height: 754px;
+  //max-height: 754px;
   #main-tree {
     max-width: 100vw;
-    max-height: 694px;
+    max-height: 100vh;
     margin: auto;
     display: block;
   }
