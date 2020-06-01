@@ -76,7 +76,7 @@ const StyledHomePage = styled.div`
     width: 60%;
     img {
       margin-right: 20px;
-      height: 30px;
+      height: 3px;
     }
   }
   .right-taskbar {
