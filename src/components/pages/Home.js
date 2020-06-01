@@ -19,44 +19,51 @@ import football from "../../assets/ywrw_2008_0.mp3";
 
 const StyledHomePage = styled.div`
   background-color: #0E4736;
-  //width: 100vw;
-  //height: 100vh;
+  width: 100vw;
+  max-height: 754px;
   #main-tree {
-    //max-width: 1626px;
     max-width: 100vw;
-    max-height: 847px;    
+    max-height: 694px;
     margin: auto;
     display: block;
   }
   .home-taskbar-container {
     background-color: #D58411;
+    height: 60px;
+    width: 100%;    
+    & a {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .home-taskbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
-    width: 100vw;
-    //margin-top: -58px;
+    width: 1220px;
+    margin: auto;
     > div {
       flex-basis: 33%;
-      display: flex;
-      flex-wrap: nowrap;
-      & img {
-        margin: 0 38px;
-      }
     }
   }
   .left-taskbar {
+    display: flex;
     img {
-      height: 40px;
+      margin-right: 60px;
+      height: 30px;
     }
   }
   .right-taskbar {
-    margin-right: 40px;
+    display: flex;
+    justify-content: flex-end;
+    img {
+      margin-left: 60px;
+    }
   }
   #weespo-school {
-    width: 330px;
-    height: 70px;
+    width: 290px;
+    height: 60px;
     margin: auto;
     display: block;
   }
@@ -133,37 +140,37 @@ export default class Home extends React.Component {
                 {/*    <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>*/}
                 {/*</map>*/}
                 <div className={"home-taskbar-container"}>
-                    <div style={{width: "506px"}} className={"left-taskbar"}>
-                        <Link to={"/menu"} style={{marginLeft: "42px"}}>
-                            <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "120px"}}/>
-                        </Link>
-                        <Link to={"#"}>
-                            <img src={flagIcon} alt={"دوره‌های آموزشی من"} title={"دوره‌های آموزشی من"}/>
-                        </Link>
-                        <Link to={"#"}>
-                            <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
-                        </Link>
-                        <Link to={"#"}>
-                            <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"}/>
-                        </Link>
-                    </div>
-                    <div>
-                        {/*<Link to={"#"}>*/}
+                    <div className={"home-taskbar"}>
+                        <div className={"left-taskbar"}>
+                            <Link to={"/menu"}>
+                                <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "90px"}}/>
+                            </Link>
+                            <Link to={"#"}>
+                                <img src={flagIcon} alt={"دوره‌های آموزشی من"} title={"دوره‌های آموزشی من"}/>
+                            </Link>
+                            <Link to={"#"}>
+                                <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
+                            </Link>
+                            <Link to={"#"}>
+                                <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"} style={{marginRight: "unset"}}/>
+                            </Link>
+                        </div>
+                        <div className={"middle-taskbar"}>
                             <img src={weespoSchool} alt={"مدرسه بالندگی ویسپو"} id={"weespo-school"}/>
-                        {/*</Link>*/}
-                    </div>
-                    <div style={{display: "flex", justifyContent: "flex-end"}} className={"right-taskbar"}>
-                        <Link to={"#"}>
-                            <img src={aaIcon} alt={"حامی"} title={"حامی"}/>
-                        </Link>
-                        {/*<Link to={"#"}>*/}
-                        <audio src={football} id={"music-home-page"} >
-                        </audio>
-                        <img src={musicIcon} alt={"آهنگ سایت"} title={"موزیک"}  onClick={this.handlePlayPause}/>
-                        {/*</Link>*/}
-                        <Link to={"#"}>
-                            <img src={eyeIcon} alt={"دوره‌های آموزشی"} title={"دوره‌های آموزشی"}/>
-                        </Link>
+                        </div>
+                        <div className={"right-taskbar"}>
+                            <Link to={"#"}>
+                                <img src={aaIcon} alt={"حامی"} title={"حامی"}/>
+                            </Link>
+                            {/*<Link to={"#"}>*/}
+                            <audio src={football} id={"music-home-page"} >
+                            </audio>
+                            <img src={musicIcon} alt={"آهنگ سایت"} title={"موزیک"}  onClick={this.handlePlayPause}/>
+                            {/*</Link>*/}
+                            <Link to={"#"}>
+                                <img src={eyeIcon} alt={"دوره‌های آموزشی"} title={"دوره‌های آموزشی"}/>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </StyledHomePage>
