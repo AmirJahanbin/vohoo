@@ -41,7 +41,7 @@ const StyledHomePage = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 1220px;
+    max-width: 1300px;
     margin: auto;
     > div {
       flex-basis: 33%;
@@ -49,16 +49,19 @@ const StyledHomePage = styled.div`
   }
   .left-taskbar {
     display: flex;
+    margin-left: 40px;
+    align-items: flex-end;
     img {
-      margin-right: 60px;
+      margin-right: 50px;
       height: 30px;
     }
   }
   .right-taskbar {
+    margin-right: 40px;
     display: flex;
     justify-content: flex-end;
     img {
-      margin-left: 60px;
+      margin-left: 50px;
     }
   }
   #weespo-school {
@@ -152,7 +155,7 @@ export default class Home extends React.Component {
                                 <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
                             </Link>
                             <Link to={"#"}>
-                                <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"} style={{marginRight: "unset"}}/>
+                                <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"} style={{marginRight: "unset", height: "32px"}}/>
                             </Link>
                         </div>
                         <div className={"middle-taskbar"}>
