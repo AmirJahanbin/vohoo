@@ -20,20 +20,40 @@ import football from "../../assets/ywrw_2008_0.mp3";
 const StyledHomePage = styled.div`
   background-color: #0E4736;
   width: 100vw;
-  //max-height: 754px;
+  max-height: 100vh;
+  @-moz-document url-prefix() {
+      {
+        max-width: 99.3vw;
+      }
+  }
+    
   #main-tree {
     max-width: 100vw;
-    max-height: 100vh;
+    max-height: -webkit-fill-available;
+    @-moz-document url-prefix() {
+      {
+        max-width: 99vw;
+        height: inherit;
+      }
+    }
     margin: auto;
     display: block;
   }
   .home-taskbar-container {
     background-color: #D58411;
-    height: 60px;
+    height: 7.41vh;
     width: 100%;    
     & a {
       display: flex;
       align-items: center;
+    }
+  }
+  .main-tree-container {
+    height: 92.59vh;
+    @-moz-document url-prefix() {
+    {
+      height: 91.2vh;
+    }
     }
   }
   .home-taskbar {
@@ -41,7 +61,8 @@ const StyledHomePage = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    max-width: 1300px;
+    //max-width: 1300px;
+    height: 100%;
     margin: auto;
     > div {
       flex-basis: 33%;
@@ -49,10 +70,12 @@ const StyledHomePage = styled.div`
   }
   .left-taskbar {
     display: flex;
-    margin-left: 40px;
+    //margin-left: 40px;
     align-items: flex-end;
+    justify-content: space-between;
+    width: 60%;
     img {
-      margin-right: 50px;
+      margin-right: 20px;
       height: 30px;
     }
   }
@@ -71,17 +94,23 @@ const StyledHomePage = styled.div`
     display: block;
   }
 `;
+
+const StyledHomeTaskbar = styled.div`
+  width: ${props => props.width};
+`;
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             courseTitles: [''],
-            isPlaying: true
+            isPlaying: true,
+            width: window.innerWidth,
         }
         this.sectionCourseNameList = [];
     }
 
     async componentDidMount() {
+        window.addEventListener("resize", this.updateWidth);
         axiosInstance.axios.defaults.headers.common['Authorization'] = null;
         axiosInstance.axios.get("/tree/section/")
             .then(async (response) => {
@@ -104,6 +133,9 @@ export default class Home extends React.Component {
                 }
             )
     }
+    updateWidth = () => {
+        this.setState(() => ({width: window.innerWidth}), () => console.log("resized: ", this.state.width));
+    }
     handleNavigateToCourseRegister = (event) => {
         console.log("id: ", event.target.value);
         const currentSection = event.target.value;
@@ -119,10 +151,15 @@ export default class Home extends React.Component {
             this.state.isPlaying ? aud.play() : aud.pause();
         })
     }
+
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     console.log(document.getElementById("main-tree").width);
+    // }
+
     render() {
         return (
             <StyledHomePage>
-                <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"} id={"main-tree"}/>
+
                 {/*<map name={"image-map"}>*/}
                 {/*    <area alt="test" title="test" coords="207,508,72" shape="circle" style={{backgroundColor: "red"}}/>*/}
                 {/*    <area target="" alt="test" title="test" href="#" coords="359,588,67" shape="circle"/>*/}
@@ -142,21 +179,26 @@ export default class Home extends React.Component {
                 {/*    <area target="" alt="test" title="test" href="#" coords="1371,147,49" shape="circle"/>*/}
                 {/*    <area target="" alt="test" title="test" href="#" coords="1735,775,51" shape="circle"/>*/}
                 {/*</map>*/}
+                <div className={"main-tree-container"} >
+                    <img src={mainTree} useMap={"#image-map"} alt={"home-main-tree"} id={"main-tree"}/>
+                </div>
                 <div className={"home-taskbar-container"}>
-                    <div className={"home-taskbar"}>
-                        <div className={"left-taskbar"}>
-                            <Link to={"/menu"}>
-                                <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "90px"}}/>
-                            </Link>
-                            <Link to={"#"}>
-                                <img src={flagIcon} alt={"دوره‌های آموزشی من"} title={"دوره‌های آموزشی من"}/>
-                            </Link>
-                            <Link to={"#"}>
-                                <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
-                            </Link>
-                            <Link to={"#"}>
-                                <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"} style={{marginRight: "unset", height: "32px"}}/>
-                            </Link>
+                    <StyledHomeTaskbar className={"home-taskbar"} width={`${this.state.width - 80}px`}>
+                        <div style={{marginLeft: "40px"}}>
+                            <div className={"left-taskbar"}>
+                                <Link to={"/menu"}>
+                                    <img src={menuIcon} alt={"go to menu page"} title={"منو"} style={{width: "90px"}}/>
+                                </Link>
+                                <Link to={"#"}>
+                                    <img src={flagIcon} alt={"دوره‌های آموزشی من"} title={"دوره‌های آموزشی من"}/>
+                                </Link>
+                                <Link to={"#"}>
+                                    <img src={healthIcon} alt={"health"} title={"سلامت جسمی"}/>
+                                </Link>
+                                <Link to={"#"}>
+                                    <img src={cofeeIcon} alt={"study"} title={"مطالعه و ارتباط"} style={{marginRight: "unset", height: "32px"}}/>
+                                </Link>
+                            </div>
                         </div>
                         <div className={"middle-taskbar"}>
                             <img src={weespoSchool} alt={"مدرسه بالندگی ویسپو"} id={"weespo-school"}/>
@@ -174,7 +216,7 @@ export default class Home extends React.Component {
                                 <img src={eyeIcon} alt={"دوره‌های آموزشی"} title={"دوره‌های آموزشی"}/>
                             </Link>
                         </div>
-                    </div>
+                    </StyledHomeTaskbar>
                 </div>
             </StyledHomePage>
 
